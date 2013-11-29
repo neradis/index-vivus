@@ -1,0 +1,8 @@
+
+#eclipse project files
+.classpath
+.project
+.settings/
+
+#temporary build artifacts
+build/

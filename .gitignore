@@ -1,0 +1,8 @@
+#Gradle files
+.gradle/
+
+#IDEA project files
+*.iml
+*.ipr
+*.iws
+.idea/
