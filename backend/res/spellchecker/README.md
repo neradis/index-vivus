@@ -1,0 +1,1 @@
+top10000de.txt source: http://wortschatz.uni-leipzig.de/Papers/top10000de.txt
