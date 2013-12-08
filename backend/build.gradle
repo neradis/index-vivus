@@ -15,6 +15,7 @@ dependencies {
         compile 'com.google.guava:guava:13.+'
         compile 'log4j:log4j:1.2.+'
         compile 'org.apache.lucene:lucene-core:3.6.0'
+        compile 'org.apache.commons:commons-lang3:3.0'
         compile files('./libs/lingpipe-4.1.0.jar')
         testCompile 'log4j:log4j:1.2.+'
     }
