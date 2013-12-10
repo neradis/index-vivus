@@ -1,4 +1,4 @@
-package de.fusionfactory.indexvivus.spellchecker;
+package de.fusionfactory.index_vivus.spellchecker;
 
 import com.aliasi.io.FileLineReader;
 import com.aliasi.lm.NGramProcessLM;

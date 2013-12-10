@@ -1,4 +1,4 @@
-package de.fusionfactory.indexvivus.spellchecker;
+package de.fusionfactory.index_vivus.spellchecker;
 
 import java.io.BufferedReader;
 import java.io.IOException;

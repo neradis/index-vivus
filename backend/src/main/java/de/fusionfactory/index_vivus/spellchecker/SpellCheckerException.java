@@ -1,4 +1,4 @@
-package de.fusionfactory.indexvivus.spellchecker;
+package de.fusionfactory.index_vivus.spellchecker;
 
 /**
  * Author: Eric Kurzhals <ek@attyh.com>
