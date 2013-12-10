@@ -93,8 +93,10 @@ class RubyExec extends Exec {
   }
 }
 
-task ruby(type: RubyExec, dependsOn: backend.classes) {
-  description "Run a Ruby script using the JRuby installation bundled in this project"
+task railsCmd(type: RubyExec, dependsOn: backend.classes) {
+  description "Run a Ruby script using the JRuby installation bundled in this project (PWD will be the rails app)"
+
+  workingDir = appBase
 
   doFirst {
     ExecUtils.addCmdLineArgs(delegate)

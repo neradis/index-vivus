@@ -1,0 +1,16 @@
+{
+  "keyword" : "ludere",
+  "description" : "spielen",
+  "nextEntryId" : "13",
+  "previousEntryId" : "11",
+  "related" : ["2","16"],
+  "keywordGroupIndex" : "1"
+}
+{
+  "keyword" : "ludus",
+  "description" : "das Spiel",
+  "nextEntryId" : 15,
+  "previousEntryId" : 17,
+  "related" : [2,12],
+  "keywordGroupIndex" : 1
+}

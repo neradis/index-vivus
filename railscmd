@@ -1,0 +1,18 @@
+#!/bin/sh
+
+DIR=`dirname "$0"`
+RAILSCMD="$@"
+
+if [ ! "$RAILSCMD" ]
+then
+    echo "Usage: $0 <command to execute>"
+    echo "\n<command to execute> could be one of"
+    echo "    gem install bundler"
+    echo "    bundle install"
+    echo "    rails s"
+    echo "    ..."
+    echo ""
+    exit
+fi
+
+$DIR/gradlew railsCmd -PcmdArgs="-S $RAILSCMD"
