@@ -28,10 +28,11 @@ class DictionaryEntry extends Record[Int, DictionaryEntry] with SequenceGenerato
   
   val wordType = "word_type".INTEGER
 
-  def this(keyword: String, description: String) {
+  def this(keyword: String, description: String, keywordGroupIndex: Int = 1) {
     this()
     this.keyword := keyword
     this.description := description
+    this.keywordGroupIndex := keywordGroupIndex
   }
 
   override def toString(): String = super.toString() +
@@ -71,6 +72,10 @@ trait JDictionaryEntry extends IDictionaryEntry { this : DictionaryEntry =>
   def getDescription: String = description.getOrElse(NONE_DESCRIPTION)
 
   def setDescription(description: String): Unit = this.description := description
+
+  def getHtmlDescription: String = htmlDescription.getOrElse(NONE_DESCRIPTION)
+
+  def setHtmlDescription(description: String): Unit = this.htmlDescription := description
 
   def getWordType: WordType = ???
 

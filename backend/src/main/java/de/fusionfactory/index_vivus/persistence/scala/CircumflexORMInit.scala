@@ -10,7 +10,7 @@ import circumflex.orm.DDLUnit
  * Created by Markus Ackermann.
  * No rights reserved. 
  */
-object CircumFlexORMInit {
+object CircumflexORMInit {
   lazy val tablesToInitialize = List(DictionaryEntry)
 
   lazy val ensureConfigured = {

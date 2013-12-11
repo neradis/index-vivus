@@ -19,6 +19,10 @@ public interface IDictionaryEntry {
 
     void setDescription(String description);
 
+    String getHtmlDescription();
+
+    void setHtmlDescription(String description);
+
     WordType getWordType();
 
     void setWordType(WordType wordType);

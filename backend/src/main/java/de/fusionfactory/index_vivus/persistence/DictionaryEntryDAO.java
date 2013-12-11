@@ -10,22 +10,22 @@ import java.util.List;
  * Created by Markus Ackermann.
  * No rights reserved.
  */
-public class DictionaryEntryCircumFlexDAO {
-    public static final DictionaryEntryCircumFlexDAO INSTANCE = new DictionaryEntryCircumFlexDAO();
+public class DictionaryEntryDAO {
+    public static final DictionaryEntryDAO INSTANCE = new DictionaryEntryDAO();
     private static final DictionaryEntry$ scalaDictionaryEntry;
 
     static {
-        if( !CircumFlexORMInitializer.ensureConfigured() ) {
+        if( !CircumflexORMInitializer.ensureConfigured() ) {
             throw new RuntimeException("Circumflex init failed");
         }
         scalaDictionaryEntry = DictionaryEntry$.MODULE$;
     }
 
-    public static DictionaryEntryCircumFlexDAO getInstance() {
+    public static DictionaryEntryDAO getInstance() {
         return INSTANCE;
     }
 
-    private DictionaryEntryCircumFlexDAO() {
+    private DictionaryEntryDAO() {
     }
 
     public Optional<? extends IDictionaryEntry> findById(final int id) {

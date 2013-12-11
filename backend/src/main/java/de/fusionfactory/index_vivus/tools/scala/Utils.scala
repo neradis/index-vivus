@@ -23,7 +23,7 @@ object Utils {
     }
 
     implicit def intOption2IntegerOptional(opt: Option[Int]): Optional[Integer] = opt match {
-      case Some(i) => Optional.of(i)
+      case Some(i: Int) => Optional.of(int2Integer(i))
       case None => Optional.absent()
     }
 

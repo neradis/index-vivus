@@ -6,23 +6,14 @@ apply plugin: 'idea'
 sourceCompatibility = '1.7'
 targetCompatibility = '1.7'
 
-
-def replaceSuffix(File orig, int suffixLen, List<String> newSuffix) {
-  def prefix = (1..suffixLen).inject(orig.canonicalFile) { File f, int k -> f.parentFile }
-  newSuffix.inject(prefix) { File f, String comp -> new File(f, comp) }
-}
-
 ext {
   scalaVersion = '2.10'
   scalaMinor = '2'
-
-  preEnhancedClassesDir = replaceSuffix(sourceSets.main.output.classesDir, 2, ['preEnhancedClasses', 'main'])
-  enhancedClassesDir = replaceSuffix(sourceSets.main.output.classesDir, 2, ['enhancedClasses', 'main'])
 }
 
 repositories {
   mavenCentral()
-  maven { url = 'http://oss.sonatype.org/content/repositories/snapshots/' }
+  maven { url = 'http://oss.sonatype.org/content/repositories/snapshots/' } //provides snaphot builds for Circumflex 3
   flatDir name: 'local', dirs: file('libs')
 }
 
@@ -37,15 +28,13 @@ dependencies {
 
   compile "org.scala-lang:scala-library:$scalaVersion.$scalaMinor"
   compile 'com.google.guava:guava:13.+'
-  compile 'org.datanucleus:datanucleus-accessplatform-jpa-rdbms:3.2.8'
-  compile 'com.h2database:h2:1.3.174'
-  compile 'org.postgresql:postgresql:9.2-1003-jdbc3'
-  compile 'org.eclipse.persistence:javax.persistence:2.1.+'
-  compile 'com.fasterxml.jackson.core:jackson-databind:2.3.+'
   compile 'pro.savant.circumflex:circumflex-orm:3.1-SNAPSHOT'
+  compile 'com.h2database:h2:1.3.174'
+  //compile 'org.postgresql:postgresql:9.2-1003-jdbc3'
+  compile 'com.fasterxml.jackson.core:jackson-databind:2.3.+'
   compile 'com.typesafe:config:1.0.2'
   compile 'log4j:log4j:1.2.+'
-  compile 'org.slf4j:slf4j-log4j12:1.7.+'
+  compile 'org.slf4j:slf4j-log4j12:1.7.+' //needed for logging from Circumflex
 
   testCompile 'junit:junit:4.+'
   testCompile 'log4j:log4j:1.2.+'
@@ -64,7 +53,6 @@ sourceSets {
 }
 
 compileJava.enabled = false //we compile also all Java source code with the Zinc Scala Compiler
-[compileJava, compileScala].each { it.destinationDir = preEnhancedClassesDir }
 
 
 tasks.withType(ScalaCompile) {
@@ -73,36 +61,9 @@ tasks.withType(ScalaCompile) {
   scalaCompileOptions.additionalParameters = ["-target:jvm-$targetCompatibility".toString()]
 }
 
-task datanucleusEnhance(type: JavaExec, dependsOn: [compileJava, compileScala, processResources]) {
-  classpath = configurations.compile + files(preEnhancedClassesDir, sourceSets.main.output.resourcesDir)
-  main = 'org.datanucleus.enhancer.DataNucleusEnhancer'
-  args = "-api JPA -pu DictionaryModels -d ${enhancedClassesDir.canonicalPath}".tokenize()
-
-  inputs.files(preEnhancedClassesDir, sourceSets.main.output.resourcesDir)
-  outputs.files(enhancedClassesDir)
-}
-
-task combineClassFiles(type: Copy, dependsOn: datanucleusEnhance) {
-  from enhancedClassesDir
-  into sourceSets.main.output.classesDir
-
-  inputs.files(preEnhancedClassesDir)
-  outputs.files(sourceSets.main.output.classesDir)
-
-  doLast {
-    //the Ant copy task allows not to overwrite newer files, so we use it instead of another Copy task
-    ant.copy(todir: sourceSets.main.output.classesDir) {
-      fileset(dir: preEnhancedClassesDir)
-    }
-  }
-}
-
-classes.dependsOn(datanucleusEnhance, combineClassFiles)
-
 processResources {
   expand(project.properties)
 }
-
 
 eclipse {
   jdt {
@@ -135,7 +96,6 @@ idea {
   }
 }
 
-
 //helper task for build investigations/debugging
 task view {
   ext.viewObj = {
@@ -164,4 +124,10 @@ task view {
 
     /*viewFiles(compileJava.outputs.outputFiles)*/
   }
+}
+
+//old, currently unused helper method
+def replaceSuffix(File orig, int suffixLen, List<String> newSuffix) {
+  def prefix = (1..suffixLen).inject(orig.canonicalFile) { File f, int k -> f.parentFile }
+  newSuffix.inject(prefix) { File f, String comp -> new File(f, comp) }
 }
