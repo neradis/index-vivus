@@ -1,21 +1,22 @@
 package de.fusionfactory.index_vivus.xmlimport;
 
-import de.fusionfactory.index_vivus.models.DictionaryEntry;
 import de.fusionfactory.index_vivus.models.WordType;
 import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 import org.w3c.dom.Node;
-import org.w3c.dom.ls.DOMImplementationLS;
-import org.w3c.dom.ls.LSSerializer;
+import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import java.io.*;
-import java.util.ArrayList;
+import javax.xml.transform.*;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import java.io.File;
+import java.io.IOException;
+import java.io.StringWriter;
 
 /**
  * Author: Kevin Jakob <kevin-jakob@web.de>
@@ -25,13 +26,10 @@ import java.util.ArrayList;
 public class Importer {
     private static Logger logger = Logger.getLogger(Importer.class);
 
-    private ArrayList<DictionaryEntry> importedEntries = null;
     private long currentEntryCounter = 0;
-    private DOMImplementationLS currentDomImpl = null;
 
-    public Importer() {
-        importedEntries = new ArrayList<>();
-    }
+    public Importer() {}
+
     private void parseInnerInformation(Element article) {
 
     }
@@ -52,17 +50,25 @@ public class Importer {
             NodeList entryContent = entries.item(i).getChildNodes();
             for(int c = 0; c < entryContent.getLength(); c ++) {
                 Node childContent = entryContent.item(c);
+
                 // keyword
                 if(childContent.getNodeName().equals("lem")) {
-                    String buf = childContent.getFirstChild().getNodeValue();
-                    if(buf.contains("[")) {
+                    String buf = childContent.getFirstChild().getNodeValue().trim();
+                    //personal name ergo noun
+                    if(Character.isUpperCase(buf.charAt(0)))
+                        wordType = WordType.NOUN;
+
+                    if(buf.contains("[") && !buf.contains("[*]")) {
                         //keyword without the ordinal number
                         keyword = buf.substring(0,buf.indexOf("[")).trim();
                         //take the number within square brackets
                         keyGroupIndex = Integer.parseInt(buf.substring(buf.indexOf("[") + 1, buf.indexOf("]")));
-                    } else
-                        keyword = buf.trim();
+                    } else if(buf.contains("[*]"))  //@TODO find out what this means for an entry and if information is needed
+                        keyword = buf.substring(0,buf.indexOf("[")).trim();
+                    else
+                        keyword = buf;
                 }
+
                 // text content containing one or no header element (<h3>) and a <p> element
                 else if(childContent.getNodeName().equals("text")) {
                     NodeList descContentNodes = childContent.getChildNodes();
@@ -70,18 +76,26 @@ public class Importer {
                         Node innerChild = descContentNodes.item(d);
                         //one of the description for the entry
                         if(innerChild.getNodeName().equals("p")) {
-                            DOMImplementationLS domImplLS = this.currentDomImpl;
-                            LSSerializer serializer = domImplLS.createLSSerializer();
-                            serializer .getDomConfig().setParameter("xml-declaration", false);
-                            description += serializer.writeToString(innerChild) + "\n";
+                            StringWriter outStr = new StringWriter();
+                            Transformer transformer = null;
+                            try {
+                                transformer = TransformerFactory.newInstance().newTransformer();
+                                //ensure utf-8 encoding and no xml header in the resulting string
+                                transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+                                transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+                                transformer.transform(new DOMSource(innerChild), new StreamResult(outStr));
+                            } catch (TransformerException e) {
+                                logger.error(e.getStackTrace());
+                            }
+                            description += outStr.toString();
                         }
                     }
                 }
 
             }
             logger.info(keyword + " " + wordType + " " + keyGroupIndex + "\n" + description);
-            if(this.currentEntryCounter > 3)
-                break;
+            //if(this.currentEntryCounter > 3)
+            //break;
         }
     }
 
@@ -98,7 +112,6 @@ public class Importer {
                         DocumentBuilder docBuild = docBuildFac.newDocumentBuilder();
                         Document content = docBuild.parse(fileHandle);
                         content.normalizeDocument();
-                        this.currentDomImpl = (DOMImplementationLS)content.getImplementation();
                         //first file in a collection starts with 000 and contains meta info
                         if (fileHandle.getName().contains("000"))
                             logger.info("Meta");

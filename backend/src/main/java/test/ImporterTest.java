@@ -1,5 +1,7 @@
 package test;
 
+import de.fusionfactory.index_vivus.models.IDictionaryEntry;
+import de.fusionfactory.index_vivus.models.ModelFactory;
 import de.fusionfactory.index_vivus.xmlimport.Importer;
 import org.apache.log4j.Logger;
 import org.xml.sax.SAXException;
@@ -17,12 +19,14 @@ public class ImporterTest {
         Importer imp = new Importer();
 
         logger.info("Starte Importer-Klasse...");
-        try {
+        IDictionaryEntry a = ModelFactory.createDictionaryEntry("abc", "Ein Test", 1);
+        logger.info(a.toString());
+ /*       try {
             imp.importDir("D:\\Temp\\xmlData\\Georges-1913");
         } catch (IOException e) {
             e.printStackTrace();
         } catch (SAXException e) {
             e.printStackTrace();
-        }
+        }     */
     }
 }
