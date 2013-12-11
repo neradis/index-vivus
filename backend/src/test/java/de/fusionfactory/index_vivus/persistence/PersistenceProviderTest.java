@@ -1,5 +1,6 @@
 package de.fusionfactory.index_vivus.persistence;
 
+import com.google.common.base.Optional;
 import de.fusionfactory.index_vivus.models.DictionaryEntry;
 import de.fusionfactory.index_vivus.models.WordType;
 import org.junit.Test;
@@ -24,8 +25,8 @@ public class PersistenceProviderTest {
 
             @Override
             protected Boolean doWork(EntityManager em) {
-                DictionaryEntry de = new DictionaryEntry("cognere", "wissen/kennen", WordType.VERB,
-                        2, -1, new LinkedList<Integer>(), 1);
+                DictionaryEntry de = new DictionaryEntry(1, "cognere", "wissen/kennen", WordType.VERB,
+                        Optional.<Integer>absent(), Optional.of(2), new LinkedList<Integer>(), 1);
                 em.persist(de);
 
                 return true;
