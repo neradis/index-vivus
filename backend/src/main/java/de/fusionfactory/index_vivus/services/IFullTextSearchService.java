@@ -1,6 +1,6 @@
 package de.fusionfactory.index_vivus.services;
 
-import de.fusionfactory.index_vivus.models.DictionaryEntry;
+import de.fusionfactory.index_vivus.models.IDictionaryEntry;
 
 import java.util.List;
 
@@ -10,5 +10,5 @@ import java.util.List;
  * Time: 15:10
  */
 public interface IFullTextSearchService {
-    List<DictionaryEntry> getMatches(String keyword);
+    List<? extends IDictionaryEntry> getMatches(String keyword);
 }
