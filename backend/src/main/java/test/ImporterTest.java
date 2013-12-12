@@ -19,14 +19,14 @@ public class ImporterTest {
         Importer imp = new Importer();
 
         logger.info("Starte Importer-Klasse...");
-        IDictionaryEntry a = ModelFactory.createDictionaryEntry("abc", "Ein Test", 1);
-        logger.info(a.toString());
- /*       try {
+        //IDictionaryEntry a = ModelFactory.createDictionaryEntry("abc", "Ein Test", 1);
+        //logger.info(a.toString());
+        try {
             imp.importDir("D:\\Temp\\xmlData\\Georges-1913");
         } catch (IOException e) {
             e.printStackTrace();
         } catch (SAXException e) {
             e.printStackTrace();
-        }     */
+        }
     }
 }

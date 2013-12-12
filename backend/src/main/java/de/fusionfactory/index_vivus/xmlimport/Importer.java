@@ -1,7 +1,13 @@
 package de.fusionfactory.index_vivus.xmlimport;
 
+import de.fusionfactory.index_vivus.models.IDictionaryEntry;
+import de.fusionfactory.index_vivus.models.ModelFactory;
 import de.fusionfactory.index_vivus.models.WordType;
+import de.fusionfactory.index_vivus.models.scalaimpl.DictionaryEntry;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.log4j.Logger;
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -42,9 +48,10 @@ public class Importer {
         //foreach entry
         for(int i = 0; i < entries.getLength(); i++) {
             long id = ++this.currentEntryCounter;
-            logger.info("Eintrag #" + id + "");
+            //logger.info("Eintrag #" + id + "");
             String keyword = "";
             String description = "";
+            String descriptionHtml = "";
             WordType wordType = WordType.UNKOWN;
             int keyGroupIndex = 1;
             NodeList entryContent = entries.item(i).getChildNodes();
@@ -87,13 +94,19 @@ public class Importer {
                             } catch (TransformerException e) {
                                 logger.error(e.getStackTrace());
                             }
-                            description += outStr.toString();
+                            descriptionHtml += outStr.toString();
                         }
                     }
+                    //strips all the html tags and unescape resulting string from cleaner
+                    description = StringEscapeUtils.unescapeHtml4(Jsoup.clean(descriptionHtml, Whitelist.none()));
                 }
-
             }
-            logger.info(keyword + " " + wordType + " " + keyGroupIndex + "\n" + description);
+            IDictionaryEntry currentEntry = ModelFactory.createDictionaryEntry(keyword, description, keyGroupIndex);
+            currentEntry.setHtmlDescription(descriptionHtml);
+            /* TODO: when implemented, activate these setters:
+              currentEntry.setId(id)
+              currentEntry.setWordType(wordType);*/
+            logger.info(((DictionaryEntry)currentEntry).toString());
             //if(this.currentEntryCounter > 3)
             //break;
         }
