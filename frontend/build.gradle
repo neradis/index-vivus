@@ -94,7 +94,7 @@ class RubyExec extends Exec {
 }
 
 task railsCmd(type: RubyExec, dependsOn: backend.classes) {
-  description "Run a Ruby script using the JRuby installation"
+  description "Run a Ruby script using the JRuby installation bundled in this project (PWD will be the rails app)"
 
   workingDir = appBase
 
@@ -103,4 +103,3 @@ task railsCmd(type: RubyExec, dependsOn: backend.classes) {
     logger.warn(commandLine.join(' '))
   }
 }
-

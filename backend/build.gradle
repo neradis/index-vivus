@@ -1,28 +1,81 @@
 apply plugin: 'java'
+apply plugin: 'scala'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
 
 sourceCompatibility = '1.7'
 targetCompatibility = '1.7'
 
+ext {
+  scalaVersion = '2.10'
+  scalaMinor = '2'
+}
+
 repositories {
-	 mavenCentral()
-        flatDir name: 'local', dirs: file('libs')
+  mavenCentral()
+  maven { url = 'http://oss.sonatype.org/content/repositories/snapshots/' } //provides snapshot builds for Circumflex 3
+  flatDir name: 'local', dirs: file('libs')
+}
+
+configurations {
+  scalaCompiler
+  scalaLibrary
 }
 
 dependencies {
-    dependencies {
-        compile 'com.google.guava:guava:13.+'
-        compile 'log4j:log4j:1.2.+'
-        testCompile 'log4j:log4j:1.2.+'
-    }
+  scalaCompiler "org.scala-lang:scala-compiler:$scalaVersion.$scalaMinor"
+  scalaLibrary "org.scala-lang:scala-library:$scalaVersion.$scalaMinor"
+
+  compile "org.scala-lang:scala-library:$scalaVersion.$scalaMinor"
+  compile 'com.google.guava:guava:13.+'
+  compile "com.typesafe.slick:slick_$scalaVersion:1.0.1"
+  compile 'pro.savant.circumflex:circumflex-orm:3.1-SNAPSHOT'
+  compile 'com.h2database:h2:1.3.174'
+  //compile 'org.postgresql:postgresql:9.2-1003-jdbc3'
+  compile 'com.fasterxml.jackson.core:jackson-databind:2.3.+'
+  compile 'com.typesafe:config:1.0.2'
+  compile 'org.apache.commons:commons-lang3:3.0'
+  compile 'org.apache.lucene:lucene-core:3.6.0'
+  compile 'org.jsoup:jsoup:1.7.2'
+  compile files('./libs/lingpipe-4.1.0.jar')
+  compile 'log4j:log4j:1.2.+'
+  compile 'org.slf4j:slf4j-log4j12:1.7.+' //needed for logging from Circumflex
+
+  testCompile 'junit:junit:4.+'
+  testCompile 'log4j:log4j:1.2.+'
 }
 
+sourceSets {
+  main {
+    scala.srcDirs = java.srcDirs
+    output.resourcesDir = output.classesDir
+  }
+
+  test {
+    scala.srcDirs = java.srcDirs
+    output.resourcesDir = output.classesDir
+  }
+}
+
+compileJava.enabled = false //we compile also all Java source code with the Zinc Scala Compiler
+
+
+tasks.withType(ScalaCompile) {
+  scalaCompileOptions.useCompileDaemon = false
+  scalaCompileOptions.useAnt = false
+  scalaCompileOptions.additionalParameters = ["-target:jvm-$targetCompatibility".toString()]
+}
+
+processResources {
+  expand(project.properties)
+}
+
+task processAllResources(dependsOn: [processResources, processTestResources])
 
 eclipse {
   jdt {
-    sourceCompatibility = 1.7
-    targetCompatibility = 1.7
+    sourceCompatibility = project(':backend').sourceCompatibility
+    targetCompatibility = project(':backend').targetCompatibility
   }
 
   classpath {
@@ -34,12 +87,9 @@ eclipse {
 
 }
 
-
-
-
 rootProject.idea.project {
-  jdkName = '1.7'
-  languageLevel = 1.7
+  jdkName = project(':backend').sourceCompatibility
+  languageLevel = project(':backend').sourceCompatibility
 }
 
 idea {
@@ -53,35 +103,38 @@ idea {
   }
 }
 
-
-
-
-
-
-
+task cleanTestDb << {
+  fileTree(projectDir).include("index_vivus*test*.db").each { it.delete() }
+}
 
 //helper task for build investigations/debugging
 task view {
-    ext.viewObj = {
-        println([class: it.class, properties: it.properties.keySet(), dump: it.dump()].entrySet().collect({
-            "### $it.key ###\n$it.value\n\n"
-        }).join('\n'))
-    }
+  ext.viewObj = {
+    println([toString: it.toString(), class: it.class, properties: it.properties.keySet(), dump: it.dump()].entrySet().collect({
+      "### $it.key ###\n$it.value\n\n"
+    }).join('\n'))
+  }
 
-    ext.viewFiles = { FileCollection fc ->
-        //println "#### dependencies for $conf.name"
-        fc.each { File file ->
-            println file.canonicalPath
-        }
+  ext.viewFiles = { FileCollection fc ->
+    //println "#### dependencies for $conf.name"
+    fc.each { File file ->
+      println file.canonicalPath
     }
+  }
 
-    doLast {
-        viewFiles(configurations.compile)
-      viewObj(project.idea)
-      viewObj(project.idea.module)
-      /*viewObj(project.eclipse)
-      viewObj(project.eclipse.jdt)
-      viewObj(project.eclipse.project)*/
+  doLast {
+    //viewFiles(configurations.compile)
+    //viewFiles(configurations.compile + sourceSets.main.output.with { files(it.classesDir, it.resourcesDir) })
 
-    }
+
+
+    /*viewObj(compileScala)*/
+    /*viewFiles(compileJava.outputs.outputFiles)*/
+  }
+}
+
+//old, currently unused helper method
+def replaceSuffix(File orig, int suffixLen, List<String> newSuffix) {
+  def prefix = (1..suffixLen).inject(orig.canonicalFile) { File f, int k -> f.parentFile }
+  newSuffix.inject(prefix) { File f, String comp -> new File(f, comp) }
 }
