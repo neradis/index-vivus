@@ -91,7 +91,7 @@ III) Ov.: digitus index, der Zeigefinger"),
 2) prägn.: a) untersuchen, b) erforschen, Nachricht einziehen")
         ]
 
-        def getMatches(keyword)
+        def getMatches(keyword, language)
             matches = []
             keyword.downcase!
 
@@ -104,7 +104,7 @@ III) Ov.: digitus index, der Zeigefinger"),
             return matches
         end
 
-        def getCompletions(keyword)
+        def getCompletions(keyword, language)
             completions = []
             keyword.downcase!
 
