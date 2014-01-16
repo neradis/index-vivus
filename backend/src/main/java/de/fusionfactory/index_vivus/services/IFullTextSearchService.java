@@ -10,5 +10,6 @@ import java.util.List;
  * Time: 15:10
  */
 public interface IFullTextSearchService {
-    List<? extends IDictionaryEntry> getMatches(String keyword);
+
+    List<? extends IDictionaryEntry> getMatches(QueryDescription queryDescription);
 }

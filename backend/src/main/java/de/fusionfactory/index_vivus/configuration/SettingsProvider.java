@@ -1,6 +1,8 @@
 package de.fusionfactory.index_vivus.configuration;
 
+import com.google.common.base.Joiner;
 import com.google.common.base.Optional;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 
 import java.io.File;
@@ -29,11 +31,19 @@ public abstract class SettingsProvider {
 
     abstract public String getDatabaseUrl();
 
+
+    public final static String H2_MEM_DB_OPTIONS =
+            Joiner.on(',').join(ImmutableList.of("DB_CLOSE_DELAY=-1"));
+
+    public final static String H2_FILE_DB_OPTIONS =
+            Joiner.on(';').join(ImmutableList.of("AUTO_SERVER=TRUE", "AUTO_SERVER_PORT=6543"));
+
+
     public static class DevelopmentSettingProvider extends SettingsProvider {
 
         @Override
         public String getDatabaseUrl() {
-            return "jdbc:h2:mem:index_vivus_dev";
+            return "jdbc:h2:mem:index_vivus_dev;" + H2_MEM_DB_OPTIONS;
         }
     }
 
@@ -41,7 +51,7 @@ public abstract class SettingsProvider {
 
         @Override
         public String getDatabaseUrl() {
-            return buildDbFilePath("index_vivus_test");
+            return buildFileDbUrl("index_vivus_test");
         }
     }
 
@@ -49,14 +59,14 @@ public abstract class SettingsProvider {
 
         @Override
         public String getDatabaseUrl() {
-            return buildDbFilePath("index_vivus_prod");
+            return buildFileDbUrl("index_vivus_prod");
         }
     }
 
-    private static String buildDbFilePath(String urlSuffix) {
+    private static String buildFileDbUrl(String urlSuffix) {
         File dbFile = new File(LocationProvider.INSTANCE.getBackendRoot(), urlSuffix);
         try {
-            return String.format("jdbc:h2:file:%s", dbFile.getCanonicalPath());
+            return String.format("jdbc:h2:file:%s;%s", dbFile.getCanonicalPath(), H2_FILE_DB_OPTIONS);
         } catch (IOException ioe) {
             throw new RuntimeException(ioe);
         }

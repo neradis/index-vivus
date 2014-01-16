@@ -10,6 +10,9 @@ object Utils {
   private val OPTIONAL_ABSENT = Optional.absent()
   private val OPTIONAL_ABSENT_INT : Optional[_ <: Integer] = Optional.absent()
 
+  def matchingNone[T]: Option[T] = Option.empty[T]
+
+
   object OptionConversions {
 
     implicit def optional2Option[T](opt: Optional[T]): Option[T] = opt match {
@@ -23,11 +26,11 @@ object Utils {
     }
 
     implicit def intOption2IntegerOptional(opt: Option[Int]): Optional[Integer] = opt match {
-      case Some(i: Int) => Optional.of(int2Integer(i))
+      case Some(i: Int) => Optional.of(int2Integer(i).toInt)
       case None => Optional.absent()
     }
 
-    implicit def IntegerOptional2intOption(opt: Optional[Integer]): Option[Int] = opt match {
+    implicit def integerOptional2intOption(opt: Optional[Integer]): Option[Int] = opt match {
       case OPTIONAL_ABSENT_INT => None
       case opt => Some(opt.get())
     }

@@ -13,7 +13,7 @@ ext {
 
 repositories {
   mavenCentral()
-  maven { url = 'http://oss.sonatype.org/content/repositories/snapshots/' } //provides snaphot builds for Circumflex 3
+  maven { url = 'http://oss.sonatype.org/content/repositories/snapshots/' } //provides snapshot builds for Circumflex 3
   flatDir name: 'local', dirs: file('libs')
 }
 
@@ -28,6 +28,7 @@ dependencies {
 
   compile "org.scala-lang:scala-library:$scalaVersion.$scalaMinor"
   compile 'com.google.guava:guava:13.+'
+  compile "com.typesafe.slick:slick_$scalaVersion:1.0.1"
   compile 'pro.savant.circumflex:circumflex-orm:3.1-SNAPSHOT'
   compile 'com.h2database:h2:1.3.174'
   //compile 'org.postgresql:postgresql:9.2-1003-jdbc3'
@@ -65,6 +66,8 @@ processResources {
   expand(project.properties)
 }
 
+task processAllResources(dependsOn: [processResources, processTestResources])
+
 eclipse {
   jdt {
     sourceCompatibility = project(':backend').sourceCompatibility
@@ -96,6 +99,10 @@ idea {
   }
 }
 
+task cleanTestDb << {
+  fileTree(projectDir).include("index_vivus*test*.db").each { it.delete() }
+}
+
 //helper task for build investigations/debugging
 task view {
   ext.viewObj = {
@@ -115,13 +122,9 @@ task view {
     //viewFiles(configurations.compile)
     //viewFiles(configurations.compile + sourceSets.main.output.with { files(it.classesDir, it.resourcesDir) })
 
-    /*viewObj(compileScala)*/
-    println('java inputs')
-    viewFiles(compileJava.inputs.files)
-    println('java source')
-    viewFiles(compileJava.source)
-    viewFiles(compileScala.source)
 
+
+    /*viewObj(compileScala)*/
     /*viewFiles(compileJava.outputs.outputFiles)*/
   }
 }
