@@ -8,8 +8,10 @@ import com.aliasi.spell.FixedWeightEditDistance;
 import com.aliasi.spell.TrainSpellChecker;
 import com.aliasi.util.ScoredObject;
 import com.aliasi.util.Streams;
+import com.google.common.io.Resources;
 
 import java.io.*;
+import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,8 +23,8 @@ import java.util.SortedSet;
  * Time: 18:02
  */
 public class SpellChecker {
-    private static final String WORDLIST = "backend\\res\\spellchecker\\top10000de.txt";
-    private static final String MODEL_FILE = "out\\spellchecker.model";
+    private static final String WORDLIST = Resources.getResource("spellchecker/top10000de.txt").getPath();
+    private static final String MODEL_FILE = "spellchecker.model";
     private static final double MATCH_WEIGHT = -0.0;
     private static final double DELETE_WEIGHT = -4.0;
     private static final double INSERT_WEIGHT = -1.0;
@@ -35,7 +37,7 @@ public class SpellChecker {
     public SpellChecker() {
         // read our index to be ready for spellchecking :o
         try {
-            readIndex();
+			createIndex();
         } catch (IOException e) {
         } catch (ClassNotFoundException e) {
         }
