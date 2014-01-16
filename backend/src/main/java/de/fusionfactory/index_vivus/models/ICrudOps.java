@@ -1,7 +1,5 @@
 package de.fusionfactory.index_vivus.models;
 
-import de.fusionfactory.index_vivus.models.scalaimpl.Abbreviation;
-
 import java.util.List;
 
 /**
@@ -29,5 +27,5 @@ public interface ICrudOps<T> {
     public int delete();
 
 
-    public List<Abbreviation> duplicateList();
+    public List<T> duplicateList();
 }
