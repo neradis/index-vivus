@@ -156,7 +156,7 @@ h1 {
 	background-image: linear-gradient(white 0%, #9FBFD2 50%);
 }
 
-input[type="submit"] {
+input[type="button"] {
 	background-image: -webkit-linear-gradient(white 0%, #9FBFD2 50%);
 	background-image: -moz-linear-gradient(white 0%, #9FBFD2 50%);
 	background-image: -o-linear-gradient(white 0%, #9FBFD2 50%);
@@ -165,7 +165,7 @@ input[type="submit"] {
 	margin: 2px;
 }
 
-input[type="submit"]:hover {
+input[type="button"]:hover {
 	background-image: -webkit-linear-gradient(white 0%, #F39814 50%);
 	background-image: -moz-linear-gradient(white 0%, #F39814 50%);
 	background-image: -o-linear-gradient(white 0%, #F39814 50%);

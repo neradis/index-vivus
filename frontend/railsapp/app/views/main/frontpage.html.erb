@@ -13,7 +13,7 @@
 				</ul>
 				<span id="textKeywordSearch">Stichwortsuche</span>
 				<input type="text" id="inputKeywordSearch" name="inputKeywordSearch">
-				<input type="submit" value="suchen" class="inline">
+				<input type="button" value="suchen" onclick="searchKeyword()" class="inline">
 				<div class="clear"></div>
 				<!--<div id="widget">
 				<input type="button" class="btn" name="1" id="btn1" value="ά" onclick="insertLetter(this.value)">
@@ -37,7 +37,7 @@
 			<form>
 				<span id="textFulltextSearch">Volltextsuche</span>
 				<input type="text" id="inputFulltextSearch" name="inputFulltextSearch" onfocus="" onblur="hide()" onkeyup="parseInput(this.value)">
-				<input type="submit" value="suchen" class="inline" />
+				<input type="button" value="suchen" class="inline" />
 			</form>
 		</div>
 	</div>
