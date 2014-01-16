@@ -1,6 +1,7 @@
 package de.fusionfactory.index_vivus.language_lookup;
 
 import de.fusionfactory.index_vivus.language_lookup.Methods.LookupMethod;
+import de.fusionfactory.index_vivus.language_lookup.Methods.WiktionaryLookup;
 import de.fusionfactory.index_vivus.language_lookup.Methods.WordlistLookup;
 
 import java.io.BufferedReader;
@@ -15,7 +16,9 @@ import java.util.*;
  * Time: 15:15
  */
 public class main {
-	private static final List<LookupMethod> _lookupMethods = Arrays.asList((LookupMethod) new WordlistLookup(Language.GERMAN));
+	private static final List<LookupMethod> _lookupMethods = Arrays.asList(
+			(LookupMethod) new WordlistLookup(Language.GERMAN),
+			(LookupMethod)new WiktionaryLookup(Language.GERMAN));
 
 	public main() {
 		InputStreamReader isReader = new InputStreamReader(System.in);
