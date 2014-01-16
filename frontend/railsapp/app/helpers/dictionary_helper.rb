@@ -96,7 +96,7 @@ III) Ov.: digitus index, der Zeigefinger"),
             keyword.downcase!
 
             DictEntries.each do |entry|
-                if entry.keyword.downcase == keyword
+                if entry.get_keyword.downcase == keyword
                     matches.append(entry)
                 end
             end
@@ -109,8 +109,8 @@ III) Ov.: digitus index, der Zeigefinger"),
             keyword.downcase!
 
             DictEntries.each do |entry|
-                if entry.keyword.downcase.start_with?(keyword)
-                    completions.append(entry.keyword)
+                if entry.get_keyword.downcase.start_with?(keyword)
+                    completions.append(entry.get_keyword)
                 end
             end
 
