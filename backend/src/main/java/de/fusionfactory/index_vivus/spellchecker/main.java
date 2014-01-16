@@ -27,7 +27,7 @@ public class main {
         BufferedReader bufReader = new BufferedReader(isReader);
 
         while (true) {
-            System.out.print("\n>");
+            System.out.print("\n> ");
             System.out.flush();
             String keyword = null;
             try {
