@@ -1,1 +1,0 @@
-LingPipe can be downloaded from http://alias-i.com/lingpipe/web/download.html
