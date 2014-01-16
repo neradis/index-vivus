@@ -56,7 +56,7 @@ IndexVivus::Application.routes.draw do
   get 'ajax/keyword/matches/:keyword' => 'ajax#get_keyword_matches'
   get 'ajax/keyword/completions/:prefix' => 'ajax#get_keyword_completions'
   
-  get 'details/:id' => 'main#details'
+  get 'details/:id' => 'main#details', :as => 'details'
 
   root :to => 'main#index'
 end

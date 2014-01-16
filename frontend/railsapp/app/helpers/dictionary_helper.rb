@@ -1,13 +1,70 @@
 # encoding: UTF-8
 module DictionaryHelper
+    class Optional
+        def initialize(object)
+            @object = object
+        end
+
+        def is_present
+            !@object.nil?
+        end
+
+        def get
+            @object
+        end
+    end
+
     class DictionaryEntry
-        attr_accessor :keyword, :group, :type, :description
+        @@entries = Hash.new
+        @@next_id = 1
 
         def initialize(keyword, group, type, description)
+            @id = @@next_id
+            @@next_id += 1
+
             @keyword = keyword
             @group = group
             @type = type
             @description = description
+
+            @related = []
+            @@entries.each do |id, entry|
+                @related.push entry
+            end
+
+            @@entries[@id] = self
+        end
+
+        def self.by_id(id)
+            @@entries[id]
+        end
+
+        def get_id
+            @id
+        end
+
+        def get_keyword
+            @keyword
+        end
+
+        def get_related
+            @related
+        end
+
+        def get_prev_entry
+            if @id == 1
+                Optional.new(nil)
+            else
+                Optional.new( self.class.by_id(@id-1) )
+            end
+        end
+
+        def get_next_entry
+            if @id == (@@next_id-1)
+                Optional.new(nil)
+            else
+                Optional.new( self.class.by_id(@id+1) )
+            end
         end
     end
 
