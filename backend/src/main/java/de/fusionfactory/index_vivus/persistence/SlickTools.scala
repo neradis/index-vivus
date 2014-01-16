@@ -30,8 +30,9 @@ object SlickTools {
           Query(table).exists.run
         } catch {
           case sqlEx: SQLException => {
-            val tableNotFoundPattern = """^Table .+ not found;(?s:.*)""".r
+            val tableNotFoundPattern = """^(?s:.*)Table .+ not found;(?s:.*)""".r
             val errorMsg = sqlEx.getMessage
+            logger info s"$errorMsg; machtes: ${tableNotFoundPattern.findFirstMatchIn(errorMsg).isDefined}"
             errorMsg match {
               case tableNotFoundPattern(_*) => {
                 logger.info(s"creating table ${DictionaryEntries.tableName} in " +
