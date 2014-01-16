@@ -15,7 +15,7 @@ import java.util.*;
  * Time: 15:15
  */
 public class main {
-	private static final List<WordlistLookup> _lookupMethods = Arrays.asList(new WordlistLookup(Language.GERMAN));
+	private static final List<LookupMethod> _lookupMethods = Arrays.asList((LookupMethod) new WordlistLookup(Language.GERMAN));
 
 	public main() {
 		InputStreamReader isReader = new InputStreamReader(System.in);
@@ -28,7 +28,7 @@ public class main {
 			try {
 				String keyword = bufferedReader.readLine();
 
-				for (WordlistLookup lookup : _lookupMethods) {
+				for (LookupMethod lookup : _lookupMethods) {
 					System.out.println(
 
 							parseClassPathToName(lookup.getClass().getCanonicalName())
