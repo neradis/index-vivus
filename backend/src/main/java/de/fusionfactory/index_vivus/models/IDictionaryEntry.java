@@ -9,43 +9,46 @@ import java.util.List;
  * No rights reserved.
  */
 public interface IDictionaryEntry {
-    int getId();
 
-    String getKeyword();
+    public int getId();
 
-    void setKeyword(String keyword);
+    public String getKeyword();
 
-    String getDescription();
+    public void setKeyword(String keyword);
 
-    void setDescription(String description);
+    public String getDescription();
 
-    String getHtmlDescription();
+    public void setDescription(String description);
 
-    void setHtmlDescription(String description);
+    public Optional<String> getHtmlDescription();
 
-    WordType getWordType();
+    public void setHtmlDescription(Optional<String> description);
 
-    void setWordType(WordType wordType);
+    public WordType getWordType();
 
-    Optional<? extends IDictionaryEntry> getPreviousEntry();
+    public void setWordType(WordType wordType);
 
-    void setPreviousEntry(Optional<? extends IDictionaryEntry> entry);
+    public Optional<? extends IDictionaryEntry> getPreviousEntry();
 
-    Optional<Integer> getPreviousEntryId();
+    public void setPreviousEntry(Optional<? extends IDictionaryEntry> entry);
 
-    void setPreviousEntryId(Optional<Integer> id);
+    public Optional<Integer> getPreviousEntryId();
 
-    Optional<? extends IDictionaryEntry> getNextEntry();
+    public void setPreviousEntryId(Optional<Integer> id);
 
-    void setNextEntry(Optional<? extends IDictionaryEntry> entry);
+    public Optional<? extends IDictionaryEntry> getNextEntry();
 
-    Optional<Integer> getNextEntryId();
+    public void setNextEntry(Optional<? extends IDictionaryEntry> entry);
 
-    void setNextEntryId(Optional<Integer> id);
+    public Optional<Integer> getNextEntryId();
 
-    int getKeywordGroupIndex();
+    public void setNextEntryId(Optional<Integer> id);
 
-    void setKeywordGroupIndex(int keywordGroupIndex);
+    public int getKeywordGroupIndex();
 
-    List<? extends IDictionaryEntry> getRelated() throws UnsupportedOperationException;
+    public void setKeywordGroupIndex(int keywordGroupIndex);
+
+    public List<? extends IDictionaryEntry> getRelated() throws UnsupportedOperationException;
+
+    public ICrudOps<? extends IDictionaryEntry> crud();
 }
