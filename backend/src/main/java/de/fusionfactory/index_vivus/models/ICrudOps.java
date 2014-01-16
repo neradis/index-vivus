@@ -1,5 +1,9 @@
 package de.fusionfactory.index_vivus.models;
 
+import de.fusionfactory.index_vivus.models.scalaimpl.Abbreviation;
+
+import java.util.List;
+
 /**
  * Created by Markus Ackermann.
  * No rights reserved.
@@ -23,4 +27,7 @@ public interface ICrudOps<T> {
      * @throws de.fusionfactory.index_vivus.persistence.ORMError
      */
     public int delete();
+
+
+    public List<Abbreviation> duplicateList();
 }
