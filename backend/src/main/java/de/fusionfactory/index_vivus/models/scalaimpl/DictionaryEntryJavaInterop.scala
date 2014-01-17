@@ -28,10 +28,6 @@ object DictionaryEntryBean {
 
 trait DictionaryEntryBean extends ICrudOpsProvider[DictionaryEntry,DictionaryEntryCrudOps] { this: DictionaryEntry =>
 
-  def getHtmlDescription: Optional[String] = htmlDescription
-
-  def setHtmlDescription(hd: Optional[String]): Unit = htmlDescription = hd
-
   def getId: Int = id.get
 
   def getIdOptional: Optional[Integer] = id
@@ -43,6 +39,10 @@ trait DictionaryEntryBean extends ICrudOpsProvider[DictionaryEntry,DictionaryEnt
   def getNextId: Optional[Integer] = nextId
 
   def setNextId(nid: Optional[Integer]): Unit = nextId = nid
+
+  def getHtmlDescription: Optional[String] = htmlDescription
+
+  def setHtmlDescription(hd: Optional[String]): Unit = htmlDescription = hd
 
   def crud = new DictionaryEntryCrudOps(this)
 

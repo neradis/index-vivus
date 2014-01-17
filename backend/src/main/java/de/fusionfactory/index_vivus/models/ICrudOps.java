@@ -1,5 +1,7 @@
 package de.fusionfactory.index_vivus.models;
 
+import java.util.List;
+
 /**
  * Created by Markus Ackermann.
  * No rights reserved.
@@ -23,4 +25,7 @@ public interface ICrudOps<T> {
      * @throws de.fusionfactory.index_vivus.persistence.ORMError
      */
     public int delete();
+
+
+    public List<T> duplicateList();
 }

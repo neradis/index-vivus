@@ -3,7 +3,7 @@ package de.fusionfactory.index_vivus.persistence
 import scala.slick.session.{Session, Database}
 import scala.slick.driver.H2Driver.simple.{Session => H2Session, _}
 import de.fusionfactory.index_vivus.configuration.SettingsProvider
-import de.fusionfactory.index_vivus.models.scalaimpl.DictionaryEntries
+import de.fusionfactory.index_vivus.models.scalaimpl.{AbbreviationsOccurrences, Abbreviations, DictionaryEntries}
 import scala.slick.lifted.Query
 
 import org.apache.log4j.Logger
@@ -21,7 +21,7 @@ object SlickTools {
 
   lazy val database = Database.forURL(SettingsProvider.getInstance.getDatabaseUrl, driver = "org.h2.Driver")
 
-  lazy val slickTables = Set(DictionaryEntries)
+  lazy val slickTables: Set[Table[_]] = Set(DictionaryEntries, Abbreviations, AbbreviationsOccurrences)
 
   def createMissingTables() = {
     for (table <- slickTables) yield {
@@ -32,7 +32,7 @@ object SlickTools {
           case sqlEx: SQLException => {
             val tableNotFoundPattern = """^(?s:.*)Table .+ not found;(?s:.*)""".r
             val errorMsg = sqlEx.getMessage
-            logger info s"$errorMsg; machtes: ${tableNotFoundPattern.findFirstMatchIn(errorMsg).isDefined}"
+            logger debug s"$errorMsg; machtes: ${tableNotFoundPattern.findFirstMatchIn(errorMsg).isDefined}"
             errorMsg match {
               case tableNotFoundPattern(_*) => {
                 logger.info(s"creating table ${DictionaryEntries.tableName} in " +

@@ -29,7 +29,8 @@ object DictionaryEntries extends Table[DictionaryEntry]("DICTIONARY_ENTRY") {
   def baseProjection = prevId ~ nextId ~ keywordGroupIndex ~ keyword ~ description ~ htmlDescription ~ pos
 
  def prevIdFK = foreignKey("PREV_ID_FK", prevId, DictionaryEntries)(_.id)
- def nextIdFK = foreignKey("NEXT_ID_FK", nextId, DictionaryEntries)(_.id)
+
+  def nextIdFK = foreignKey("NEXT_ID_FK", nextId, DictionaryEntries)(_.id)
 
   def * = id.? ~: baseProjection <>(t => DictionaryEntry(t._1, t._2, t._3, t._4, t._5, t._6, t._7, t._8),
     DictionaryEntry.unapply)
