@@ -10,6 +10,6 @@ import java.util.List;
  * Time: 15:07
  */
 public interface IKeywordSearchService {
-    List<? extends IDictionaryEntry> getMatches(String keyword);
-    List<String> getCompletions(String keyword);
+    List<? extends IDictionaryEntry> getMatches(String keyword, Language language);
+    List<String> getCompletions(String keyword, Language language);
 }

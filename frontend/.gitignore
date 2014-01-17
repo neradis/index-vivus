@@ -1,6 +1,9 @@
 #gem home of bundled jruby
 ruby/gems
+railsapp/db
 railsapp/tmp
+railsapp/log
+
 
 #Netbeans rails project files
 railsapp/nbproject
