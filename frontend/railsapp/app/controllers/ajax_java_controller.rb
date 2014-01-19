@@ -19,11 +19,12 @@ class AjaxJavaController < ApplicationController
     end
 
     def get_keyword_completions
-      completions 'unmodified'  
-      begin
-          completions = @keyword_search_service.get_completions( params[:prefix], @@language_by_string[params[:lang]])
-        rescue Exception
-          completions = "error"
+        begin
+            completions = @keyword_search_service.get_completions( params[:prefix], @@language_by_string[params[:lang]])
+        rescue Java::JavaUtil::NoSuchElementException => nse
+            raise "Unknown language: #{params[:lang]}"
+        rescue Exception => e
+            completions = ["error #{e} (#{e.class})"]
         end
         render :json => completions
     end

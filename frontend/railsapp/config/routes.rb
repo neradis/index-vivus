@@ -55,6 +55,9 @@ IndexVivus::Application.routes.draw do
   get 'ajax/fulltext/matches/:query' => 'ajax#get_fulltext_matches'
   get 'ajax/keyword/matches/:lang/:keyword' => 'ajax_java#get_keyword_matches'
   get 'ajax/keyword/completions/:lang/:prefix' => 'ajax_java#get_keyword_completions'
+
+  get 'info/classpath' => 'info#get_classpath'
+  get 'info/loadpath' => 'info#get_loadpath'
   
   get 'details/:id' => 'main#details', :as => 'details'
 
