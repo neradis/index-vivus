@@ -15,5 +15,9 @@ class LocationProviderImpl extends LocationProvider {
   override def getBackendRoot: File = new File(buildProps.getString("backend.rootDir"))
   override def getBackendBuild: File = new File(buildProps.getString("backend.buildDir"))
 
-  override def getDataDir: File = new File(getBackendRoot, s"data/${Environment.getActive.name}")
+  override def getDataDir: File = {
+    val dir = new File(getBackendRoot, s"data/${Environment.getActive.name}")
+    if( !dir.isDirectory) assert(dir.mkdirs())
+    dir
+  }
 }
