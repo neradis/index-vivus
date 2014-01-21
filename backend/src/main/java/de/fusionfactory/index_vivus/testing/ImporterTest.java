@@ -1,6 +1,5 @@
-package test;
+package de.fusionfactory.index_vivus.testing;
 
-import de.fusionfactory.index_vivus.configuration.Environment;
 import de.fusionfactory.index_vivus.configuration.SettingsProvider;
 import de.fusionfactory.index_vivus.xmlimport.Importer;
 import org.apache.log4j.Logger;
