@@ -103,7 +103,8 @@ idea {
 }
 
 task cleanTestDb << {
-  fileTree(projectDir).include("index_vivus*test*.db").each { it.delete() }
+  ext.testDataDir = new File(projectDir, 'data/test')
+  fileTree(testDataDir).include("*.db").each { it.delete() }
 }
 
 //helper task for build investigations/debugging
