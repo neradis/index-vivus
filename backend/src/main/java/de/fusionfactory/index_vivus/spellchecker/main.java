@@ -39,7 +39,7 @@ public class main {
                 for (int i = 0; i < suggestions.length; i++) {
                     System.out.println("#" + (i + 1) + ": " + suggestions[i]);
                 }
-                String alternative = sc.getAlternativeWords(keyword);
+                String alternative = sc.getBestAlternativeWord(keyword);
                 System.out.println("found alternative: " + alternative);
 
             } catch (IOException e) {

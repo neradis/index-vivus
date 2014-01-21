@@ -1,6 +1,5 @@
 package de.fusionfactory.index_vivus.spellchecker;
 
-import com.aliasi.io.FileLineReader;
 import com.aliasi.lm.NGramProcessLM;
 import com.aliasi.spell.AutoCompleter;
 import com.aliasi.spell.CompiledSpellChecker;
@@ -8,9 +7,9 @@ import com.aliasi.spell.FixedWeightEditDistance;
 import com.aliasi.spell.TrainSpellChecker;
 import com.aliasi.util.ScoredObject;
 import com.aliasi.util.Streams;
-import com.google.common.io.Resources;
+import de.fusionfactory.index_vivus.configuration.LocationProvider;
 import de.fusionfactory.index_vivus.models.scalaimpl.DictionaryEntry;
-import de.fusionfactory.index_vivus.tools.LoadFixtures;
+import de.fusionfactory.index_vivus.testing.fixtures.FixtureData;
 
 import java.io.*;
 import java.util.HashMap;
@@ -23,7 +22,6 @@ import java.util.SortedSet;
  * Time: 18:02
  */
 public class SpellChecker {
-	private static final String MODEL_FILE = "spellchecker.model";
 	private static final double MATCH_WEIGHT = -0.0;
 	private static final double DELETE_WEIGHT = -4.0;
 	private static final double INSERT_WEIGHT = -1.0;
@@ -58,7 +56,7 @@ public class SpellChecker {
 		NGramProcessLM lm = new NGramProcessLM(NGRAM_LENGTH);
 		TrainSpellChecker tsc = new TrainSpellChecker(lm, fixedEdit);
 
-		for (DictionaryEntry de : LoadFixtures.fetchFixtures()) {
+		for (DictionaryEntry de : FixtureData.DICTIONARY_ENTRIES) {
 			tsc.handle(de.getKeyword());
 		}
 
@@ -66,7 +64,7 @@ public class SpellChecker {
 		BufferedOutputStream bos;
 		ObjectOutputStream oos;
 
-		fos = new FileOutputStream(MODEL_FILE);
+		fos = new FileOutputStream(spellcheckerModelPath());
 		bos = new BufferedOutputStream(fos);
 		oos = new ObjectOutputStream(bos);
 
@@ -90,7 +88,7 @@ public class SpellChecker {
 		BufferedInputStream bis;
 		ObjectInputStream ois;
 
-		fis = new FileInputStream(MODEL_FILE);
+		fis = new FileInputStream(spellcheckerModelPath());
 		bis = new BufferedInputStream(fis);
 		ois = new ObjectInputStream(bis);
 
@@ -108,9 +106,9 @@ public class SpellChecker {
 	 * @return
 	 * @throws SpellCheckerException
 	 */
-	public String getAlternativeWords(String keyword) throws SpellCheckerException {
+	public String getBestAlternativeWord(String keyword) throws SpellCheckerException {
 		if (spellCheckerIndex == null) {
-			throw new SpellCheckerException("no index defined");
+			throw new SpellCheckerException("uninitialised index");
 		}
 
 		String alternative = spellCheckerIndex.didYouMean(keyword);
@@ -127,8 +125,10 @@ public class SpellChecker {
 	 */
 	public Map<String, Float> createAutocompletionIndex() throws IOException {
 		Map<String, Float> m = new HashMap<String, Float>();
-		for (DictionaryEntry de : LoadFixtures.fetchFixtures()) {
-			m.put(de.getKeyword(), (float) de.getKeyword().length());
+		for (DictionaryEntry de : FixtureData.DICTIONARY_ENTRIES) {
+			m.put(de.getKeyword(), (float) de.getKeyword().length()); //TODO: please revise the decisions on using
+            //the word lengths here -> as I understand the AutoCompleter-Javadoc, word count is expected as weight
+            //until we have these, maybe a fixed value of 1 is better than word length?
 		}
 
 		return m;
@@ -149,4 +149,12 @@ public class SpellChecker {
 
 		return r;
 	}
+
+    protected File spellcheckerModelPath() {
+        return new File(LocationProvider.getInstance().getDataDir(), "spellchecker.model");
+    }
+
+    protected File autocompleterModelPath() {
+        return new File(LocationProvider.getInstance().getDataDir(), "completer.model");
+    }
 }
