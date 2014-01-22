@@ -118,8 +118,8 @@ public class Importer {
             logger.info("Anzahl Abbrvs: " + inpAbbrvs.size());
             for(int i = 0; i < inpAbbrvs.size(); i++) {
                 AbbrvImportTransaction abbrvImport = new AbbrvImportTransaction(inpAbbrvs.get(i));
-                //DbHelper.transaction(abbrvImport);
-                //inpAbbrvs.set(i,abbrvImport.getCurrentA());
+                DbHelper.transaction(abbrvImport);
+                inpAbbrvs.set(i,abbrvImport.getCurrentA());
                 logger.info(inpAbbrvs.get(i));
             }
         }

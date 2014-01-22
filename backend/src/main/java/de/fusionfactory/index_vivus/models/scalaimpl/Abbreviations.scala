@@ -17,7 +17,7 @@ object Abbreviations extends Table[Abbreviation]("ABBREVIATIONS"){
 
   def shortFormUnique  = index("SHORT_FORM_UNIQUE", shortForm, unique = true)
 
-  def longFormUnique  = index("LONG_FORM_UNIQUE", longForm, unique = true)
+  //def longFormUnique  = index("LONG_FORM_UNIQUE", longForm, unique = true)
 
   def * = id.? ~: baseProjection <> ((id,sf,lf) => Abbreviation(id, sf, lf), Abbreviation.unapply)
 
