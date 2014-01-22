@@ -3,7 +3,7 @@ package de.fusionfactory.index_vivus.persistence
 import scala.slick.session.{Session, Database}
 import scala.slick.driver.H2Driver.simple.{Session => H2Session, _}
 import de.fusionfactory.index_vivus.configuration.SettingsProvider
-import de.fusionfactory.index_vivus.models.scalaimpl.{AbbreviationOccurrences, Abbreviations, DictionaryEntries}
+import de.fusionfactory.index_vivus.models.scalaimpl.{GermanTokens, AbbreviationOccurrences, Abbreviations, DictionaryEntries}
 import scala.slick.lifted.Query
 import SlickTools.{database => db}
 
@@ -30,7 +30,7 @@ object SlickTools {
 
   lazy val database = Database.forURL(SettingsProvider.getInstance.getDatabaseUrl, driver = "org.h2.Driver")
 
-  lazy val slickTables: Set[Table[_]] = Set(DictionaryEntries, Abbreviations, AbbreviationOccurrences)
+  lazy val slickTables: Set[Table[_]] = Set(DictionaryEntries, Abbreviations, AbbreviationOccurrences, GermanTokens)
 
   def createMissingTables() = {
     def tableExists(table: Table[_])(implicit t: Session) = {
