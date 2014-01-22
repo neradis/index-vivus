@@ -1,0 +1,119 @@
+
+@import "_mixins";
+
+
+#keywordSearch {
+    width: 290px;
+    padding: 10px 15px;
+    float: right;
+
+    h3 {
+        margin-left: 5px;
+        text-align: center;
+    }
+
+    input[type="text"] {
+        float: left;
+        display: inline;
+        width: 125px;
+        margin: 1px 10px;
+    }
+
+    input[type="submit"] {
+        float: right;
+    }
+}
+
+#fulltextSearch {
+    padding: 10px 15px 15px;
+    height: 40px;
+    margin: 45px 0px;
+
+    input[type="text"] {
+        width: 745px;
+        float: left;
+    }
+
+    input[type="submit"] {
+        float: right;
+    }
+}
+
+
+#tbResult {
+    width: 100%;
+    background-color: #F9F9F9;
+    margin: 0 auto;
+
+    @include box-shadow(2px 2px 1px 2px #ccc);
+    @include opacity(0);
+    @include transition(opacity 0.5s ease);
+
+    &.active {
+        @include opacity(1);
+    }
+
+    > thead {
+        background-color: #A2CBF2;
+        color: white;
+        font-weight: bolder;
+        text-shadow: 0 0 0.1em #222;
+    }
+
+    > tbody {
+        > tr:nth-child(even) {
+            background-color: #D9DBDD;
+        }
+
+        > tr {
+            cursor: pointer;
+
+            &:hover {
+                background-color: #A2CBF2;
+            }
+
+            > td:nth-child(1) {
+                width: 200px;
+            }
+            > td:nth-child(2) {
+                width: 80px;
+            }
+            > td:nth-child(3) {
+                width: 400px;
+            }
+
+            a, a:hover {
+                color: black;
+            }
+        }
+    }
+}
+
+#language-selector {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    width: 250px;
+
+    li {
+        margin: 4px;
+        padding: 1px;
+        margin-top: -2px;
+        float: left;
+        width: 25px;
+        height: 25px;
+        cursor: pointer;
+        font-size: 1.3em;
+        text-align: center;
+        @include linear-gradient(white 0%, #9FBFD2 50%);
+
+        &.ui-selecting {
+            background: #FECA40;
+        }
+
+        &.ui-selected {
+            @include linear-gradient(white 0%, #F39814 50%);
+            color: white;
+        }
+    }
+}
