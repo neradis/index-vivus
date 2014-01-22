@@ -1,20 +1,21 @@
 package de.fusionfactory.index_vivus.language_lookup.Methods;
 
+import com.google.common.base.Charsets;
 import com.google.gson.Gson;
 import de.fusionfactory.index_vivus.language_lookup.Language;
 import de.fusionfactory.index_vivus.language_lookup.WordNotFoundException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.BasicResponseHandler;
+import org.apache.http.impl.client.DefaultHttpClient;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-
-import org.apache.http.client.ResponseHandler;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.BasicResponseHandler;
-import org.apache.http.impl.client.DefaultHttpClient;
 
 /**
  * Created with IntelliJ IDEA.
@@ -115,7 +116,12 @@ public class WiktionaryLookup extends LookupMethod {
 	 * @return
 	 */
 	private String buildApiUri(String keyword) {
-		String uri = "http://en.wiktionary.org/w/api.php?action=query&titles=" + URLEncoder.encode(keyword) + "&prop=categories&format=json";
-		return uri;
+		String uri = null;
+        try {
+            uri = "http://en.wiktionary.org/w/api.php?action=query&titles=" + URLEncoder.encode(keyword, Charsets.UTF_8.toString()) + "&prop=categories&format=json";
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace(); //will not occurr - UTF-8 is supported everywhere
+        }
+        return uri;
 	}
 }
