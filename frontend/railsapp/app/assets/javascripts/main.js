@@ -7,12 +7,25 @@ window.onload = function() {
 
 function searchKeyword(){
  var value = $("#inputKeywordSearch").val();
- $.getJSON("ajax/keyword/matches/".concat(value),function(result){
+ var lang = "LATIN";
+ $.getJSON("ajax/keyword/matches/"+ lang +"/"+(value),function(result){
     $("tbody tr").remove();
     $.each(result, function(i){
 	$('#tbResult > tbody:last').append('<tr><td>'.concat(result[i]["keyword"])+'</td><td>'.concat(result[i]["type"])+'</td><td>'.concat(result[i]["description"])+'</td></tr>');
     });
   });
 }
+
+function searchFulltext(){
+ var value = $("#inputFulltextSearch").val();
+ var lang = "LATIN";
+ $.getJSON("ajax/fulltext/matches/"+(value),function(result){
+    $("tbody tr").remove();
+    $.each(result, function(i){
+	$('#tbResult > tbody:last').append('<tr><td>'.concat(result[i]["keyword"])+'</td><td>'.concat(result[i]["type"])+'</td><td>'.concat(result[i]["description"])+'</td></tr>');
+    });
+  });
+}
+
 
 
