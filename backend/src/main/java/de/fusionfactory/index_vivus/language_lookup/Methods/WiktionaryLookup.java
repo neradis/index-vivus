@@ -2,8 +2,8 @@ package de.fusionfactory.index_vivus.language_lookup.Methods;
 
 import com.google.common.base.Charsets;
 import com.google.gson.Gson;
-import de.fusionfactory.index_vivus.language_lookup.Language;
 import de.fusionfactory.index_vivus.language_lookup.WordNotFoundException;
+import de.fusionfactory.index_vivus.services.Language;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;

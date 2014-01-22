@@ -1,7 +1,6 @@
 package de.fusionfactory.index_vivus.language_lookup;
 
-import org.apache.commons.codec.language.bm.Lang;
-
+import de.fusionfactory.index_vivus.services.Language;
 /**
  * Created with IntelliJ IDEA.
  * User: Eric Kurzhals
@@ -22,7 +21,7 @@ public class LanguageLookupResult {
 		Language = null;
 	}
 
-	public LanguageLookupResult(String word, String dataProvider, Boolean matchedLanguage, de.fusionfactory.index_vivus.language_lookup.Language language) {
+	public LanguageLookupResult(String word, String dataProvider, Boolean matchedLanguage, Language language) {
 		Word = word;
 		DataProvider = dataProvider;
 		MatchedLanguage = matchedLanguage;

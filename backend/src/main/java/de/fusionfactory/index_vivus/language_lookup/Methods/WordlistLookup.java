@@ -1,8 +1,8 @@
 package de.fusionfactory.index_vivus.language_lookup.Methods;
 
 import com.google.common.io.Resources;
-import de.fusionfactory.index_vivus.language_lookup.Language;
 import de.fusionfactory.index_vivus.language_lookup.WordNotFoundException;
+import de.fusionfactory.index_vivus.services.Language;
 
 import java.io.*;
 import java.util.Scanner;

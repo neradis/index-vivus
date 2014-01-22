@@ -1,7 +1,7 @@
 package de.fusionfactory.index_vivus.language_lookup.Methods;
 
-import de.fusionfactory.index_vivus.language_lookup.Language;
 import de.fusionfactory.index_vivus.language_lookup.WordNotFoundException;
+import de.fusionfactory.index_vivus.services.Language;
 
 /**
  * Created with IntelliJ IDEA.

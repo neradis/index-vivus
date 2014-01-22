@@ -3,6 +3,8 @@ package de.fusionfactory.index_vivus.language_lookup;
 import de.fusionfactory.index_vivus.language_lookup.Methods.LookupMethod;
 import de.fusionfactory.index_vivus.language_lookup.Methods.WiktionaryLookup;
 import de.fusionfactory.index_vivus.language_lookup.Methods.WordlistLookup;
+import de.fusionfactory.index_vivus.persistence.DbHelper;
+import de.fusionfactory.index_vivus.services.Language;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -20,6 +22,7 @@ public class main {
 		InputStreamReader isReader = new InputStreamReader(System.in);
 		BufferedReader bufferedReader = new BufferedReader(isReader);
 		Lookup lookup = new Lookup(Language.GERMAN);
+		DbHelper.createMissingTables();
 
 		while (true) {
 			System.out.print("\n> ");
