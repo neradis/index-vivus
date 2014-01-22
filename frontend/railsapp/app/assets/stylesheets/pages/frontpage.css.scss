@@ -117,3 +117,32 @@
         }
     }
 }
+
+#widget {
+    width: 200px;
+    padding: 7px;
+    margin: 0px;
+    position: absolute;
+    top :160px;
+    @include linear-gradient(#F2F7F9 0%, #9FBFD2 50%);
+        
+    border-radius: 3px;
+    @include box-shadow(3px 3px 1px 2px #ccc);
+
+    input[type="button"] {
+        font-size:1.5em;
+        padding: 0px;
+        width: 40px;
+        height:40px;
+        margin: 0px;
+        display:block;
+        float:left;
+        
+        @include linear-gradient(white 0%, #D9DBDD 50%);
+
+        &:hover {
+            @include linear-gradient(white 0%, #F2F7F9 50%);
+        }
+    }
+}
+
