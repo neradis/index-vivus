@@ -47,7 +47,7 @@
         function searchKeyword(value) {
             var lang = getKeywordLanguage();
 
-            $.getJSON("ajax/keyword/matches/"+ lang +"/"+(value), function(result) {
+            $.getJSON("ajax/keyword/matches/"+encodeURIComponent(lang)+"/"+encodeURIComponent(value), function(result) {
                 printSearchResults(result);
             });
         }

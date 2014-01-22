@@ -28,6 +28,16 @@
         $("#tbResult tbody tr").remove();
         $("#tbResult").addClass('active');
 
+        if (matches.length == 0) {
+            console.log("0 matches");
+            $('#tbResult > tbody').append(
+                $('<tr></tr>').append(
+                    $('<td colspan="3"></td>').text("Keine Ergebnisse")
+                )
+            );
+            return;
+        }
+
         $.each(matches, function(i, match) {
             var detailsUrl = '/details/'+match.id;
 
