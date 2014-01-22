@@ -1,14 +1,15 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>IndexVivus</title>
+  <title>Index Vivus</title>
   <%= stylesheet_link_tag    "application", :media => "all" %>
   <%= javascript_include_tag "application" %>
   <%= csrf_meta_tags %>
 </head>
 <body>
-
-<%= yield %>
-
+    <div id="wrapper">
+        <h1>index vivus</h1>
+        <%= yield %>
+    </div>
 </body>
 </html>

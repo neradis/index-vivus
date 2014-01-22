@@ -5,6 +5,7 @@
 @import "_mixins";
 
 body {
+	@include linear-gradient(white 0%, #9FBFD2 50%);
 	font-family: sans-serif;
 	text-align: center;
 	text-shadow: 0 0 0.05em #eee;
@@ -19,12 +20,40 @@ a {
 	}
 }
 
+h1 {
+	text-shadow: #c0c0c0 3px 3px 5px;
+}
+
+h3 {
+	margin: 0 0 3px;
+	font-size: 100%;
+	font-weight: bold;
+	text-align: left;
+}
+
+h5 {
+	text-align: left;
+	margin-left: 10px;
+
+	&.left-besides {
+		float: left;
+		margin: 6px 0 0;
+	}
+}
+
+h3, h5 {
+	color: white;
+	text-shadow: 0 0 0.1em #222;
+}
+
+
 #widget {
-	
+        
 	width: 200px;
 	padding: 7px;
 	margin: 0px;
-	position: absolute;	
+	position: absolute;
+	top	:160px;
 	@include linear-gradient(#F2F7F9 0%, #9FBFD2 50%);
 		
 	border-radius: 3px;
@@ -47,21 +76,68 @@ a {
 	@include linear-gradient(white 0%, #F2F7F9 50%);
 }
 #wrapper {
-	width: 1000px;
+	width: 850px;
 	height: 900px;
 	margin: auto;
-	@include linear-gradient(white 0%, #9FBFD2 50%);
 }
 
+
+#keywordSearch {
+	width: 290px;
+	padding: 10px 15px;
+	float: right;
+
+	h3 {
+		margin-left: 5px;
+		text-align: center;
+	}
+
+	input[type="text"] {
+		float: left;
+		display: inline;
+		width: 125px;
+		margin: 1px 10px;
+	}
+
+	input[type="submit"] {
+		float: right;
+	}
+}
+
+#fulltextSearch {
+	padding: 10px 15px 15px;
+	height: 40px;
+	margin: 45px 0px;
+
+	input[type="text"] {
+		width: 745px;
+		float: left;
+	}
+
+	input[type="submit"] {
+		float: right;
+	}
+}
+
+
 #tbResult {
-	width: 90%;
+	width: 100%;
 	background-color: #F9F9F9;
 	margin: 0 auto;
+
 	@include box-shadow(2px 2px 1px 2px #ccc);
+	@include opacity(0);
+	@include transition(opacity 0.5s ease);
+
+	&.active {
+		@include opacity(1);
+	}
 
 	> thead {
 		background-color: #A2CBF2;
+		color: white;
 		font-weight: bolder;
+		text-shadow: 0 0 0.1em #222;
 	}
 
 	> tbody {
@@ -70,6 +146,12 @@ a {
 		}
 
 		> tr {
+			cursor: pointer;
+
+			&:hover {
+				background-color: #A2CBF2;
+			}
+
 			> td:nth-child(1) {
 				width: 200px;
 			}
@@ -79,50 +161,14 @@ a {
 			> td:nth-child(3) {
 				width: 400px;
 			}
+
+			a, a:hover {
+				color: black;
+			}
 		}
 	}
 }
 
-#searchWrapper {
-	width: 85%;
-	margin: auto;
-}
-
-#keywordSearch {
-	width: 30%;
-	padding: 9px;
-	margin-right: 15px;
-	float: right;
-}
-
-#inputKeywordSearch {
-	float: left;
-	display: inline;
-}
-
-#textKeywordSearch {
-	display: block;
-	width: 300px;
-	text-align: left;
-	font-weight: bold;
-}
-
-#fulltextSearch {
-	padding: 15px;
-	height: 40px;
-	margin: 45px 0px;
-}
-
-#inputFulltextSearch {
-	width: 90%;
-	float: left;
-}
-
-#textFulltextSearch {
-	display: block;
-	text-align: left;
-	font-weight: bold;
-}
 
 .box {
 
@@ -131,14 +177,11 @@ a {
 	@include box-shadow(2px 2px 1px 2px #ccc);
 }
 
-.details {
+.box.details {
 	width: 80%;
 	margin: 25px auto;
 	text-align: center;
 	padding: 7px;
-}
-h1 {
-	text-shadow: #c0c0c0 3px 3px 5px;
 }
 
 .clear {
@@ -146,7 +189,6 @@ h1 {
 }
 
 .inline {
-
 	float: left;
 }
 
@@ -163,7 +205,7 @@ h1 {
 	li {
 		margin: 4px;
 		padding: 1px;
-		margin-top: 17px;
+		margin-top: -2px;
 		float: left;
 		width: 25px;
 		height: 25px;
@@ -183,7 +225,7 @@ h1 {
 	}
 }
 
-input[type="button"] {
+input[type="submit"] {
 	@include linear-gradient(white 0%, #9FBFD2 50%);
 	border: 0;
 	margin: 2px;
@@ -193,9 +235,15 @@ input[type="button"] {
 	}
 }
 
-tr:hover {
-	@include box-shadow(3px 3px 1px 2px #ccc);
-	border: 0px solid #AFAFAF;
+#translation {
+	h3 {
+		margin-left: 10px;
+	}
+
+	p {
+		padding: 0 10px;
+		text-align: justify;
+	}
 }
 
 .similar:hover, .seeAlso:hover{
@@ -216,16 +264,6 @@ td {
 table, td {
 	border-collapse: collapse;
 	border-right: 1px solid #AFAFAF;
-}
-
-h3, h5{
-	text-align:left;
-	margin-left:10px;
-}
-
-.seeAlso, h5{
-	float: left;
-	margin: 0px 0px 0px 10px;
 }
 
 .seeAlso{

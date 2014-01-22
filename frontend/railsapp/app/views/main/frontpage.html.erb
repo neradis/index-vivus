@@ -1,57 +1,53 @@
-<div id="wrapper">
-	<h1>index-vivus</h1>
-	<div id="keywordSearch" class="box">
-		<form>
-			<ul id="language-selector">
-				<li class="ui-state-default" data-lang="greek">G</li>
-				<li class="ui-state-default" data-lang="latin">L</li>
-			</ul>
+<div id="keywordSearch" class="box">
+	<form>
+		<h3>Stichwortsuche</h3>
 
-			<span id="textKeywordSearch">Stichwortsuche</span>
+		<ul id="language-selector">
+			<li class="ui-state-default" data-lang="greek">G</li>
+			<li class="ui-state-default" data-lang="latin">L</li>
+		</ul>
 
-			<input type="text" id="inputKeywordSearch" name="inputKeywordSearch">
-			<input type="submit" value="suchen" class="inline">
-
-			<div class="clear"></div>
-
-			<div id="widget">
-                		<p>Greek Alphabet</p>
-			</div>
-		</form>
-		
-	</div>
-	<div id="searchWrapper">
-		<div class="clear"></div>
-		<div id="fulltextSearch" class="box">
-			<form>
-				<span id="textFulltextSearch">Volltextsuche</span>
-				<input type="text" id="inputFulltextSearch" name="inputFulltextSearch" onfocus="" onblur="hide()" onkeyup="parseInput(this.value)">
-				<input type="button" value="suchen" class="inline" />
-			</form>
+		<input type="text" id="inputKeywordSearch" name="inputKeywordSearch">
+		<input type="submit" value="suchen" class="inline">
+		<div id="widget">
+        		<p>Greek Alphabet</p>
 		</div>
-	</div>
+	</form>
+	
+</div>
+<div id="searchWrapper">
 	<div class="clear"></div>
-	<div id="result">
-		<table id ="tbResult">
-			<thead>
-				<tr>
-					<td>Ergebnis</td><td>Typ</td><td>Beschreibung</td>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td>Dummy1</td><td>Typ</td><td>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptu</td>
-				</tr>
-				<tr>
-					<td>Dummy2</td><td>Typ</td><td>kasd gubergren, no sea takimata sanctus est Lorem </td>
-				</tr>
-				<tr>
-					<td>Dummy3</td><td>Typ</td><td>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy</td>
-				</tr>
-				<tr>
-					<td>Dummy4</td><td>Typ</td><td>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</td>
-				</tr>
-			</tbody>
-		</table>
+	<div id="fulltextSearch" class="box">
+		<form>
+			<h3>Volltextsuche</h3>
+			<input type="text" id="inputFulltextSearch" name="inputFulltextSearch" onfocus="" onblur="hide()" onkeyup="parseInput(this.value)">
+			<input type="submit" value="suchen" class="inline" />
+		</form>
 	</div>
+</div>
+<div class="clear"></div>
+<div id="result">
+	<table id ="tbResult">
+		<thead>
+			<tr>
+				<td>Ergebnis</td><td>Typ</td><td>Beschreibung</td>
+			</tr>
+		</thead>
+		<tbody>
+			<!--
+			<tr>
+				<td>Dummy1</td><td>Typ</td><td>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptu</td>
+			</tr>
+			<tr>
+				<td>Dummy2</td><td>Typ</td><td>kasd gubergren, no sea takimata sanctus est Lorem </td>
+			</tr>
+			<tr>
+				<td>Dummy3</td><td>Typ</td><td>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy</td>
+			</tr>
+			<tr>
+				<td>Dummy4</td><td>Typ</td><td>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</td>
+			</tr>
+			-->
+		</tbody>
+	</table>
 </div>
