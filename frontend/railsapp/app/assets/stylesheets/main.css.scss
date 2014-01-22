@@ -51,6 +51,12 @@ a {
 		}
 
 		> tr {
+			cursor: pointer;
+
+			&:hover {
+				background-color: #A2CBF2;
+			}
+
 			> td:nth-child(1) {
 				width: 200px;
 			}
@@ -59,6 +65,10 @@ a {
 			}
 			> td:nth-child(3) {
 				width: 400px;
+			}
+
+			a, a:hover {
+				color: black;
 			}
 		}
 	}

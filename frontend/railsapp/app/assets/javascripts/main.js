@@ -11,16 +11,27 @@ function searchFulltext() {
 }
 
 function printSearchResults(matches) {
-    $("tbody tr").remove();
+    var $tr;
+
+    $("#tbResult tbody tr").remove();
 
     $.each(matches, function(i, match) {
+        var detailsUrl = '/details/'+match.id;
+
         $('#tbResult > tbody:last')
         .append(
-            $('<tr></tr>').append(
-                $('<td></td>').text(match["keyword"]),
-                $('<td></td>').text(match["type"]),
-                $('<td></td>').text(match["description"])
+            $tr = $('<tr></tr>')
+            .append(
+                $('<td></td>').append(
+                    $('<a></a>').text(match.keyword).attr('href', detailsUrl)
+                ),
+                $('<td></td>').text(match.type),
+                $('<td></td>').text(match.description)
             )
-        )
+        );
+
+        $tr.find('> td').click(function(event) {
+            document.location.href = detailsUrl;
+        });
     });
 }

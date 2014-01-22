@@ -38,9 +38,10 @@ class AjaxController < ApplicationController
 
         matches.each do |match|
             serialized[match.get_id] = {
-                :keyword => match.get_keyword,
-                :type => match.get_word_type.to_s,
-                :description => match.get_description
+                :id         => match.get_id,
+                :keyword    => match.get_keyword,
+                :type       => match.get_word_type.to_s,
+                :description=> match.get_description
             }
         end
 
