@@ -3,14 +3,14 @@
 	<div id="keywordSearch" class="box">
 			<form>
 
-				<ol id="selectable">
-					<li class="ui-state-default" data-lang="<%= get_language_enum::GREEK %>">
+				<ul id="language-selector">
+					<li class="ui-state-default" data-lang="greek">
 						G
 					</li>
-					<li class="ui-state-default" data-lang="<%= get_language_enum::LATIN %>">
+					<li class="ui-state-default ui-selected" data-lang="latin">
 						L
 					</li>
-				</ol>
+				</ul>
 				<span id="textKeywordSearch">Stichwortsuche</span>
 				<input type="text" id="inputKeywordSearch" name="inputKeywordSearch">
 				<input type="submit" value="suchen" class="inline">

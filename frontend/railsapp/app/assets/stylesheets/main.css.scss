@@ -125,23 +125,23 @@ h1 {
 #feedback {
 	font-size: 0.5em;
 }
-#selectable .ui-selecting {
+#language-selector .ui-selecting {
 	background: #FECA40;
 }
-#selectable .ui-selected {
+#language-selector .ui-selected {
 	background-image: -webkit-linear-gradient(white 0%, #F39814 50%);
 	background-image: -moz-linear-gradient(white 0%, #F39814 50%);
 	background-image: -o-linear-gradient(white 0%, #F39814 50%);
 	background-image: linear-gradient(white 0%, #F39814 50%);
 	color: white;
 }
-#selectable {
+#language-selector {
 	list-style-type: none;
 	margin: 0;
 	padding: 0;
 	width: 250px;
 }
-#selectable li {
+#language-selector li {
 	margin: 4px;
 	padding: 1px;
 	margin-top: 17px;

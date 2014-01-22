@@ -1,6 +1,7 @@
 (function($) {
     $(function() {
         var $keywordInput = $('#inputKeywordSearch');
+        var $langSelector = $('#language-selector');
 
         $keywordInput.autocomplete({
             source : function(request, responseCallback) {
@@ -9,7 +10,9 @@
                     return;
                 }
 
-                $.get('/ajax/keyword/completions/'+encodeURIComponent(term), 'json')
+                var lang = $langSelector.find('> .ui-selected').data('lang');
+
+                $.get('/ajax/keyword/completions/'+encodeURIComponent(lang)+'/'+encodeURIComponent(term), 'json')
                 .done(function(data) {
                     responseCallback(data);
                 });
