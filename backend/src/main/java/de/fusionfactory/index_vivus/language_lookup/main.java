@@ -16,13 +16,10 @@ import java.util.*;
  * Time: 15:15
  */
 public class main {
-	private static final List<LookupMethod> _lookupMethods = Arrays.asList(
-			(LookupMethod) new WordlistLookup(Language.GERMAN),
-			(LookupMethod)new WiktionaryLookup(Language.GERMAN));
-
 	public main() {
 		InputStreamReader isReader = new InputStreamReader(System.in);
 		BufferedReader bufferedReader = new BufferedReader(isReader);
+		Lookup lookup = new Lookup(Language.GERMAN);
 
 		while (true) {
 			System.out.print("\n> ");
@@ -30,25 +27,14 @@ public class main {
 
 			try {
 				String keyword = bufferedReader.readLine();
-
-				for (LookupMethod lookup : _lookupMethods) {
-					System.out.println(
-
-							parseClassPathToName(lookup.getClass().getCanonicalName())
-									+ ": " + lookup.IsExpectedLanguage(keyword)
-
-					);
-				}
-
+				System.out.println(keyword + ": " + lookup.IsExpectedLanguage(keyword));
 			} catch (IOException e) {
 				break;
 			}
 		}
 	}
 
-	private static String parseClassPathToName(String classPath) {
-		return classPath.substring(classPath.lastIndexOf(".") + 1);
-	}
+
 
 	public static void main(String[] args) {
 		new main();
