@@ -8,6 +8,9 @@ import de.fusionfactory.index_vivus.services.Language;
 import org.apache.log4j.Logger;
 
 import java.util.*;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * Created with IntelliJ IDEA.
@@ -17,17 +20,29 @@ import java.util.*;
  */
 public class Lookup extends LookupMethod {
 	private static final List<LookupMethod> _lookupMethods = new ArrayList<LookupMethod>();
-	private ArrayList<LanguageLookupResult> _isExpectedLanguage = new ArrayList<LanguageLookupResult>();
 	private static Logger logger = Logger.getLogger(Lookup.class);
 	private GermanTokenMemory germanTokenMemory;
+	private static int MAX_BATCH_THREADS = 10;
 
 	public Lookup(Language expectedLanguage) {
 		super(expectedLanguage);
 		_lookupMethods.addAll(Arrays.asList(
-				(LookupMethod) new WordlistLookup(_language),
-				(LookupMethod) new WiktionaryLookup(_language)));
+				new WordlistLookup(_language),
+				new WiktionaryLookup(_language)));
 
 		germanTokenMemory = GermanTokenMemory.getInstance();
+	}
+
+	public ArrayList<LanguageLookupResult> IsExpectedLanguageBatch(List<String> listWords) throws InterruptedException {
+		CountDownLatch countDownLatch = new CountDownLatch(listWords.size());
+		ExecutorService executorService = Executors.newFixedThreadPool(MAX_BATCH_THREADS);
+		ArrayList<LanguageLookupResult> _isExpectedLanguage = new ArrayList<LanguageLookupResult>();
+
+		for (String word : listWords) {
+			executorService.execute(new BatchThreadHandler(word, countDownLatch, this, _isExpectedLanguage));
+		}
+		countDownLatch.await();
+		return _isExpectedLanguage;
 	}
 
 	@Override
@@ -37,6 +52,7 @@ public class Lookup extends LookupMethod {
 			Optional<Boolean> ret = germanTokenMemory.isGerman(word);
 			return (ret.isPresent() && ret.get());
 		}
+		final ArrayList<LanguageLookupResult> _isExpectedLanguage = new ArrayList<LanguageLookupResult>();
 
 		Thread[] threads = new Thread[_lookupMethods.size()];
 		for (int i = 0; i < _lookupMethods.size(); i++) {
@@ -75,12 +91,33 @@ public class Lookup extends LookupMethod {
 		return ret;
 	}
 
-	private static String parseClassPathToName(String classPath) {
+	public static String parseClassPathToName(String classPath) {
 		return classPath.substring(classPath.lastIndexOf(".") + 1);
 	}
 
 	@Override
 	public Language GetLanguage(String word) throws WordNotFoundException {
 		return null;
+	}
+
+	private class BatchThreadHandler implements Runnable {
+		private final String word;
+		private final CountDownLatch latch;
+		private final Lookup lookup;
+		private final ArrayList<LanguageLookupResult> languageLookupResults;
+
+		public BatchThreadHandler(String word, CountDownLatch latch, Lookup lookup, ArrayList<LanguageLookupResult>  languageLookupResults) {
+			this.word = word;
+			this.latch = latch;
+			this.lookup = lookup;
+			this.languageLookupResults = languageLookupResults;
+		}
+
+		@Override
+		public void run() {
+			boolean res = lookup.IsExpectedLanguage(word);
+			languageLookupResults.add(new LanguageLookupResult(word, Lookup.parseClassPathToName(Lookup.class.getCanonicalName()), res, lookup._language));
+			latch.countDown();
+		}
 	}
 }

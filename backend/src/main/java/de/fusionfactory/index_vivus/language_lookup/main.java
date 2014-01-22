@@ -5,6 +5,7 @@ import de.fusionfactory.index_vivus.language_lookup.Methods.WiktionaryLookup;
 import de.fusionfactory.index_vivus.language_lookup.Methods.WordlistLookup;
 import de.fusionfactory.index_vivus.persistence.DbHelper;
 import de.fusionfactory.index_vivus.services.Language;
+import org.apache.log4j.Logger;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -18,11 +19,25 @@ import java.util.*;
  * Time: 15:15
  */
 public class main {
+
+	public static ArrayList<String> _wordList = new ArrayList<String>();
+
 	public main() {
 		InputStreamReader isReader = new InputStreamReader(System.in);
 		BufferedReader bufferedReader = new BufferedReader(isReader);
 		Lookup lookup = new Lookup(Language.GERMAN);
 		DbHelper.createMissingTables();
+		Logger logger = Logger.getLogger(main.class);
+		_wordList.addAll(Arrays.asList("Haus", "Maus", "Klaus", "Raus", "Home", "Mouse", "Yay", "Hallo", "Was", "Geht", "Ab", "yo", "no", "hdf"));
+
+		try {
+			ArrayList<LanguageLookupResult> resultArrayList = lookup.IsExpectedLanguageBatch(_wordList);
+			for (LanguageLookupResult res : resultArrayList) {
+				logger.info(res.DataProvider + " [" + res.Word + "]: " + res.MatchedLanguage);
+			}
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 
 		while (true) {
 			System.out.print("\n> ");
@@ -36,8 +51,6 @@ public class main {
 			}
 		}
 	}
-
-
 
 	public static void main(String[] args) {
 		new main();
