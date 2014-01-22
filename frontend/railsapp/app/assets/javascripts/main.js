@@ -14,10 +14,20 @@
         "VERB"          : "Verb"
     };
 
-    function searchFulltext() {
-        var value = $("#inputFulltextSearch").val();
+    $(function() {
+        var $fulltextSearchInput = $("#inputFulltextSearch");
+        var $fulltextSearchForm = $("#fulltextSearch > form");
 
-        $.getJSON("ajax/fulltext/matches/"+(value), function(result) {
+        $fulltextSearchForm.submit(function(event) {
+            event.preventDefault();
+
+            searchFulltext( $fulltextSearchInput.val() );
+        });
+    });
+
+
+    function searchFulltext(value) {
+        $.getJSON("ajax/fulltext/matches/"+encodeURIComponent(value), function(result) {
             printSearchResults(result);
         });
     }
