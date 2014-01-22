@@ -5,9 +5,18 @@
 @import "_mixins";
 
 body {
-	text-align: center;
 	font-family: sans-serif;
-	#background-color: #F2F2F2;
+	text-align: center;
+	text-shadow: 0 0 0.05em #eee;
+}
+
+a {
+	color: #03d;
+	text-decoration: none;
+
+	&:hover {
+		color: red;
+	}
 }
 
 #widget {
