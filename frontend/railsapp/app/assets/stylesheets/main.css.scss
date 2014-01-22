@@ -148,6 +148,7 @@ h1 {
 		float: left;
 		width: 25px;
 		height: 25px;
+		cursor: pointer;
 		font-size: 1.3em;
 		text-align: center;
 		@include linear-gradient(white 0%, #9FBFD2 50%);
@@ -163,30 +164,14 @@ h1 {
 	}
 }
 
-<<<<<<< HEAD
 input[type="button"] {
-	background-image: -webkit-linear-gradient(white 0%, #9FBFD2 50%);
-	background-image: -moz-linear-gradient(white 0%, #9FBFD2 50%);
-	background-image: -o-linear-gradient(white 0%, #9FBFD2 50%);
-	background-image: linear-gradient(white 0%, #9FBFD2 50%);
-=======
-input[type="submit"] {
 	@include linear-gradient(white 0%, #9FBFD2 50%);
->>>>>>> frontend
 	border: 0;
 	margin: 2px;
 
-<<<<<<< HEAD
-input[type="button"]:hover {
-	background-image: -webkit-linear-gradient(white 0%, #F39814 50%);
-	background-image: -moz-linear-gradient(white 0%, #F39814 50%);
-	background-image: -o-linear-gradient(white 0%, #F39814 50%);
-	background-image: linear-gradient(white 0%, #F39814 50%);
-=======
 	&:hover {
 		@include linear-gradient(white 0%, #F39814 50%);
 	}
->>>>>>> frontend
 }
 
 tr:hover {
