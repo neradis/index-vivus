@@ -9,6 +9,7 @@ import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -16,6 +17,7 @@ import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Random;
 
 /**
  * Created with IntelliJ IDEA.
@@ -24,6 +26,7 @@ import java.util.Map;
  * Time: 16:17
  */
 public class WiktionaryLookup extends LookupMethod {
+	private Logger logger = Logger.getLogger(WiktionaryLookup.class);
 
 	public WiktionaryLookup(Language expectedLanguage) {
 		super(expectedLanguage);
@@ -92,22 +95,42 @@ public class WiktionaryLookup extends LookupMethod {
 	 */
 	private WiktionaryResponseJson doWebRequest(String uri) {
 		HttpClient httpClient = new DefaultHttpClient();
+
 		try {
-			HttpGet httpGet = new HttpGet(uri);
-			ResponseHandler<String> responseHandler = new BasicResponseHandler();
-			String responseBody = httpClient.execute(httpGet, responseHandler);
-			Gson gson = new Gson();
-			WiktionaryResponseJson item = gson.fromJson(responseBody, WiktionaryResponseJson.class);
-
-			return item;
-		} catch (IOException e) {
+			Thread.currentThread().sleep((long) (Math.random() * (100 - 50)));
+		} catch (InterruptedException e) {
 			e.printStackTrace();
-		} catch (Exception e) {
-
-		} finally {
-			httpClient.getConnectionManager().shutdown();
 		}
 
+		for (int i = 0; i < 3; i++) {
+			try {
+				HttpGet httpGet = new HttpGet(uri);
+				ResponseHandler<String> responseHandler = new BasicResponseHandler();
+				String responseBody = httpClient.execute(httpGet, responseHandler);
+				Gson gson = new Gson();
+				WiktionaryResponseJson item = gson.fromJson(responseBody, WiktionaryResponseJson.class);
+
+				return item;
+			} catch (IOException e) {
+				logger.info("Got Exception, retry after 100ms");
+				try {
+					Thread.currentThread().sleep(100);
+				} catch (InterruptedException e1) {
+					e1.printStackTrace();
+				}
+//				e.printStackTrace();
+			} catch (Exception e) {
+
+				logger.info("Got Exception (e), retry after 100ms");
+				try {
+					Thread.currentThread().sleep(100);
+				} catch (InterruptedException e1) {
+					e1.printStackTrace();
+				}
+			} finally {
+				httpClient.getConnectionManager().shutdown();
+			}
+		}
 		return null;
 	}
 

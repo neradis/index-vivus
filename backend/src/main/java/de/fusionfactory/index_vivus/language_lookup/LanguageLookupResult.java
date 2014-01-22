@@ -1,6 +1,9 @@
 package de.fusionfactory.index_vivus.language_lookup;
 
 import de.fusionfactory.index_vivus.services.Language;
+
+import java.util.ArrayList;
+
 /**
  * Created with IntelliJ IDEA.
  * User: Eric Kurzhals
@@ -13,12 +16,10 @@ public class LanguageLookupResult {
 	public String DataProvider;
 	public Boolean MatchedLanguage;
 	public Language Language;
+	public ArrayList<LanguageLookupResult> Children;
 
 	public LanguageLookupResult() {
-		Word = "";
-		DataProvider = "";
-		MatchedLanguage = false;
-		Language = null;
+		this("", "", false, null);
 	}
 
 	public LanguageLookupResult(String word, String dataProvider, Boolean matchedLanguage, Language language) {
@@ -26,5 +27,6 @@ public class LanguageLookupResult {
 		DataProvider = dataProvider;
 		MatchedLanguage = matchedLanguage;
 		Language = language;
+		Children = new ArrayList<LanguageLookupResult>();
 	}
 }

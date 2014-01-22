@@ -24,6 +24,12 @@ public class Lookup extends LookupMethod {
 	private GermanTokenMemory germanTokenMemory;
 	private static int MAX_BATCH_THREADS = 10;
 
+	public static void SetMaxBatchThreads(int i) {
+		if (i < 1)
+			return;
+		MAX_BATCH_THREADS = i;
+	}
+
 	public Lookup(Language expectedLanguage) {
 		super(expectedLanguage);
 		_lookupMethods.addAll(Arrays.asList(
@@ -48,7 +54,7 @@ public class Lookup extends LookupMethod {
 	@Override
 	public boolean IsExpectedLanguage(final String word) {
 		if (germanTokenMemory.hasResult(word)) {
-			logger.info(word + " found in cache.");
+			logger.trace(word + " found in cache.");
 			Optional<Boolean> ret = germanTokenMemory.isGerman(word);
 			return (ret.isPresent() && ret.get());
 		}
@@ -81,7 +87,7 @@ public class Lookup extends LookupMethod {
 
 		boolean ret = false;
 		for (LanguageLookupResult r : _isExpectedLanguage) {
-			logger.info(r.DataProvider + " [" + r.Word + "]: " + r.MatchedLanguage);
+			logger.trace(r.DataProvider + " [" + r.Word + "]: " + r.MatchedLanguage);
 			if (r.MatchedLanguage)
 				ret = true;
 		}
@@ -106,7 +112,7 @@ public class Lookup extends LookupMethod {
 		private final Lookup lookup;
 		private final ArrayList<LanguageLookupResult> languageLookupResults;
 
-		public BatchThreadHandler(String word, CountDownLatch latch, Lookup lookup, ArrayList<LanguageLookupResult>  languageLookupResults) {
+		public BatchThreadHandler(String word, CountDownLatch latch, Lookup lookup, ArrayList<LanguageLookupResult> languageLookupResults) {
 			this.word = word;
 			this.latch = latch;
 			this.lookup = lookup;

@@ -1,15 +1,11 @@
 package de.fusionfactory.index_vivus.language_lookup;
 
-import de.fusionfactory.index_vivus.language_lookup.Methods.LookupMethod;
-import de.fusionfactory.index_vivus.language_lookup.Methods.WiktionaryLookup;
-import de.fusionfactory.index_vivus.language_lookup.Methods.WordlistLookup;
+import com.google.common.io.Resources;
 import de.fusionfactory.index_vivus.persistence.DbHelper;
 import de.fusionfactory.index_vivus.services.Language;
 import org.apache.log4j.Logger;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.*;
 
 /**
@@ -20,29 +16,59 @@ import java.util.*;
  */
 public class main {
 
-	public static ArrayList<String> _wordList = new ArrayList<String>();
+	public ArrayList<String> _wordList = new ArrayList<String>();
+	private static String wordListFile = Resources.getResource("word_language/top10000de.txt").getPath();
+	private Logger logger;
 
-	public main() {
-		InputStreamReader isReader = new InputStreamReader(System.in);
-		BufferedReader bufferedReader = new BufferedReader(isReader);
+	private void testOurWordListFile() {
 		Lookup lookup = new Lookup(Language.GERMAN);
-		DbHelper.createMissingTables();
-		Logger logger = Logger.getLogger(main.class);
-		_wordList.addAll(Arrays.asList("Haus", "Maus", "Klaus", "Raus", "Home", "Mouse", "Yay", "Hallo", "Was", "Geht", "Ab", "yo", "no", "hdf"));
+		long startTime = System.currentTimeMillis();
+		long endTime = System.currentTimeMillis();
 
 		try {
-			ArrayList<LanguageLookupResult> resultArrayList = lookup.IsExpectedLanguageBatch(_wordList);
-			for (LanguageLookupResult res : resultArrayList) {
-				logger.info(res.DataProvider + " [" + res.Word + "]: " + res.MatchedLanguage);
+			BufferedReader br = new BufferedReader(new FileReader(wordListFile));
+			String line = br.readLine();
+			while (line != null) {
+				_wordList.add(line);
+				line = br.readLine();
 			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		endTime = System.currentTimeMillis();
+
+		logger.info("Build WordList in " + ((endTime - startTime) / 1000) + " seconds.");
+
+		try {
+			startTime = System.currentTimeMillis();
+			ArrayList<LanguageLookupResult> resultArrayList = lookup.IsExpectedLanguageBatch(_wordList);
+			endTime = System.currentTimeMillis();
+			logger.info("Check WordList with " + _wordList.size() + " Elements in " + ((endTime - startTime) / 1000) + " seconds.");
+
+			int notMatched = 0;
+			for (LanguageLookupResult result : resultArrayList) {
+				if (!result.MatchedLanguage) {
+					notMatched++;
+				}
+			}
+
+			logger.info(notMatched + " Words are not Wiktionary-German tagged.");
+
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+	}
+
+	private void userInput() {
+		InputStreamReader isReader = new InputStreamReader(System.in);
+		BufferedReader bufferedReader = new BufferedReader(isReader);
+		Lookup lookup = new Lookup(Language.GERMAN);
 
 		while (true) {
 			System.out.print("\n> ");
 			System.out.flush();
-
 			try {
 				String keyword = bufferedReader.readLine();
 				System.out.println(keyword + ": " + lookup.IsExpectedLanguage(keyword));
@@ -52,7 +78,19 @@ public class main {
 		}
 	}
 
+	public main(String[] args) {
+		logger = Logger.getLogger(main.class);
+		DbHelper.createMissingTables();
+
+		if (args.length == 0) {
+			userInput();
+			return;
+		} else if (args[0].equals("wordListCheck")) {
+			testOurWordListFile();
+		}
+	}
+
 	public static void main(String[] args) {
-		new main();
+		new main(args);
 	}
 }
