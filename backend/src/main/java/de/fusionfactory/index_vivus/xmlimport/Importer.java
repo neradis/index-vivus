@@ -32,8 +32,7 @@ import javax.xml.xpath.XPathFactory;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import static java.lang.String.format;
 
@@ -42,11 +41,11 @@ import static java.lang.String.format;
  * Date: 08.12.13
  * Time: 22:55
  */
-public class Importer {
-    private static Logger logger = Logger.getLogger(Importer.class);
-    private final Optional<Integer> integerAbsent = Optional.absent();
-    private final Optional<String> stringAbsent = Optional.absent();
-    private ArrayList<Abbreviation> abbreviations = null;
+public abstract class Importer {
+    protected static Logger logger = Logger.getLogger(Importer.class);
+    protected final Optional<Integer> integerAbsent = Optional.absent();
+    protected final Optional<String> stringAbsent = Optional.absent();
+    protected ArrayList<Abbreviation> abbreviations = null;
     public Importer() {
         // check for existing tables and create them, if not existent (for mode DEV and TEST)
         if(Environment.getActive().equals(Environment.DEVELOPMENT) || Environment.getActive().equals(Environment.TEST)) {
@@ -60,9 +59,9 @@ public class Importer {
      * @param innerChild
      * @return string of inner html content
      */
-    private String extractInnerHtml(Node innerChild) {
+    protected String extractInnerHtml(Node innerChild) {
         StringWriter outStr = new StringWriter();
-        Transformer transformer = null;
+        Transformer transformer;
         try {
             transformer = TransformerFactory.newInstance().newTransformer();
             //ensure utf-8 encoding and no xml header in the resulting string
@@ -75,64 +74,14 @@ public class Importer {
         return outStr.toString();
     }
 
-    private void parseAbbrvData(NodeList entries) {
-        NodeList abbrvContent = null;
-        for(int i = 0; i < entries.item(0).getChildNodes().getLength(); i++) {
-            if(entries.item(0).getChildNodes().item(i).getNodeName().equals("text"))
-                abbrvContent = entries.item(0).getChildNodes().item(i).getChildNodes();
-        }
-        ArrayList<Abbreviation> inpAbbrvs = new ArrayList<>();
-        if(abbrvContent != null) {
-            for(int c = 0; c < abbrvContent.getLength(); c++) {
-                Node abbrvNode = abbrvContent.item(c);
-                if(abbrvNode.getNodeName().equals("p")) {
-                    //extract html code from node
-                    String abbrvLine = this.extractInnerHtml(abbrvNode);
-                    //select all abbrv short formes within the <b> tags
-                    String abbrvRaw = abbrvLine.substring(abbrvLine.indexOf("<b>"), abbrvLine.lastIndexOf("</b>") + 4);
-                    //skip the '*' entry
-                    if(abbrvRaw.substring(abbrvRaw.indexOf("<b>") + 3, abbrvRaw.indexOf("</b>")).equals("*")) {
-                        continue;
-                    }
-                    String abbrvLabel = null;
-                    String abbrv = null;
-                    //more than one abbreviation in a line, separated by comma
-                    if(abbrvRaw.contains(",")) {
-                        String[] abbrvRaws = abbrvRaw.split(",");
-                        //select the abbrv labels (everything after the last </b> till the start of the <p> tag minus 1)
-                        // -1 for the trailing dot
-                        abbrvLabel = abbrvLine.substring(abbrvLine.lastIndexOf("</b>") + 6,abbrvLine.indexOf("</p>") - 1).replace("od.", "oder").trim();
-                        String[] abbrvLabels = abbrvLabel.split(",");
-                        for(int a = 0; a < abbrvRaws.length; a ++) {
-                            abbrv = abbrvRaws[a].substring(abbrvRaws[a].indexOf("<b>") + 3,abbrvRaws[a].indexOf("</b>"));
-                            abbrvLabel = abbrvLabels.length == 1 ? abbrvLabels[abbrvLabels.length - 1].trim() : abbrvLabels[a].trim();
-                            inpAbbrvs.add(Abbreviation.create(abbrv, abbrvLabel));
-                        }
-                    } else {
-                        abbrv = abbrvRaw.substring(abbrvRaw.indexOf("<b>") + 3, abbrvRaw.indexOf("</b>"));
-                        abbrvLabel = abbrvLine.substring(abbrvLine.lastIndexOf("</b>") + 6,abbrvLine.indexOf("</p>") - 1).replace("od.", "oder").trim();
-                        inpAbbrvs.add(Abbreviation.create(abbrv, abbrvLabel));
-                    }
-                }
-            }
-            logger.info("Anzahl Abbrvs: " + inpAbbrvs.size());
-            for(int i = 0; i < inpAbbrvs.size(); i++) {
-                AbbrvImportTransaction abbrvImport = new AbbrvImportTransaction(inpAbbrvs.get(i));
-                DbHelper.transaction(abbrvImport);
-                inpAbbrvs.set(i,abbrvImport.getCurrentA());
-                logger.info(inpAbbrvs.get(i));
-            }
-        }
-        this.abbreviations = inpAbbrvs;
-    }
-
+    protected abstract void parseAbbrvData(NodeList entries);
 
     private void parseEntryData(NodeList entries) throws IOException, SAXException {
         //foreach entry
         Optional<DictionaryEntry> prevEntry = Optional.absent();
         long currentEntryCounter = 0;
         for(int i = 0; i < entries.getLength(); i++) {
-            long id = ++currentEntryCounter;
+            currentEntryCounter++;
             if(currentEntryCounter > 3)
                 break;
             //logger.info("Eintrag #" + id + "");
@@ -172,16 +121,16 @@ public class Importer {
                             String html = this.extractInnerHtml(innerChild);
                             //look for abbreviations in the description and add <abbrv></abbrv> tags
                             String lastAbbrv = "";
-                            for(int a  = 0; a < this.abbreviations.size(); a++) {
-                                String abbrvBuf = this.abbreviations.get(a).getShortForm();
+                            for(Abbreviation abbrv : this.abbreviations) {
+                                String aBuf = abbrv.getShortForm();
                                 //don't search for a short name more than once (for instance n. = nach. & n. = generis neutrius.)
-                                if(lastAbbrv.equals(abbrvBuf))
+                                if(lastAbbrv.equals(aBuf))
                                     continue;
-                                if(html.contains(" " + abbrvBuf)) {
-                                    logger.info("HAHA: " + abbrvBuf);
-                                    html = html.replace(" " + abbrvBuf," <abbrv>" + abbrvBuf + "</abbrv>");
+                                if(html.contains(" " + aBuf)) {
+                                    //logger.info("HAHA: " + abbrvBuf);
+                                    html = html.replace(" " + aBuf," <abbrv>" + aBuf + "</abbrv>");
                                 }
-                                lastAbbrv = abbrvBuf;
+                                lastAbbrv = aBuf;
                             }
                             //WTF java: adding NULL as a word ?
                             if(descriptionHtml == null)
@@ -295,9 +244,6 @@ public class Importer {
 
         public Optional<DictionaryEntry> getPrevE() {
            return prevE;
-        }
-        public DictionaryEntry getCurrentE() {
-           return currentE;
         }
     }
 }
