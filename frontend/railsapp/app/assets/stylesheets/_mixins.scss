@@ -11,3 +11,20 @@
     background-image: -o-linear-gradient($from, $to);
     background-image: linear-gradient($from, $to);
 }
+
+@mixin opacity($opacity) {
+    // see https://coderwall.com/p/mca5xw
+    $IEValue: $opacity*100;
+
+    opacity: $opacity;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity="+$IEValue+")";
+    filter: alpha(opacity=$IEValue);
+}
+
+@mixin transition($transition) {
+    -moz-transition: $transition;
+    -ms-transition: $transition;
+    -o-transition: $transition;
+    -webkit-transition: $transition;
+    transition: $transition;
+}

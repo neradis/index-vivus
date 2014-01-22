@@ -26,11 +26,12 @@
         var $tr;
 
         $("#tbResult tbody tr").remove();
+        $("#tbResult").addClass('active');
 
         $.each(matches, function(i, match) {
             var detailsUrl = '/details/'+match.id;
 
-            $('#tbResult > tbody:last')
+            $('#tbResult > tbody')
             .append(
                 $tr = $('<tr></tr>')
                 .append(
