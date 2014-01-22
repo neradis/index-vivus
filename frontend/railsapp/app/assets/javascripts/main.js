@@ -1,7 +1,12 @@
 // Place all the behaviors and hooks related to the matching controller here.
 // All this logic will automatically be available in application.js.
 window.onload = function() {
-    $("#language-selector").selectable();
+    $("#language-selector").selectable({
+        selected: function() {
+            $('#inputKeywordSearch').autocomplete( "search" );
+        }
+    });
+
     $("li:first").addClass('ui-selected');
 };
 
