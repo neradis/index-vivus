@@ -1,0 +1,38 @@
+<%
+	dict_entry = get_dictionary_entry(params[:id].to_i)
+%>
+
+<div id="wrapper">
+	<h1>index-vivus</h1>
+
+	<div id="neighbor-links" class="box details">
+		<%
+			if dict_entry.get_prev_entry.is_present
+				prev_entry = dict_entry.get_prev_entry.get
+				concat link_to prev_entry.get_keyword, details_url(prev_entry.get_id), class: "prev"
+			end
+		%>
+		<%
+			if dict_entry.get_next_entry.is_present
+				next_entry = dict_entry.get_next_entry.get
+				concat link_to next_entry.get_keyword, details_url(next_entry.get_id), class: "next"
+			end
+		%>
+	</div>
+	
+	<div id="translation" class="box details">
+		<h3>Übersetzung</h3>
+		<p>
+			Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur
+		</p>
+	</div>
+
+	<h5>siehe auch:</h5>
+	<ul id="see-also" class="box details">
+		<% dict_entry.get_related.each do |related_entry| %>
+			<li class="similar">
+                <%= link_to related_entry.get_keyword, details_url(related_entry.get_id) %>
+            </li>
+		<% end %>
+	</ul>
+</div>
