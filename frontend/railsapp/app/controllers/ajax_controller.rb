@@ -13,7 +13,7 @@ class AjaxController < ApplicationController
 
     def get_keyword_matches
         matches = @keyword_search_service.get_matches( params[:keyword], @@language_by_string[params[:lang]] )
-        render :text => matches.join(', ')
+        render :json => serialize_matches(matches)
     end
 
     def get_keyword_completions
@@ -29,5 +29,17 @@ class AjaxController < ApplicationController
 
     def get_fulltext_matches
         render :json => []
+    end
+
+    private
+
+    def serialize_matches matches
+        serialized = {}
+
+        matches.each do |match|
+            serialized[match.get_id] = match.get_keyword
+        end
+
+        return serialized
     end
 end
