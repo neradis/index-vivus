@@ -40,14 +40,17 @@ body {
 		> tr:nth-child(even) {
 			background-color: #D9DBDD;
 		}
-		> tr > td:nth-child(1) {
-			width: 200px;
-		}
-		> tr > td:nth-child(2) {
-			width: 80px;
-		}
-		> tr > td:nth-child(3) {
-			width: 400px;
+
+		> tr {
+			> td:nth-child(1) {
+				width: 200px;
+			}
+			> td:nth-child(2) {
+				width: 80px;
+			}
+			> td:nth-child(3) {
+				width: 400px;
+			}
 		}
 	}
 }
