@@ -38,7 +38,8 @@ dependencies {
   compile ':lingpipe:4.1.0'
   compile 'log4j:log4j:1.2.+'
   compile 'org.slf4j:slf4j-log4j12:1.7.+' //needed for logging from Circumflex
-
+  compile 'org.apache.httpcomponents:httpclient:4.2.3'
+  compile 'com.google.code.gson:gson:2.2.+'
   testCompile 'junit:junit:4.+'
   testCompile "org.scalatest:scalatest_2.10:2.0"
   testCompile 'log4j:log4j:1.2.+'
