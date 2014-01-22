@@ -69,21 +69,17 @@
 //Widget
 window.onload = function() {
  hideWidget();  
- $("#selectable").selectable();
- $("li:first").addClass('ui-selected');
- 
- $("#inpudKeywordSeach").blur(function() {
+ $("#inputKeywordSeach").blur(function() {
      hideWidget();
  });
  $("#inputKeywordSearch").focus(function() {
-     showWidget();
+     parseInput($(this).val());
  });
  $("#inputKeywordSearch").keyup(function() {
      parseInput($(this).val());
  });
  $("#language-selector li:last").click(function() {
 	hideWidget();
-
  });
 };
 
