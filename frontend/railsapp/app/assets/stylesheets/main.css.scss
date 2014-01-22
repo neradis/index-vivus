@@ -1,10 +1,13 @@
 // Place all the styles related to the main controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+@import "_mixins";
+
 body {
 	text-align: center;
 	font-family: sans-serif;
-	#background-color:#F2F2F2;
+	#background-color: #F2F2F2;
 }
 
 #widget {
@@ -19,38 +22,37 @@ body {
 	width: 1000px;
 	height: 900px;
 	margin: auto;
-	background-image: -webkit-linear-gradient(white 0%, #9FBFD2 50%);
-	background-image: -moz-linear-gradient(white 0%, #9FBFD2 50%);
-	background-image: -o-linear-gradient(white 0%, #9FBFD2 50%);
-	background-image: linear-gradient(white 0%, #9FBFD2 50%);
+	@include linear-gradient(white 0%, #9FBFD2 50%);
 }
 
 #tbResult {
 	width: 90%;
 	background-color: #F9F9F9;
 	margin: 0 auto;
-	-moz-box-shadow: 2px 2px 1px 2px #ccc;
-	-webkit-box-shadow: 2px 2px 1px 2px #ccc;
-	box-shadow: 2px 2px 1px 2px #ccc;
-}
-#tbResult > thead {
-	background-color: #A2CBF2;
-	font-weight: bolder;
-}
-#tbResult > tbody > tr:nth-child(even) {
-	background-color: #D9DBDD;
-}
-#tbResult > tbody > tr > td:nth-child(1) {
+	@include box-shadow(2px 2px 1px 2px #ccc);
 
-}
-#tbResult > tbody > tr > td:nth-child(1) {
-	width: 200px;
-}
-#tbResult > tbody > tr > td:nth-child(2) {
-	width: 80px;
-}
-#tbResult > tbody > tr > td:nth-child(3) {
-	width: 400px;
+	> thead {
+		background-color: #A2CBF2;
+		font-weight: bolder;
+	}
+
+	> tbody {
+		> tr:nth-child(even) {
+			background-color: #D9DBDD;
+		}
+
+		> tr {
+			> td:nth-child(1) {
+				width: 200px;
+			}
+			> td:nth-child(2) {
+				width: 80px;
+			}
+			> td:nth-child(3) {
+				width: 400px;
+			}
+		}
+	}
 }
 
 #searchWrapper {
@@ -98,9 +100,7 @@ body {
 
 	background-color: #A2CBF2;
 	border-radius: 3px;
-	-moz-box-shadow: 2px 2px 1px 2px #ccc;
-	-webkit-box-shadow: 2px 2px 1px 2px #ccc;
-	box-shadow: 2px 2px 1px 2px #ccc;
+	@include box-shadow(2px 2px 1px 2px #ccc);
 }
 
 .details {
@@ -125,57 +125,63 @@ h1 {
 #feedback {
 	font-size: 0.5em;
 }
-#language-selector .ui-selecting {
-	background: #FECA40;
-}
-#language-selector .ui-selected {
-	background-image: -webkit-linear-gradient(white 0%, #F39814 50%);
-	background-image: -moz-linear-gradient(white 0%, #F39814 50%);
-	background-image: -o-linear-gradient(white 0%, #F39814 50%);
-	background-image: linear-gradient(white 0%, #F39814 50%);
-	color: white;
-}
+
 #language-selector {
 	list-style-type: none;
 	margin: 0;
 	padding: 0;
 	width: 250px;
-}
-#language-selector li {
-	margin: 4px;
-	padding: 1px;
-	margin-top: 17px;
-	float: left;
-	width: 25px;
-	height: 25px;
-	font-size: 1.3em;
-	text-align: center;
-	background-image: -webkit-linear-gradient(white 0%, #9FBFD2 50%);
-	background-image: -moz-linear-gradient(white 0%, #9FBFD2 50%);
-	background-image: -o-linear-gradient(white 0%, #9FBFD2 50%);
-	background-image: linear-gradient(white 0%, #9FBFD2 50%);
+
+	li {
+		margin: 4px;
+		padding: 1px;
+		margin-top: 17px;
+		float: left;
+		width: 25px;
+		height: 25px;
+		font-size: 1.3em;
+		text-align: center;
+		@include linear-gradient(white 0%, #9FBFD2 50%);
+
+		&.ui-selecting {
+			background: #FECA40;
+		}
+
+		&.ui-selected {
+			@include linear-gradient(white 0%, #F39814 50%);
+			color: white;
+		}
+	}
 }
 
+<<<<<<< HEAD
 input[type="button"] {
 	background-image: -webkit-linear-gradient(white 0%, #9FBFD2 50%);
 	background-image: -moz-linear-gradient(white 0%, #9FBFD2 50%);
 	background-image: -o-linear-gradient(white 0%, #9FBFD2 50%);
 	background-image: linear-gradient(white 0%, #9FBFD2 50%);
+=======
+input[type="submit"] {
+	@include linear-gradient(white 0%, #9FBFD2 50%);
+>>>>>>> frontend
 	border: 0;
 	margin: 2px;
-}
 
+<<<<<<< HEAD
 input[type="button"]:hover {
 	background-image: -webkit-linear-gradient(white 0%, #F39814 50%);
 	background-image: -moz-linear-gradient(white 0%, #F39814 50%);
 	background-image: -o-linear-gradient(white 0%, #F39814 50%);
 	background-image: linear-gradient(white 0%, #F39814 50%);
+=======
+	&:hover {
+		@include linear-gradient(white 0%, #F39814 50%);
+	}
+>>>>>>> frontend
 }
 
 tr:hover {
-	-moz-box-shadow: 1px 2px 0px 2px #ccc;
-	-webkit-box-shadow: 1px 2px 0px 2px #ccc;
-	box-shadow: 3px 3px 1px 2px #ccc;
+	@include box-shadow(3px 3px 1px 2px #ccc);
 	border: 0px solid #AFAFAF;
 }
 
@@ -183,7 +189,7 @@ tr:hover {
 	text-decoration: underline;
 }
 .similar{
-	margin:0px 5px;
+	margin: 0px 5px;
 
 }
 
@@ -204,9 +210,9 @@ h3, h5{
 	margin-left:10px;
 }
 
-.seeAlso ,h5{
-	float:left;
-	margin:0px 0px 0px 10px;
+.seeAlso, h5{
+	float: left;
+	margin: 0px 0px 0px 10px;
 }
 
 .seeAlso{

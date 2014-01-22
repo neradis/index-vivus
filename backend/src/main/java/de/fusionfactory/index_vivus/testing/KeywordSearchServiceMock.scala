@@ -40,7 +40,7 @@ class KeywordSearchServiceMock extends IKeywordSearchService{
 
     def getPreviousEntry: Optional[_ <: IDictionaryEntry] = ???
 
-    def getWordType: WordType = ???
+    def getWordType: WordType = WordType.UNKNOWN
 
     def getHtmlDescription: Optional[String] = Optional.absent()
 
