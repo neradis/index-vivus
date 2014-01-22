@@ -61,10 +61,12 @@ public class WiktionaryLookup extends LookupMethod {
 		while (it.hasNext()) {
 			Map.Entry e = (Map.Entry) it.next();
 			WiktionaryResponseJson.Page p = (WiktionaryResponseJson.Page) e.getValue();
-			for (WiktionaryResponseJson.Category c : p.categories) {
-				boolean found = c.title.contains(mapWiktionaryLanguageKeys().get(_language));
-				if (found)
-					return found;
+			if (p.categories != null) {
+				for (WiktionaryResponseJson.Category c : p.categories) {
+					boolean found = c.title.contains(mapWiktionaryLanguageKeys().get(_language));
+					if (found)
+						return found;
+				}
 			}
 		}
 		return false;
@@ -117,11 +119,11 @@ public class WiktionaryLookup extends LookupMethod {
 	 */
 	private String buildApiUri(String keyword) {
 		String uri = null;
-        try {
-            uri = "http://en.wiktionary.org/w/api.php?action=query&titles=" + URLEncoder.encode(keyword, Charsets.UTF_8.toString()) + "&prop=categories&format=json";
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace(); //will not occurr - UTF-8 is supported everywhere
-        }
-        return uri;
+		try {
+			uri = "http://en.wiktionary.org/w/api.php?action=query&titles=" + URLEncoder.encode(keyword, Charsets.UTF_8.toString()) + "&prop=categories&format=json";
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace(); //will not occurr - UTF-8 is supported everywhere
+		}
+		return uri;
 	}
 }
