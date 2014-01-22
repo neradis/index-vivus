@@ -15,6 +15,10 @@ public class LocationProvider {
     protected LocationProvider() {
     }
 
+    public static LocationProvider getInstance() {
+        return INSTANCE;
+    }
+
     public File getProjectRoot() {
         return impl.getProjectRoot();
     }
@@ -31,12 +35,13 @@ public class LocationProvider {
         return impl.getBackendBuild();
     }
 
+    public File getDataDir() {
+        return impl.getDataDir();
+    }
 
     public static void main(String[] args) {
         System.out.println(
             ImmutableList.of(INSTANCE.getProjectRoot(), INSTANCE.getProjectBuild(),
                     INSTANCE.getBackendRoot(), INSTANCE.getBackendBuild()));
-
-
     }
 }

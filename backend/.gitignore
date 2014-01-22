@@ -11,5 +11,6 @@ build/
 data/development/
 data/test/
 
-#h2 db trace files
+#h2 log files and lock files
 *trace.db
+*lock.db

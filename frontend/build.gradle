@@ -37,10 +37,10 @@ class ExecUtils {
 
 }
 
-ext.backendClasspath = (backend.configurations.compile +  backend.sourceSets.main.output).getAsPath()
+ext.backendClasspath = backend.configurations.compile +  backend.sourceSets.main.output
 
 task showCP << {
-  println backendClasspath
+  println backendClasspath.getAsPath()
 }
 
 class RubyExec extends Exec {
@@ -62,9 +62,7 @@ class RubyExec extends Exec {
   }
 
   List<String> getBaseSwitches() {
-    /*def envCP = project?.environment?.CLASSPATH?.with {"${File.pathSeparator}${it}"} ?: ''*/
-
-    ['--1.9', '-J-cp' ,"${project.backendClasspath}"] //$envCP
+    ['--1.9']
   }
 
   @Override
@@ -93,7 +91,12 @@ class RubyExec extends Exec {
   }
 }
 
-task railsCmd(type: RubyExec, dependsOn: backend.classes) {
+task generateClasspathScript << {
+  def script = backendClasspath.collect({ "\$CLASSPATH << \"$it\"" }).join('\n')
+  file("$appBase/add_classpath.rb").write(script)
+}
+
+task railsCmd(type: RubyExec, dependsOn: [backend.classes, generateClasspathScript]) {
   description "Run a Ruby script using the JRuby installation bundled in this project (PWD will be the rails app)"
 
   workingDir = appBase
@@ -103,3 +106,4 @@ task railsCmd(type: RubyExec, dependsOn: backend.classes) {
     logger.warn(commandLine.join(' '))
   }
 }
+

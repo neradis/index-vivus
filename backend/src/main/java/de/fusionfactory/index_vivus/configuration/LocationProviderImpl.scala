@@ -8,12 +8,16 @@ import java.io.File
  * No rights reserved. 
  */
 class LocationProviderImpl extends LocationProvider {
-  lazy val buildProps : Config = {
-    ConfigFactory.load("build.properties")
-  }
+  lazy val buildProps : Config = ConfigFactory.load("build.properties")
 
   override def getProjectRoot: File = new File(buildProps.getString("project.rootDir"))
   override def getProjectBuild: File = new File(buildProps.getString("project.buildDir"))
   override def getBackendRoot: File = new File(buildProps.getString("backend.rootDir"))
   override def getBackendBuild: File = new File(buildProps.getString("backend.buildDir"))
+
+  override def getDataDir: File = {
+    val dir = new File(getBackendRoot, s"data/${Environment.getActive.name}")
+    if( !dir.isDirectory) assert(dir.mkdirs())
+    dir
+  }
 }

@@ -19,18 +19,22 @@ import de.fusionfactory.index_vivus.persistence.ORMError
 
 object DictionaryEntryBean {
 
-  def posEnumIdx(wt: WordType): Option[Byte] = wt match {
+  lazy val posIdxRange = 0 until WordType.values.length
+
+  def pos2Byte(wt: WordType): Option[Byte] = wt match {
     case WordType.UNKNOWN => None
     case wt : WordType => Some(WordType.values().indexOf(wt).toByte)
+  }
+
+  def byte2Pos(idx: Option[Byte]): WordType = idx match {
+    case Some(b: Byte) if posIdxRange contains b => WordType.values.apply(b)
+    case None => WordType.UNKNOWN
+    case _ => throw new IllegalStateException(s"index $idx out of bounds for ${classOf[WordType].getSimpleName}")
   }
 }
 
 
 trait DictionaryEntryBean extends ICrudOpsProvider[DictionaryEntry,DictionaryEntryCrudOps] { this: DictionaryEntry =>
-
-  def getHtmlDescription: Optional[String] = htmlDescription
-
-  def setHtmlDescription(hd: Optional[String]): Unit = htmlDescription = hd
 
   def getId: Int = id.get
 
@@ -43,6 +47,14 @@ trait DictionaryEntryBean extends ICrudOpsProvider[DictionaryEntry,DictionaryEnt
   def getNextId: Optional[Integer] = nextId
 
   def setNextId(nid: Optional[Integer]): Unit = nextId = nid
+
+  def getHtmlDescription: Optional[String] = htmlDescription
+
+  def setHtmlDescription(hd: Optional[String]): Unit = htmlDescription = hd
+
+  def getOccurringAbbreviations: JList[Abbreviation] = fetchAbbreviations()
+
+  def getOccurringAbbreviations(s: Session): JList[Abbreviation] = fetchAbbreviations(Some(s))
 
   def crud = new DictionaryEntryCrudOps(this)
 
