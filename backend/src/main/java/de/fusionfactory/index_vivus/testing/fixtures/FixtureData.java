@@ -7,6 +7,8 @@ import de.fusionfactory.index_vivus.models.WordType;
 import de.fusionfactory.index_vivus.models.scalaimpl.Abbreviation;
 import de.fusionfactory.index_vivus.models.scalaimpl.DictionaryEntry;
 
+import static de.fusionfactory.index_vivus.services.Language.LATIN;
+
 /**
  * Created by Markus Ackermann.
  * No rights reserved.
@@ -17,21 +19,21 @@ public class FixtureData {
 
 
     public static final ImmutableSet<DictionaryEntry> DICTIONARY_ENTRIES = ImmutableSet.of(
-            DictionaryEntry.create(integerAbsent, integerAbsent, (byte) 1,
+            DictionaryEntry.create(LATIN, integerAbsent, integerAbsent, (byte) 1,
                     "index", "das Verzeichnis", stringAbsent, WordType.NOUN),
-            DictionaryEntry.create(integerAbsent, integerAbsent, (byte) 2,
+            DictionaryEntry.create(LATIN, integerAbsent, integerAbsent, (byte) 2,
                     "index", "der Zeigefinder (spez. und genauer: index digitus)", stringAbsent, WordType.NOUN),
-            DictionaryEntry.create(integerAbsent, integerAbsent, (byte) 1,
+            DictionaryEntry.create(LATIN, integerAbsent, integerAbsent, (byte) 1,
                     "index verborum", "das Wörterbuch", stringAbsent, WordType.NOUN),
-            DictionaryEntry.create(integerAbsent, integerAbsent, (byte) 1,
+            DictionaryEntry.create(LATIN, integerAbsent, integerAbsent, (byte) 1,
                     "verbum", "das Wort, der Spruch", stringAbsent, WordType.NOUN),
-            DictionaryEntry.create(integerAbsent, integerAbsent, (byte) 1,
+            DictionaryEntry.create(LATIN, integerAbsent, integerAbsent, (byte) 1,
                     "dominus", "der Herr, der Meister (subst. von dominare)", stringAbsent, WordType.NOUN),
-            DictionaryEntry.create(integerAbsent, integerAbsent, (byte) 1,
+            DictionaryEntry.create(LATIN, integerAbsent, integerAbsent, (byte) 1,
                     "dominare", "beherrschen, kontrollieren", stringAbsent, WordType.VERB),
-            DictionaryEntry.create(integerAbsent, integerAbsent, (byte) 1,
+            DictionaryEntry.create(LATIN, integerAbsent, integerAbsent, (byte) 1,
                     "beatus", "schön", stringAbsent, WordType.ADJECTIVE),
-            DictionaryEntry.create(integerAbsent, integerAbsent, (byte) 1,
+            DictionaryEntry.create(LATIN, integerAbsent, integerAbsent, (byte) 1,
                     "SPQR", "abgek. für: Senātus Populusque Rōmānus Eigentum - " +
                     "des römischen Sentats und des römischen Volkes",
                     stringAbsent, WordType.OTHER)

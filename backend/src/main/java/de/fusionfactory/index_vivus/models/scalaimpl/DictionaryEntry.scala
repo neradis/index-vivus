@@ -10,7 +10,8 @@ import de.fusionfactory.index_vivus.persistence.SlickTools.{database => db, _}
 import de.fusionfactory.index_vivus.tools.scala.Utils.OptionConversions._
 import scala.collection.convert.wrapAll._
 import scala.slick.driver.H2Driver.simple.{Session => H2Session, _}
-import DictionaryEntryBean.pos2Byte
+import DictionaryEntryBean._
+import de.fusionfactory.index_vivus.services.Language
 
 
 /**
@@ -20,14 +21,14 @@ import DictionaryEntryBean.pos2Byte
 
 object DictionaryEntry {
 
-  def apply(prevId: Option[Int] = None, nextId: Option[Int] = None, keywordGroupIndex: Byte,keyword: String,
+  def apply(lang: Language, prevId: Option[Int] = None, nextId: Option[Int] = None, keywordGroupIndex: Byte,keyword: String,
             description: String, htmlDescription: Option[String]  = None, pos: WordType = WordType.UNKNOWN):DictionaryEntry = {
-    apply(None, prevId, nextId, keywordGroupIndex, keyword, description, htmlDescription, pos2Byte(pos))
+    apply(None, lang2Byte(lang), prevId, nextId, keywordGroupIndex, keyword, description, htmlDescription, pos2Byte(pos))
   }
 
-  def create(prevId: Optional[Integer], nextId: Optional[Integer], keywordGroupIndex: Byte,keyword: String,
+  def create(lang: Language, prevId: Optional[Integer], nextId: Optional[Integer], keywordGroupIndex: Byte,keyword: String,
                     description: String, htmlDescription: Optional[String], pos: WordType): DictionaryEntry = {
-    apply(prevId, nextId, keywordGroupIndex, keyword, description, htmlDescription, pos)
+    apply(lang, prevId, nextId, keywordGroupIndex, keyword, description, htmlDescription, pos)
   }
 
   def fetchById(id: Int): Optional[DictionaryEntry] = db.withSession( implicit s => DEs.byIdQuery(id).firstOption )
@@ -53,6 +54,7 @@ object DictionaryEntry {
 
 
 case class DictionaryEntry /*protected[scalaimpl]*/ (id: Option[Int],
+                                                 sourceLanguage: Byte,
                                                  var prevId: Option[Int],
                                                  var nextId: Option[Int],
                                                  @BeanProperty var keywordGroupIndex: Byte,

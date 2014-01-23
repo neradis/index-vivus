@@ -12,6 +12,7 @@ import scala.collection.convert.wrapAll._
 import com.google.common.base.Optional
 import DictionaryEntryBean._
 import de.fusionfactory.index_vivus.persistence.ORMError
+import de.fusionfactory.index_vivus.services.Language
 
 /**
  * Created by Markus Ackermann.
@@ -21,6 +22,11 @@ import de.fusionfactory.index_vivus.persistence.ORMError
 object DictionaryEntryBean {
 
   lazy val posIdxRange = 0 until WordType.values.length
+
+
+  def lang2Byte(wt: Language): Byte = Language.values().indexOf(wt).toByte 
+    
+  def byte2Lang(idx: Byte): Language = Language.values.apply(idx)
 
   def pos2Byte(wt: WordType): Option[Byte] = wt match {
     case WordType.UNKNOWN => None

@@ -175,7 +175,7 @@ public abstract class Importer {
                     description = StringEscapeUtils.unescapeHtml4(Jsoup.clean(descriptionHtml, Whitelist.none()));
                 }
             }
-            DictionaryEntry currentEntry = DictionaryEntry.create(integerAbsent, integerAbsent, keyGroupIndex, keyword, description, Optional.of(descriptionHtml), wordType);
+            DictionaryEntry currentEntry = DictionaryEntry.create(sourceLanguage(), integerAbsent, integerAbsent, keyGroupIndex, keyword, description, Optional.of(descriptionHtml), wordType);
             //save entry to the database within a transaction and return the new previous
             //entry for referencing in the next iteration
 
