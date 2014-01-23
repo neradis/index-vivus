@@ -115,7 +115,7 @@ public class Lookup extends LookupMethod {
 
 		boolean ret = false;
 		for (LanguageLookupResult r : _isExpectedLanguage) {
-			logger.info(r.DataProvider + " [" + r.Word + "]: " + r.MatchedLanguage);
+			logger.trace(r.DataProvider + " [" + r.Word + "]: " + r.MatchedLanguage);
 			if (r.MatchedLanguage)
 				ret = true;
 		}
