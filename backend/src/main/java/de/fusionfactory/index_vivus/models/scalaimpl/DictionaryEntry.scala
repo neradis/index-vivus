@@ -80,6 +80,7 @@ case class DictionaryEntry /*protected[scalaimpl]*/ (id: Option[Int],
 
   def fetchAbbreviations(s: Option[Session] = None): List[Abbreviation] = {
     val work: Session => List[Abbreviation] = { implicit s =>
+
       DEs.joinOccurringAbbreviationsQuery.list()
     }
     inTransaction(s)(work)
