@@ -1,6 +1,7 @@
 package de.fusionfactory.index_vivus.testing;
 
 import de.fusionfactory.index_vivus.configuration.SettingsProvider;
+import de.fusionfactory.index_vivus.xmlimport.GeorgesImporter;
 import de.fusionfactory.index_vivus.xmlimport.Importer;
 import org.apache.log4j.Logger;
 import org.xml.sax.SAXException;
@@ -15,7 +16,7 @@ import java.io.IOException;
 public class ImporterTest {
     private static Logger logger = Logger.getLogger(ImporterTest.class);
     public static void main(String []args) {
-        Importer imp = new Importer();
+        Importer imp = new GeorgesImporter();
         logger.info("Starte Importer-Klasse...");
         //IDictionaryEntry a = ModelFactory.createDictionaryEntry("abc", "Ein Test", 1);
         //logger.info(a.toString());
