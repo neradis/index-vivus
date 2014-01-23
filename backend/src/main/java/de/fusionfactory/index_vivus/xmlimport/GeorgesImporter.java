@@ -7,6 +7,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import java.util.ArrayList;
 import java.io.IOException;
 import java.util.Comparator;
 import java.util.Map;
@@ -81,12 +82,15 @@ public class GeorgesImporter extends Importer {
                 }
             }
             logger.info("Imported Abbreviations: " + inpAbbrvs.size());
-            for(Map.Entry<String,String> entry : inpAbbrvs.entrySet()) {
-                Abbreviation abbrv = Abbreviation.create(entry.getKey(),entry.getValue());
-                AbbreviationImportTransaction abbrvImport = new AbbreviationImportTransaction(abbrv);
-                DbHelper.transaction(abbrvImport);
-                this.abbreviations.add(abbrvImport.getCurrentA());
-            }
+            ArrayList<Abbreviation> aBuf = new ArrayList<>();
+            for(Map.Entry<String,String> entry : inpAbbrvs.entrySet())
+                aBuf.add(Abbreviation.create(entry.getKey(), entry.getValue()));
+            AbbreviationsImportTransaction abbrvImport = new AbbreviationsImportTransaction(aBuf);
+            DbHelper.transaction(abbrvImport);
+
+            this.abbreviations.addAll(abbrvImport.getAbbreviations());
+            for(Abbreviation abbrv : this.abbreviations)
+                logger.info(abbrv);
         }
     }
 

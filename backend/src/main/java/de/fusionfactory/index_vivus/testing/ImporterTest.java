@@ -22,7 +22,7 @@ public class ImporterTest {
         //logger.info(a.toString());
         try {
             logger.info(SettingsProvider.getInstance().getDatabaseUrl());
-            imp.importDir("D:\\Temp\\xmlData\\Georges-1913");
+            imp.importDir("D:\\Temp\\xmlData\\Georges-1913_edit");
         } catch (IOException e) {
             e.printStackTrace();
         } catch (SAXException e) {
