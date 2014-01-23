@@ -1,9 +1,7 @@
 package de.fusionfactory.index_vivus.language_lookup;
 
 import com.google.common.base.Optional;
-import de.fusionfactory.index_vivus.language_lookup.Methods.LookupMethod;
-import de.fusionfactory.index_vivus.language_lookup.Methods.WiktionaryLookup;
-import de.fusionfactory.index_vivus.language_lookup.Methods.WordlistLookup;
+import de.fusionfactory.index_vivus.language_lookup.Methods.*;
 import de.fusionfactory.index_vivus.services.Language;
 import org.apache.log4j.Logger;
 
@@ -24,6 +22,10 @@ public class Lookup extends LookupMethod {
 	private GermanTokenMemory germanTokenMemory;
 	private static int MAX_BATCH_THREADS = 10;
 
+	/**
+	 * Sets the Max Threads to process the batch request.
+	 * @param i
+	 */
 	public static void SetMaxBatchThreads(int i) {
 		if (i < 1)
 			return;
@@ -34,11 +36,19 @@ public class Lookup extends LookupMethod {
 		super(expectedLanguage);
 		_lookupMethods.addAll(Arrays.asList(
 				new WordlistLookup(_language),
-				new WiktionaryLookup(_language)));
+				new WiktionaryLookup(_language),
+				new StemmedWordListLookup(_language),
+				new UniLeStemmedWordListLookup(_language)));
 
 		germanTokenMemory = GermanTokenMemory.getInstance();
 	}
 
+	/**
+	 * Calls an Batch Language Check of given Wordlist.
+	 * @param listWords
+	 * @return
+	 * @throws InterruptedException
+	 */
 	public ArrayList<LanguageLookupResult> IsExpectedLanguageBatch(List<String> listWords) throws InterruptedException {
 		CountDownLatch countDownLatch = new CountDownLatch(listWords.size());
 		ExecutorService executorService = Executors.newFixedThreadPool(MAX_BATCH_THREADS);
@@ -49,6 +59,24 @@ public class Lookup extends LookupMethod {
 		}
 		countDownLatch.await();
 		return _isExpectedLanguage;
+	}
+
+	/**
+	 * Returns an List which contains only Words in given Language.
+	 * @param listWords
+	 * @return
+	 * @throws InterruptedException
+	 */
+	public ArrayList<String> GetListOfLanguageWords(List<String> listWords) throws InterruptedException {
+		ArrayList<LanguageLookupResult> list = IsExpectedLanguageBatch(listWords);
+		ArrayList<String> result = new ArrayList<String>();
+
+		for (LanguageLookupResult r : list) {
+			if (r.MatchedLanguage)
+				result.add(r.Word);
+		}
+
+		return result;
 	}
 
 	@Override
@@ -87,7 +115,7 @@ public class Lookup extends LookupMethod {
 
 		boolean ret = false;
 		for (LanguageLookupResult r : _isExpectedLanguage) {
-			logger.trace(r.DataProvider + " [" + r.Word + "]: " + r.MatchedLanguage);
+			logger.info(r.DataProvider + " [" + r.Word + "]: " + r.MatchedLanguage);
 			if (r.MatchedLanguage)
 				ret = true;
 		}
@@ -106,6 +134,9 @@ public class Lookup extends LookupMethod {
 		return null;
 	}
 
+	/**
+	 * THe Batch Thread Handler.
+	 */
 	private class BatchThreadHandler implements Runnable {
 		private final String word;
 		private final CountDownLatch latch;
