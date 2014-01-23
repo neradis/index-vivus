@@ -38,7 +38,7 @@ class KeywordSearchServiceMock extends IKeywordSearchService{
 
     def setNextEntryId(id: Optional[Integer]): Unit = ???
 
-    def getWordType: WordType = ???
+    def getWordType: WordType = WordType.UNKNOWN
 
     def getHtmlDescription: Optional[String] = Optional.absent()
 
