@@ -1,190 +1,92 @@
 // Place all the styles related to the main controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+@import "_mixins";
+
 body {
-	text-align: center;
+	@include linear-gradient(white 0%, #9FBFD2 50%);
 	font-family: sans-serif;
-	#background-color:#F2F2F2;
+	text-align: center;
+	text-shadow: 0 0 0.05em #eee;
 }
 
-#widget {
-	width: 115px;
-	padding: 0px;
-	margin: 0px;
-	background-color: gray;
-	position: absolute;
+a {
+	color: #03d;
+	text-decoration: none;
+
+	&:hover {
+		color: red;
+	}
 }
+
+h1 {
+	text-shadow: #c0c0c0 3px 3px 5px;
+}
+
+h3 {
+	margin: 0 0 3px;
+	font-size: 100%;
+	font-weight: bold;
+	text-align: left;
+}
+
+h5 {
+	text-align: left;
+	margin-left: 10px;
+
+	&.left-besides {
+		float: left;
+		margin: 6px 0 0;
+	}
+}
+
+h1, h3, h5 {
+	cursor: default;
+}
+
+h3, h5 {
+	color: white;
+	text-shadow: 0 0 0.1em #222;
+}
+
 
 #wrapper {
-	width: 1000px;
+	width: 850px;
 	height: 900px;
 	margin: auto;
-	background-image: -webkit-linear-gradient(white 0%, #9FBFD2 50%);
-	background-image: -moz-linear-gradient(white 0%, #9FBFD2 50%);
-	background-image: -o-linear-gradient(white 0%, #9FBFD2 50%);
-	background-image: linear-gradient(white 0%, #9FBFD2 50%);
 }
 
-#tbResult {
-	width: 90%;
-	background-color: #F9F9F9;
-	margin: 0 auto;
-	-moz-box-shadow: 2px 2px 1px 2px #ccc;
-	-webkit-box-shadow: 2px 2px 1px 2px #ccc;
-	box-shadow: 2px 2px 1px 2px #ccc;
-}
-#tbResult > thead {
-	background-color: #A2CBF2;
-	font-weight: bolder;
-}
-#tbResult > tbody > tr:nth-child(even) {
-	background-color: #D9DBDD;
-}
-#tbResult > tbody > tr > td:nth-child(1) {
-
-}
-#tbResult > tbody > tr > td:nth-child(1) {
-	width: 200px;
-}
-#tbResult > tbody > tr > td:nth-child(2) {
-	width: 80px;
-}
-#tbResult > tbody > tr > td:nth-child(3) {
-	width: 400px;
-}
-
-#searchWrapper {
-	width: 85%;
-	margin: auto;
-}
-
-#keywordSearch {
-	width: 30%;
-	padding: 9px;
-	margin-right: 15px;
-	float: right;
-}
-
-#inputKeywordSearch {
-	float: left;
-	display: inline;
-}
-
-#textKeywordSearch {
-	display: block;
-	width: 300px;
-	text-align: left;
-	font-weight: bold;
-}
-
-#fulltextSearch {
-	padding: 15px;
-	height: 40px;
-	margin: 45px 0px;
-}
-
-#inputFulltextSearch {
-	width: 90%;
-	float: left;
-}
-
-#textFulltextSearch {
-	display: block;
-	text-align: left;
-	font-weight: bold;
-}
 
 .box {
 
 	background-color: #A2CBF2;
 	border-radius: 3px;
-	-moz-box-shadow: 2px 2px 1px 2px #ccc;
-	-webkit-box-shadow: 2px 2px 1px 2px #ccc;
-	box-shadow: 2px 2px 1px 2px #ccc;
+	@include box-shadow(2px 2px 1px 2px #ccc);
 }
 
-.details {
-	width: 80%;
-	margin: 25px auto;
-	text-align: center;
-	padding: 7px;
-}
-h1 {
-	text-shadow: #c0c0c0 3px 3px 5px;
-}
 
 .clear {
 	clear: both;
 }
 
 .inline {
-
 	float: left;
 }
 
 #feedback {
 	font-size: 0.5em;
 }
-#selectable .ui-selecting {
-	background: #FECA40;
-}
-#selectable .ui-selected {
-	background-image: -webkit-linear-gradient(white 0%, #F39814 50%);
-	background-image: -moz-linear-gradient(white 0%, #F39814 50%);
-	background-image: -o-linear-gradient(white 0%, #F39814 50%);
-	background-image: linear-gradient(white 0%, #F39814 50%);
-	color: white;
-}
-#selectable {
-	list-style-type: none;
-	margin: 0;
-	padding: 0;
-	width: 250px;
-}
-#selectable li {
-	margin: 4px;
-	padding: 1px;
-	margin-top: 17px;
-	float: left;
-	width: 25px;
-	height: 25px;
-	font-size: 1.3em;
-	text-align: center;
-	background-image: -webkit-linear-gradient(white 0%, #9FBFD2 50%);
-	background-image: -moz-linear-gradient(white 0%, #9FBFD2 50%);
-	background-image: -o-linear-gradient(white 0%, #9FBFD2 50%);
-	background-image: linear-gradient(white 0%, #9FBFD2 50%);
-}
+
 
 input[type="submit"] {
-	background-image: -webkit-linear-gradient(white 0%, #9FBFD2 50%);
-	background-image: -moz-linear-gradient(white 0%, #9FBFD2 50%);
-	background-image: -o-linear-gradient(white 0%, #9FBFD2 50%);
-	background-image: linear-gradient(white 0%, #9FBFD2 50%);
+	@include linear-gradient(white 0%, #9FBFD2 50%);
 	border: 0;
 	margin: 2px;
-}
 
-input[type="submit"]:hover {
-	background-image: -webkit-linear-gradient(white 0%, #F39814 50%);
-	background-image: -moz-linear-gradient(white 0%, #F39814 50%);
-	background-image: -o-linear-gradient(white 0%, #F39814 50%);
-	background-image: linear-gradient(white 0%, #F39814 50%);
-}
-
-tr:hover {
-	-moz-box-shadow: 1px 2px 0px 2px #ccc;
-	-webkit-box-shadow: 1px 2px 0px 2px #ccc;
-	box-shadow: 3px 3px 1px 2px #ccc;
-	border: 0px solid #AFAFAF;
-}
-
-.similar:hover, .seeAlso:hover{
-	text-decoration: underline;
-}
-.similar{
-	margin:0px 5px;
-
+	&:hover {
+		@include linear-gradient(white 0%, #F39814 50%);
+	}
 }
 
 tr {
@@ -197,20 +99,6 @@ td {
 table, td {
 	border-collapse: collapse;
 	border-right: 1px solid #AFAFAF;
-}
-
-h3, h5{
-	text-align:left;
-	margin-left:10px;
-}
-
-.seeAlso ,h5{
-	float:left;
-	margin:0px 0px 0px 10px;
-}
-
-.seeAlso{
-	font-size: 0.9em;
 }
 
 ul.ui-autocomplete{

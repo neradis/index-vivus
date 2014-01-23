@@ -1,0 +1,28 @@
+
+#neighbor-links {
+    height: 18px;
+    
+    a {
+        &.prev {
+            float: left;
+            padding-left: 18px;
+
+            &:before {
+                content: "< ";
+            }
+        }
+
+        &.next {
+            float: right;
+            padding-right: 18px;
+
+            &:after {
+                content: " >";
+            }
+        }
+    }
+}
+
+#see-also {
+    list-style-type: none;
+}

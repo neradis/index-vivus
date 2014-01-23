@@ -1,0 +1,33 @@
+
+@import "_mixins";
+
+
+.box.details {
+    width: 80%;
+    margin: 25px auto;
+    text-align: center;
+    padding: 7px;
+}
+
+.similar{
+    margin: 0px 5px;
+}
+.seeAlso{
+    font-size: 0.9em;
+}
+
+.similar:hover, .seeAlso:hover{
+    text-decoration: underline;
+}
+
+#translation {
+    h3 {
+        margin-left: 10px;
+    }
+
+    p {
+        padding: 0 10px;
+        margin: 10px 0;
+        text-align: justify;
+    }
+}

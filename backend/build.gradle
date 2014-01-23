@@ -83,6 +83,13 @@ processResources {
 
 task processAllResources(dependsOn: [processResources, processTestResources])
 
+task loadFixtures(type: JavaExec, dependsOn: classes) {
+    main = 'de.fusionfactory.index_vivus.testing.fixtures.LoadFixtures'
+    args = []
+
+    classpath = sourceSets.main.runtimeClasspath
+}
+
 eclipse {
   jdt {
     sourceCompatibility = project(':backend').sourceCompatibility

@@ -2,6 +2,7 @@ package de.fusionfactory.index_vivus.testing.fixtures;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Optional;
+import de.fusionfactory.index_vivus.configuration.Environment;
 import de.fusionfactory.index_vivus.models.scalaimpl.Abbreviation;
 import de.fusionfactory.index_vivus.models.scalaimpl.AbbreviationOccurrence;
 import de.fusionfactory.index_vivus.models.scalaimpl.DictionaryEntry;
@@ -110,6 +111,12 @@ public class LoadFixtures {
         createDictionaryEntryFixtures();
         createAbbreviationFixtures();
         addAbbreviationOccurrenceRelations();
+    }
+
+    public static void createFixturesIfDevelopment() {
+        if(Environment.getActive() == Environment.DEVELOPMENT){
+            createFixtures();
+        }
     }
 
     public static void main(String[] args) {
