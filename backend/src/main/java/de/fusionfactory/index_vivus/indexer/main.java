@@ -1,5 +1,9 @@
 package de.fusionfactory.index_vivus.indexer;
 
+import de.fusionfactory.index_vivus.xmlimport.GeorgesImporter;
+import de.fusionfactory.index_vivus.xmlimport.Importer;
+import org.xml.sax.SAXException;
+
 import java.io.IOException;
 
 /**
@@ -13,11 +17,17 @@ public class main {
 		Indexer indexer = new Indexer();
 
 		try {
+//			Importer xmlImporter = new GeorgesImporter();
+//			xmlImporter.importFromDefaultLocation();
+
 			indexer.mapIndexToRam();
 
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+//		catch (SAXException e) {
+//			e.printStackTrace();
+//		}
 	}
 
 	public static void main(String[] args) {
