@@ -35,6 +35,8 @@ object Abbreviation {
   def fetchByShortForm(keyword: String, s: Session): Optional[Abbreviation] =
     transactionForSession(s)(implicit s => Abbr.byShortFormQuery(keyword).firstOption)
 
+  def fetchAll(): JList[Abbreviation] = db.withSession( implicit s => Query(Abbr).list )
+
   def fetchAll(s: Session): JList[Abbreviation] = transactionForSession(s)( implicit s => Query(Abbr).list )
 }
 
