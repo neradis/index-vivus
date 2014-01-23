@@ -342,6 +342,7 @@ public abstract class Importer {
             }
             logger.debug("prev: " + prevE);
             logger.debug("current: " + currentE);
+            logger.debug("abbrv matches: " + abbrvMatches.size());
             //add abbreviation occurrences for current entry
             for (Abbreviation abbrv : abbrvMatches) {
                 if (!AbbreviationOccurrence.exists(currentE.getId(), abbrv.getId(), tx)) // no duplicate entry
