@@ -186,11 +186,11 @@ public class Importer {
                 List<DictionaryEntry> duplicates = currentE.crud(tx).duplicateList();
                 if (duplicates.isEmpty()) { // no duplicate entries!
                     if (prevE.isPresent()) {
-                        currentE.setPrevId(Optional.of(prevE.get().getId()));
+                        currentE.setPreviousEntryId(Optional.of(prevE.get().getId()));
                     }
                     currentE = currentE.crud(tx).insertAsNew();
                     if (prevE.isPresent()) {
-                        prevE.get().setNextId(currentE.getIdOptional());
+                        prevE.get().setNextEntryId(currentE.getIdOptional());
                         prevE.get().crud(tx).update();
                     }
                     //set current Entry as previous Entry

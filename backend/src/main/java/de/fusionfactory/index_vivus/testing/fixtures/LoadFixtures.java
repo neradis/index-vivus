@@ -35,13 +35,13 @@ public class LoadFixtures {
                     if (duplicates.isEmpty()) {
 
                         if (prevEntry.isPresent()) {
-                            de.setPrevId(Optional.of(prevEntry.get().getId()));
+                            de.setPreviousEntryId(Optional.of(prevEntry.get().getId()));
                         }
 
                         DictionaryEntry savedEntry = de.crud(tx).insertAsNew();
 
                         if (prevEntry.isPresent()) {
-                            prevEntry.get().setNextId(savedEntry.getIdOptional());
+                            prevEntry.get().setNextEntryId(savedEntry.getIdOptional());
                             prevEntry.get().crud(tx).update();
                         }
 

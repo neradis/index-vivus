@@ -1,7 +1,7 @@
 package de.fusionfactory.index_vivus.models.scalaimpl
 
 import com.google.common.base.Optional
-import de.fusionfactory.index_vivus.models.WordType
+import de.fusionfactory.index_vivus.models.{IDictionaryEntry, WordType}
 import scala.beans.BeanProperty
 import java.util.{List => JList}
 import scala.slick.session.Session
@@ -56,10 +56,11 @@ case class DictionaryEntry /*protected[scalaimpl]*/ (id: Option[Int],
                                                  var prevId: Option[Int],
                                                  var nextId: Option[Int],
                                                  @BeanProperty var keywordGroupIndex: Byte,
-                                                 @BeanProperty var keyword: String, var description: String,
+                                                 @BeanProperty var keyword: String,
+                                                 @BeanProperty var description: String,
                                                  var htmlDescription: Option[String],
-                                                 val posIdx: Option[Byte])
-  extends DictionaryEntryBean {
+                                                 var posIdx: Option[Byte])
+  extends DictionaryEntryBean with  IDictionaryEntry {
 
   def fetchAbbreviations(s: Option[Session] = None): List[Abbreviation] = {
     val work: Session => List[Abbreviation] = { implicit s =>
