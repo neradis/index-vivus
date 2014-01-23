@@ -3,11 +3,13 @@ package de.fusionfactory.index_vivus.xmlimport;
 import com.google.common.base.Joiner;
 import com.google.common.base.Optional;
 import de.fusionfactory.index_vivus.configuration.Environment;
+import de.fusionfactory.index_vivus.configuration.LocationProvider;
 import de.fusionfactory.index_vivus.models.WordType;
 import de.fusionfactory.index_vivus.models.scalaimpl.Abbreviation;
 import de.fusionfactory.index_vivus.models.scalaimpl.AbbreviationOccurrence;
 import de.fusionfactory.index_vivus.models.scalaimpl.DictionaryEntry;
 import de.fusionfactory.index_vivus.persistence.DbHelper;
+import de.fusionfactory.index_vivus.services.Language;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
@@ -31,6 +33,7 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.ArrayList;
@@ -48,20 +51,25 @@ public abstract class Importer {
     protected final Optional<Integer> integerAbsent = Optional.absent();
     protected final Optional<String> stringAbsent = Optional.absent();
     protected ArrayList<Abbreviation> abbreviations = null;
+
     public Importer() {
         // check for existing tables and create them, if not existent (for mode DEV and TEST)
-        if(Environment.getActive().equals(Environment.DEVELOPMENT) || Environment.getActive().equals(Environment.TEST)) {
+        if (Environment.getActive().equals(Environment.DEVELOPMENT) || Environment.getActive().equals(Environment.TEST)) {
             DbHelper.createMissingTables();
         }
         abbreviations = new ArrayList<>();
     }
+
     public Importer(List<Abbreviation> knownAbbreviations) {
         this();
         abbreviations.addAll(knownAbbreviations);
     }
 
+    protected abstract Language sourceLanguage();
+
+    protected abstract String sourceFilePrefix();
+
     /**
-     *
      * @param innerChild
      * @return string of inner html content
      */
@@ -86,7 +94,7 @@ public abstract class Importer {
         //foreach entry
         Optional<DictionaryEntry> prevEntry = Optional.absent();
         long currentEntryCounter = 0;
-        for(int i = 0; i < entries.getLength(); i++) {
+        for (int i = 0; i < entries.getLength(); i++) {
             currentEntryCounter++;
             //TODO: comment in for testing, commented out only for the commit!
             //if(currentEntryCounter > 3)
@@ -97,53 +105,53 @@ public abstract class Importer {
 
             NodeList entryContent = entries.item(i).getChildNodes();
             ArrayList<Abbreviation> abbrvMatches = new ArrayList<>();
-            for(int c = 0; c < entryContent.getLength(); c ++) {
+            for (int c = 0; c < entryContent.getLength(); c++) {
                 Node childContent = entryContent.item(c);
                 // keyword
-                if(childContent.getNodeName().equals("lem")) {
+                if (childContent.getNodeName().equals("lem")) {
                     String buf = childContent.getFirstChild().getNodeValue().trim();
                     //personal name ergo noun
-                    if(Character.isUpperCase(buf.charAt(0)))
+                    if (Character.isUpperCase(buf.charAt(0)))
                         wordType = WordType.NOUN;
 
-                    if(buf.contains("[") && !buf.contains("[*]")) {
+                    if (buf.contains("[") && !buf.contains("[*]")) {
                         //keyword without the ordinal number
-                        keyword = buf.substring(0,buf.indexOf("[")).trim();
+                        keyword = buf.substring(0, buf.indexOf("[")).trim();
                         //take the number within square brackets
                         keyGroupIndex = Byte.parseByte(buf.substring(buf.indexOf("[") + 1, buf.indexOf("]")));
-                    } else if(buf.contains("[*]"))  //@TODO find out what this means for an entry and if information is needed
-                        keyword = buf.substring(0,buf.indexOf("[")).trim();
+                    } else if (buf.contains("[*]"))  //@TODO find out what this means for an entry and if information is needed
+                        keyword = buf.substring(0, buf.indexOf("[")).trim();
                     else
                         keyword = buf;
                 }
 
                 // text content containing one or no header element (<h3>) and a <p> element
-                else if(childContent.getNodeName().equals("text")) {
+                else if (childContent.getNodeName().equals("text")) {
                     NodeList descContentNodes = childContent.getChildNodes();
-                    for(int d = 0; d < descContentNodes.getLength(); d++) {
+                    for (int d = 0; d < descContentNodes.getLength(); d++) {
                         Node innerChild = descContentNodes.item(d);
                         //one of the description for the entry
-                        if(innerChild.getNodeName().equals("p")) {
+                        if (innerChild.getNodeName().equals("p")) {
                             String html = this.extractInnerHtml(innerChild);
                             //look for abbreviations in the description and add <abbrv></abbrv> tags
                             String lastAbbrv = "";
-                            for(Abbreviation abbrv : this.abbreviations) {
+                            for (Abbreviation abbrv : this.abbreviations) {
                                 String aBuf = abbrv.getShortForm();
                                 //don't search for a short name more than once (for instance n. = nach. & n. = generis neutrius.)
-                                if(lastAbbrv.equals(aBuf))
+                                if (lastAbbrv.equals(aBuf))
                                     continue;
                                 //abbreviation match, edit htmlDescription and add to list
-                                if(html.contains(" " + aBuf)) {
+                                if (html.contains(" " + aBuf)) {
                                     //logger.info("HAHA: " + aBuf);
-                                    html = html.replace(" " + aBuf," <abbrv>" + aBuf + "</abbrv>");
+                                    html = html.replace(" " + aBuf, " <abbrv>" + aBuf + "</abbrv>");
                                     // no duplicate matches are tracked!
-                                    if(!abbrvMatches.contains(abbrv))
+                                    if (!abbrvMatches.contains(abbrv))
                                         abbrvMatches.add(abbrv);
                                 }
                                 lastAbbrv = aBuf;
                             }
                             //WTF java: adding NULL as a word ?
-                            if(descriptionHtml == null)
+                            if (descriptionHtml == null)
                                 descriptionHtml = html;
                             else
                                 descriptionHtml += html;
@@ -156,7 +164,7 @@ public abstract class Importer {
             DictionaryEntry currentEntry = DictionaryEntry.create(integerAbsent, integerAbsent, keyGroupIndex, keyword, description, Optional.of(descriptionHtml), wordType);
             //save entry to the database within a transaction and return the new previous
             //entry for referencing in the next iteration
-            EntryImportTransaction entryImp = new EntryImportTransaction(prevEntry,currentEntry);
+            EntryImportTransaction entryImp = new EntryImportTransaction(prevEntry, currentEntry);
             DbHelper.transaction(entryImp);
 
             //prevEntry is the processed currentEntry !
@@ -164,8 +172,8 @@ public abstract class Importer {
             // save all the abbreviation occurrences in the current entry
             logger.info(prevEntry.get());
             logger.info(abbrvMatches.size());
-            for(Abbreviation abbrv : abbrvMatches) {
-                AbbreviationOccurrenceImportTransaction abbrvOccImp = new AbbreviationOccurrenceImportTransaction(prevEntry.get(),abbrv);
+            for (Abbreviation abbrv : abbrvMatches) {
+                AbbreviationOccurrenceImportTransaction abbrvOccImp = new AbbreviationOccurrenceImportTransaction(prevEntry.get(), abbrv);
                 DbHelper.transaction(abbrvOccImp);
             }
             /* TODO: when implemented, activate these setters:
@@ -174,13 +182,24 @@ public abstract class Importer {
 
     }
 
-    public void importDir(String fileName) throws IOException, SAXException {
-        File dirHandle =new File(fileName);
-        File[] files = dirHandle.listFiles();
-        if(files != null) {
-            for(File fileHandle : files) {
-                if (fileHandle.isFile() && fileHandle.getName().contains(".xml")) {
+    public void importFromDefaultLocation() throws IOException, SAXException {
+        importDir(LocationProvider.getInstance().getDictionaryDir());
+    }
+
+    public void importDir(String dirPath) throws IOException, SAXException {
+        importDir(new File(dirPath));
+    }
+
+    public void importDir(File inputDir) throws IOException, SAXException {
+        File[] files = inputDir.listFiles();
+        boolean noFiles = true;
+
+        if (files != null) {
+            for (File fileHandle : files) {
+                if (fileHandle.isFile() && fileHandle.getName().startsWith(sourceFilePrefix())
+                        &&fileHandle.getName().contains(".xml")) {
                     logger.info("Datei: '" + fileHandle.getAbsoluteFile() + "' wird verarbeitet.");
+                    noFiles = false;
                     try {
                         DocumentBuilderFactory docBuildFac = DocumentBuilderFactory.newInstance();
                         docBuildFac.setIgnoringComments(true);
@@ -193,8 +212,7 @@ public abstract class Importer {
                             this.parseAbbrvData((NodeList) XPathFactory.newInstance().newXPath().evaluate("//article[contains(lem,'Verzeichnis')]",
                                     content.getDocumentElement(),
                                     XPathConstants.NODESET));
-                        }
-                        else {
+                        } else {
                             // all entries in the file
                             this.parseEntryData(content.getElementsByTagName("article"));
                         }
@@ -205,11 +223,14 @@ public abstract class Importer {
                 //break;
             }
         }
+        if(noFiles) {
+            throw new FileNotFoundException("Keine passenden Wörterbuchdateien gefunden");
+        }
     }
+
     public List<Abbreviation> getAbbreviations() {
         return this.abbreviations;
     }
-
 
     public class AbbreviationOccurrenceImportTransaction extends DbHelper.Operations<Object> {
         private DictionaryEntry entry;
@@ -219,6 +240,7 @@ public abstract class Importer {
             entry = relevantEntry;
             abbrv = relevantAbbreviation;
         }
+
         @Override
         public Object perform(Session tx) {
             //check if already existent
@@ -231,6 +253,7 @@ public abstract class Importer {
             return null;
         }
     }
+
     public class AbbreviationImportTransaction extends DbHelper.Operations<Object> {
         private Abbreviation currentA;
 
@@ -250,10 +273,12 @@ public abstract class Importer {
             }
             return null;
         }
+
         public Abbreviation getCurrentA() {
             return this.currentA;
         }
     }
+
     public class EntryImportTransaction extends DbHelper.Operations<Object> {
         private Optional<DictionaryEntry> prevE;
         private DictionaryEntry currentE;
@@ -288,7 +313,7 @@ public abstract class Importer {
         }
 
         public Optional<DictionaryEntry> getPrevE() {
-           return prevE;
+            return prevE;
         }
     }
 }

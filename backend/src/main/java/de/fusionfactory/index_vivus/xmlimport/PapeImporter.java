@@ -1,5 +1,6 @@
 package de.fusionfactory.index_vivus.xmlimport;
 
+import de.fusionfactory.index_vivus.services.Language;
 import org.w3c.dom.NodeList;
 
 /**
@@ -8,6 +9,16 @@ import org.w3c.dom.NodeList;
  * Time: 23:38
  */
 public class PapeImporter extends Importer{
+
+    @Override
+    protected String sourceFilePrefix() {
+        return "Pape";
+    }
+
+    @Override
+    protected Language sourceLanguage() {
+        return Language.GREEK;
+    }
 
     @Override
     protected void parseAbbrvData(NodeList entries) {

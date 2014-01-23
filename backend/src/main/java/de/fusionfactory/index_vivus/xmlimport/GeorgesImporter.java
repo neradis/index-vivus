@@ -2,9 +2,12 @@ package de.fusionfactory.index_vivus.xmlimport;
 
 import de.fusionfactory.index_vivus.models.scalaimpl.Abbreviation;
 import de.fusionfactory.index_vivus.persistence.DbHelper;
+import de.fusionfactory.index_vivus.services.Language;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
+import java.io.IOException;
 import java.util.Comparator;
 import java.util.Map;
 import java.util.TreeMap;
@@ -15,6 +18,16 @@ import java.util.TreeMap;
  * Time: 23:35
  */
 public class GeorgesImporter extends Importer {
+
+    @Override
+    protected String sourceFilePrefix() {
+        return "Georges";
+    }
+
+    @Override
+    protected Language sourceLanguage() {
+        return Language.LATIN;
+    }
 
     @Override
     protected void parseAbbrvData(NodeList entries) {
@@ -74,6 +87,19 @@ public class GeorgesImporter extends Importer {
                 DbHelper.transaction(abbrvImport);
                 this.abbreviations.add(abbrvImport.getCurrentA());
             }
+        }
+    }
+
+    public static void main(String[] args) {
+        try {
+            new GeorgesImporter().importFromDefaultLocation();
+
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (SAXException e) {
+            e.printStackTrace();
         }
     }
 }

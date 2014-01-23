@@ -7,9 +7,11 @@
 #temporary build artifacts
 build/
 
-#development and test data
 data/development/
 data/test/
+
+inputs/production
+
 
 #h2 log files and lock files
 *trace.db
