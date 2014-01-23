@@ -55,11 +55,11 @@ object DictionaryEntry {
   def fetchByKeywordAndGroupId(keyword: String, groupId: Byte, s: Session): Optional[DictionaryEntry] =
     transactionForSession(s)(implicit s => DEs.byKeywordAndKWGIndexQuery(keyword, groupId).firstOption)
 
-  def fetchByKeywordAndSourceLanguage(keyword: String, lang: Language): JList[DictionaryEntry] =
-    db.withSession(implicit s => DEs.byKeywordAndSourceLanguageQuery(keyword, lang).list)
+  def fetchByKeywordAndSourceLanguage(keyword: String, lang: Language): Optional[DictionaryEntry] =
+    db.withSession(implicit s => DEs.byKeywordAndSourceLanguageQuery(keyword, lang).firstOption)
 
-  def fetchByKeywordAndSourceLanguage(keyword: String, lang: Language, s: Session): JList[DictionaryEntry] =
-    transactionForSession(s)(implicit s => DEs.byKeywordAndSourceLanguageQuery(keyword, lang).list)
+  def fetchByKeywordAndSourceLanguage(keyword: String, lang: Language, s: Session): Optional[DictionaryEntry] =
+    transactionForSession(s)(implicit s => DEs.byKeywordAndSourceLanguageQuery(keyword, lang).firstOption)
 
   def fetchAll(): JList[DictionaryEntry] = db.withSession ( implicit s => Query(DEs).list )
 
@@ -80,7 +80,6 @@ case class DictionaryEntry /*protected[scalaimpl]*/ (id: Option[Int],
 
   def fetchAbbreviations(s: Option[Session] = None): List[Abbreviation] = {
     val work: Session => List[Abbreviation] = { implicit s =>
-
       DEs.joinOccurringAbbreviationsQuery.list()
     }
     inTransaction(s)(work)

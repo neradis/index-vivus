@@ -61,5 +61,5 @@ object DictionaryEntries extends Table[DictionaryEntry]("DICTIONARY_ENTRIES") {
     Query(DEs) filter (de => (de.keyword === kw) && (de.keywordGroupIndex === kwgi))
 
   def byKeywordAndSourceLanguageQuery(kw: String, lang: Language) =
-    Query(DEs) filter (de => (de.keyword === kw) && (de.sourceLanguage === lang2Byte(lang)))
+    Query(DEs) filter (de => (de.keyword === kw) && (de.keywordGroupIndex === lang2Byte(lang)))
 }
