@@ -124,7 +124,7 @@ public class Lookup extends LookupMethod {
 				ret = true;
 		}
 
-		germanTokenMemory.put(word, ret);
+//		germanTokenMemory.put(word, ret);
 
 		return ret;
 	}
