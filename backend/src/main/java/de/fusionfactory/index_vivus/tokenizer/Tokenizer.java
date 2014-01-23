@@ -31,7 +31,7 @@ public class Tokenizer {
 
 		String[] lines = entry.split("\n");
 
-		for (int i = 1; i < lines.length; i++) {
+		for (int i = 0; i < lines.length; i++) {
 			result.addAll(getTokenizedLine(lines[i]));
 		}
 
