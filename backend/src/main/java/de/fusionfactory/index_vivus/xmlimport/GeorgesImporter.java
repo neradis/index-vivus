@@ -5,7 +5,6 @@ import de.fusionfactory.index_vivus.persistence.DbHelper;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Map;
 import java.util.TreeMap;
@@ -67,18 +66,14 @@ public class GeorgesImporter extends Importer {
                             inpAbbrvs.put(abbrv, abbrvLabel);
                     }
                 }
-
             }
             logger.info("Imported Abbreviations: " + inpAbbrvs.size());
-            ArrayList<Abbreviation> abbrvOut = new ArrayList<>();
             for(Map.Entry<String,String> entry : inpAbbrvs.entrySet()) {
                 Abbreviation abbrv = Abbreviation.create(entry.getKey(),entry.getValue());
-                AbbrvImportTransaction abbrvImport = new AbbrvImportTransaction(abbrv);
+                AbbreviationImportTransaction abbrvImport = new AbbreviationImportTransaction(abbrv);
                 DbHelper.transaction(abbrvImport);
-                abbrvOut.add(abbrvImport.getCurrentA());
-                logger.info(abbrvImport.getCurrentA());
+                this.abbreviations.add(abbrvImport.getCurrentA());
             }
-            this.abbreviations = abbrvOut;
         }
     }
 }

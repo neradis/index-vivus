@@ -5,6 +5,7 @@ import com.google.common.base.Optional;
 import de.fusionfactory.index_vivus.configuration.Environment;
 import de.fusionfactory.index_vivus.models.WordType;
 import de.fusionfactory.index_vivus.models.scalaimpl.Abbreviation;
+import de.fusionfactory.index_vivus.models.scalaimpl.AbbreviationOccurrence;
 import de.fusionfactory.index_vivus.models.scalaimpl.DictionaryEntry;
 import de.fusionfactory.index_vivus.persistence.DbHelper;
 import org.apache.commons.lang3.StringEscapeUtils;
@@ -53,6 +54,10 @@ public abstract class Importer {
         }
         abbreviations = new ArrayList<>();
     }
+    public Importer(List<Abbreviation> knownAbbreviations) {
+        this();
+        abbreviations.addAll(knownAbbreviations);
+    }
 
     /**
      *
@@ -82,15 +87,15 @@ public abstract class Importer {
         long currentEntryCounter = 0;
         for(int i = 0; i < entries.getLength(); i++) {
             currentEntryCounter++;
-            if(currentEntryCounter > 3)
-                break;
-            //logger.info("Eintrag #" + id + "");
-            String keyword = "";
-            String description = "";
-            String descriptionHtml = null;
+            //TODO: comment in for testing, commented out only for the commit!
+            //if(currentEntryCounter > 3)
+            //    break;
+            String keyword = "", description = "", descriptionHtml = null;
             WordType wordType = WordType.UNKNOWN;
             byte keyGroupIndex = 1;
+
             NodeList entryContent = entries.item(i).getChildNodes();
+            ArrayList<Abbreviation> abbrvMatches = new ArrayList<>();
             for(int c = 0; c < entryContent.getLength(); c ++) {
                 Node childContent = entryContent.item(c);
                 // keyword
@@ -126,9 +131,13 @@ public abstract class Importer {
                                 //don't search for a short name more than once (for instance n. = nach. & n. = generis neutrius.)
                                 if(lastAbbrv.equals(aBuf))
                                     continue;
+                                //abbreviation match, edit htmlDescription and add to list
                                 if(html.contains(" " + aBuf)) {
-                                    //logger.info("HAHA: " + abbrvBuf);
+                                    //logger.info("HAHA: " + aBuf);
                                     html = html.replace(" " + aBuf," <abbrv>" + aBuf + "</abbrv>");
+                                    // no duplicate matches are tracked!
+                                    if(!abbrvMatches.contains(abbrv))
+                                        abbrvMatches.add(abbrv);
                                 }
                                 lastAbbrv = aBuf;
                             }
@@ -148,11 +157,20 @@ public abstract class Importer {
             //entry for referencing in the next iteration
             EntryImportTransaction entryImp = new EntryImportTransaction(prevEntry,currentEntry);
             DbHelper.transaction(entryImp);
+
+            //prevEntry is the processed currentEntry !
             prevEntry = entryImp.getPrevE();
-            logger.info(prevEntry.get().getHtmlDescription());
+            // save all the abbreviation occurrences in the current entry
+            logger.info(prevEntry.get());
+            logger.info(abbrvMatches.size());
+            for(Abbreviation abbrv : abbrvMatches) {
+                AbbreviationOccurrenceImportTransaction abbrvOccImp = new AbbreviationOccurrenceImportTransaction(prevEntry.get(),abbrv);
+                DbHelper.transaction(abbrvOccImp);
+            }
             /* TODO: when implemented, activate these setters:
               currentEntry.setWordType(wordType);*/
         }
+
     }
 
     public void importDir(String fileName) throws IOException, SAXException {
@@ -187,11 +205,35 @@ public abstract class Importer {
             }
         }
     }
+    public List<Abbreviation> getAbbreviations() {
+        return this.abbreviations;
+    }
 
-    public class AbbrvImportTransaction extends DbHelper.Operations<Object> {
+
+    public class AbbreviationOccurrenceImportTransaction extends DbHelper.Operations<Object> {
+        private DictionaryEntry entry;
+        private Abbreviation abbrv;
+
+        public AbbreviationOccurrenceImportTransaction(DictionaryEntry relevantEntry, Abbreviation relevantAbbreviation) {
+            entry = relevantEntry;
+            abbrv = relevantAbbreviation;
+        }
+        @Override
+        public Object perform(Session tx) {
+            //check if already existent
+            if (!AbbreviationOccurrence.exists(entry.getId(), abbrv.getId(), tx)) // no duplicate entry
+                AbbreviationOccurrence.create(entry.getId(), abbrv.getId(), tx);
+            else {
+                logger.warn(format("Skipping already added abbreviation occurrence relation: %s#%d - %s",
+                        entry.getKeyword(), entry.getKeywordGroupIndex(), abbrv.getShortForm()));
+            }
+            return null;
+        }
+    }
+    public class AbbreviationImportTransaction extends DbHelper.Operations<Object> {
         private Abbreviation currentA;
 
-        public AbbrvImportTransaction(Abbreviation currentAbbrv) {
+        public AbbreviationImportTransaction(Abbreviation currentAbbrv) {
             currentA = currentAbbrv;
         }
 
@@ -233,13 +275,15 @@ public abstract class Importer {
                     prevE.get().crud(tx).update();
                 }
                 //set current Entry as previous Entry
+                logger.info("prev: " + prevE);
+                logger.info("current: " + currentE);
                 prevE = Optional.of(currentE);
             } else {
                 String dupList = Joiner.on(" \n").join(duplicates);
                 logger.warn(format("Already found entries in database with same content as %s:%n%s%n - SKIPPED",
                         currentE, dupList));
             }
-            return null; //nothing to return
+            return null;
         }
 
         public Optional<DictionaryEntry> getPrevE() {
