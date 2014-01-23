@@ -37,7 +37,7 @@ public class Lookup extends LookupMethod {
 		super(expectedLanguage);
 		_lookupMethods.addAll(Arrays.asList(
 				new WordlistLookup(_language),
-				new WiktionaryLookup(_language),
+//				new WiktionaryLookup(_language),
 				new StemmedWordListLookup(_language)
 				, new UniLeStemmedWordListLookup(_language)
 		));
@@ -52,10 +52,10 @@ public class Lookup extends LookupMethod {
 	 * @return
 	 * @throws InterruptedException
 	 */
-	public ArrayList<LanguageLookupResult> IsExpectedLanguageBatch(List<String> listWords) throws InterruptedException {
+	public List<LanguageLookupResult> IsExpectedLanguageBatch(List<String> listWords) throws InterruptedException {
 		CountDownLatch countDownLatch = new CountDownLatch(listWords.size());
 		ExecutorService executorService = Executors.newFixedThreadPool(MAX_BATCH_THREADS);
-		ArrayList<LanguageLookupResult> _isExpectedLanguage = new ArrayList<LanguageLookupResult>();
+		List<LanguageLookupResult> _isExpectedLanguage = Collections.synchronizedList(new ArrayList<LanguageLookupResult>());
 
 		for (String word : listWords) {
 			executorService.execute(new BatchThreadHandler(word, countDownLatch, this, _isExpectedLanguage));
@@ -72,7 +72,7 @@ public class Lookup extends LookupMethod {
 	 * @throws InterruptedException
 	 */
 	public ArrayList<String> GetListOfLanguageWords(List<String> listWords) throws InterruptedException {
-		ArrayList<LanguageLookupResult> list = IsExpectedLanguageBatch(listWords);
+		List<LanguageLookupResult> list = IsExpectedLanguageBatch(listWords);
 		ArrayList<String> result = new ArrayList<String>();
 
 		for (LanguageLookupResult r : list) {
@@ -85,11 +85,11 @@ public class Lookup extends LookupMethod {
 
 	@Override
 	public boolean IsExpectedLanguage(final String word) {
-		if (germanTokenMemory.hasResult(word)) {
-			logger.trace(word + " found in cache.");
-			Optional<Boolean> ret = germanTokenMemory.isGerman(word);
-			return (ret.isPresent() && ret.get());
-		}
+//		if (germanTokenMemory.hasResult(word)) {
+//			logger.trace(word + " found in cache.");
+//			Optional<Boolean> ret = germanTokenMemory.isGerman(word);
+//			return (ret.isPresent() && ret.get());
+//		}
 		final ArrayList<LanguageLookupResult> _isExpectedLanguage = new ArrayList<LanguageLookupResult>();
 
 		Thread[] threads = new Thread[_lookupMethods.size()];
@@ -145,9 +145,9 @@ public class Lookup extends LookupMethod {
 		private final String word;
 		private final CountDownLatch latch;
 		private final Lookup lookup;
-		private final ArrayList<LanguageLookupResult> languageLookupResults;
+		private final List<LanguageLookupResult> languageLookupResults;
 
-		public BatchThreadHandler(String word, CountDownLatch latch, Lookup lookup, ArrayList<LanguageLookupResult> languageLookupResults) {
+		public BatchThreadHandler(String word, CountDownLatch latch, Lookup lookup, List<LanguageLookupResult> languageLookupResults) {
 			this.word = word;
 			this.latch = latch;
 			this.lookup = lookup;
@@ -158,7 +158,9 @@ public class Lookup extends LookupMethod {
 		public void run() {
 			if (word.length() > 0) {
 				boolean res = lookup.IsExpectedLanguage(word);
+//				logger.info("Lookup: " + word);
 				languageLookupResults.add(new LanguageLookupResult(word, Lookup.parseClassPathToName(Lookup.class.getCanonicalName()), res, lookup._language));
+//				logger.info("Done .. >_< Lookup: " + word);
 			}
 			latch.countDown();
 		}

@@ -25,54 +25,55 @@ import java.util.List;
  * Time: 19:23
  */
 public class Indexer {
-	private Directory directoryIndex = new RAMDirectory();
+
+//	new RAMDirectory();
 	private Tokenizer tokenizer;
 	private File fsDirectoryFile = new File(LocationProvider.getInstance().getDataDir().getPath(), "index.lucene.bin");
+	private Directory directoryIndex ;
 	private Logger logger;
 
 	public Indexer() {
 		tokenizer = new Tokenizer();
 		logger = Logger.getLogger(this.getClass());
 		logger.info(fsDirectoryFile.getAbsolutePath());
+
+		try {
+			directoryIndex = new SimpleFSDirectory(fsDirectoryFile);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void mapIndexToRam() throws IOException {
 		if (fsDirectoryFile.exists()) {
-			Directory fsDirectory = FSDirectory.open(fsDirectoryFile);
-			StandardAnalyzer standardAnalyzer = new StandardAnalyzer(Version.LUCENE_46);
-			IndexWriterConfig config = new IndexWriterConfig(Version.LUCENE_46, standardAnalyzer);
-			IndexWriter indexWriter = new IndexWriter(directoryIndex, config);
-			indexWriter.addIndexes(fsDirectory);
+			logger.info("FSDirectory exists");
 		} else {
 			createIndex();
 		}
 	}
 
 	private void createIndex() throws IOException {
+		logger.info("Create new Index");
 		StandardAnalyzer standardAnalyzer = new StandardAnalyzer(Version.LUCENE_46);
 		IndexWriterConfig config = new IndexWriterConfig(Version.LUCENE_46, standardAnalyzer);
 		IndexWriter indexWriter = new IndexWriter(directoryIndex, config);
 
-		List<DictionaryEntry> dictionaryEntryList = DictionaryEntry.fetchAll(null);
+		List<DictionaryEntry> dictionaryEntryList = DictionaryEntry.fetchAll();
+		int i = 0;
 		for (DictionaryEntry e : dictionaryEntryList) {
+			if (i > 1)
+				break;
+			logger.info("progress... " + i);
 			insertDocument(indexWriter, e);
+			logger.info("progress... " + i + " .. done");
+			i++;
 		}
 
-		if (!fsDirectoryFile.exists()) {
-			fsDirectoryFile.createNewFile();
-		}
-
-		{
-			Directory fsDirectory = FSDirectory.open(fsDirectoryFile);
-			IndexWriterConfig fsConfig = new IndexWriterConfig(Version.LUCENE_46, standardAnalyzer);
-			IndexWriter fsIndexWriter = new IndexWriter(fsDirectory, fsConfig);
-			fsIndexWriter.addIndexes(directoryIndex);
-			fsIndexWriter.close();
-		}
+		indexWriter.close();
 	}
 
 	private void insertDocument(IndexWriter w, DictionaryEntry entry) throws IOException {
-		int dbId = entry.getId(), lang = 0;
+		int dbId = entry.getId(), lang = entry.sourceLanguage();
 
 		List<String> tokens = tokenizer.getTokenizedString(entry.getDescription());
 		String content = Tokenizer.implodeArray(tokens.toArray(new String[tokens.size()]), " ");
