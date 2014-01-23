@@ -11,5 +11,7 @@ import java.util.List;
  */
 public interface IFullTextSearchService {
 
-    List<? extends IDictionaryEntry> getMatches(QueryDescription queryDescription);
+	List<? extends IDictionaryEntry> getMatches(String query, int page, int entries) throws FulltextSearchException;
+
+	List<? extends IDictionaryEntry> getMatches(String query, Language language, int page, int entries) throws FulltextSearchException;
 }
