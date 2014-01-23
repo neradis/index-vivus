@@ -3,6 +3,7 @@ package de.fusionfactory.index_vivus.language_lookup.Methods;
 import com.google.common.io.Resources;
 import de.fusionfactory.index_vivus.language_lookup.WordNotFoundException;
 import de.fusionfactory.index_vivus.services.Language;
+import org.apache.log4j.Logger;
 
 import java.io.*;
 import java.util.Scanner;
@@ -15,6 +16,7 @@ import java.util.Scanner;
  */
 public class WordlistLookup extends LookupMethod {
 	private static String wordListFile = Resources.getResource("word_language/top10000de.txt").getPath();
+	private Logger logger = Logger.getLogger(WordlistLookup.class);
 
 	public WordlistLookup(Language l) {
 		super(l);

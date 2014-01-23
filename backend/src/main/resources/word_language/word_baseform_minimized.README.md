@@ -1,0 +1,1 @@
+need to add word_baseform_minizied.txt from uni leipzig.

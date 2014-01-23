@@ -1,9 +1,7 @@
 package de.fusionfactory.index_vivus.language_lookup;
 
 import com.google.common.base.Optional;
-import de.fusionfactory.index_vivus.language_lookup.Methods.LookupMethod;
-import de.fusionfactory.index_vivus.language_lookup.Methods.WiktionaryLookup;
-import de.fusionfactory.index_vivus.language_lookup.Methods.WordlistLookup;
+import de.fusionfactory.index_vivus.language_lookup.Methods.*;
 import de.fusionfactory.index_vivus.services.Language;
 import org.apache.log4j.Logger;
 
@@ -34,7 +32,9 @@ public class Lookup extends LookupMethod {
 		super(expectedLanguage);
 		_lookupMethods.addAll(Arrays.asList(
 				new WordlistLookup(_language),
-				new WiktionaryLookup(_language)));
+				new WiktionaryLookup(_language),
+				new StemmedWordListLookup(_language),
+				new UniLeStemmedWordListLookup(_language)));
 
 		germanTokenMemory = GermanTokenMemory.getInstance();
 	}
@@ -87,7 +87,7 @@ public class Lookup extends LookupMethod {
 
 		boolean ret = false;
 		for (LanguageLookupResult r : _isExpectedLanguage) {
-			logger.trace(r.DataProvider + " [" + r.Word + "]: " + r.MatchedLanguage);
+			logger.info(r.DataProvider + " [" + r.Word + "]: " + r.MatchedLanguage);
 			if (r.MatchedLanguage)
 				ret = true;
 		}
