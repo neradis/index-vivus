@@ -2,6 +2,7 @@ package de.fusionfactory.index_vivus.xmlimport;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Optional;
+import com.google.common.collect.ImmutableList;
 import de.fusionfactory.index_vivus.configuration.Environment;
 import de.fusionfactory.index_vivus.configuration.LocationProvider;
 import de.fusionfactory.index_vivus.models.WordType;
@@ -36,8 +37,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.StringWriter;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import static java.lang.String.format;
 
@@ -50,7 +50,7 @@ public abstract class Importer {
     protected static Logger logger = Logger.getLogger(Importer.class);
     protected final Optional<Integer> integerAbsent = Optional.absent();
     protected final Optional<String> stringAbsent = Optional.absent();
-    protected final long logEntryBatchSize = 100;
+    protected final short logEntryBatchSize = 1000;
     protected ArrayList<Abbreviation> abbreviations = null;
 
     public Importer() {
@@ -96,7 +96,12 @@ public abstract class Importer {
         //foreach entry
         Optional<DictionaryEntry> prevEntry = Optional.absent();
         long processed = 0, added = 0, logCounter = 0, count = entries.getLength();
+        short warningsPrinted = 0;
+        logger.info("Input entries in file: " + count);
+        LinkedHashMap<DictionaryEntry, ArrayList<Abbreviation>> entryBulk = new LinkedHashMap<>();
         for (int i = 0; i < entries.getLength(); i++) {
+            //if(processed > 500)
+            //    break;
             String keyword = "", description = "", descriptionHtml = null;
             WordType wordType = WordType.UNKNOWN;
             byte keyGroupIndex = 1;
@@ -107,24 +112,24 @@ public abstract class Importer {
                 Node childContent = entryContent.item(c);
                 // keyword
                 if (childContent.getNodeName().equals("lem")) {
-                    String buf = childContent.getFirstChild().getNodeValue().trim();
-                    //personal name ergo noun
+                String buf = childContent.getFirstChild().getNodeValue().trim();
+                //personal name ergo noun
 
-                    if (Character.isUpperCase(buf.charAt(0)))
-                        wordType = WordType.NOUN;
+                if (Character.isUpperCase(buf.charAt(0)))
+                    wordType = WordType.NOUN;
 
 
-                    if (buf.contains("[") && !buf.contains("[*]")) {
-                        //keyword without the ordinal number
+                if (buf.contains("[") && !buf.contains("[*]")) {
+                    //keyword without the ordinal number
 
-                        keyword = buf.substring(0, buf.indexOf("[")).trim();
-                        //take the number within square brackets
-                        keyGroupIndex = Byte.parseByte(buf.substring(buf.indexOf("[") + 1, buf.indexOf("]")));
+                    keyword = buf.substring(0, buf.indexOf("[")).trim();
+                    //take the number within square brackets
+                    keyGroupIndex = Byte.parseByte(buf.substring(buf.indexOf("[") + 1, buf.indexOf("]")));
 
-                    } else if (buf.contains("[*]"))  //@TODO find out what this means for an entry and if information is needed
-                        keyword = buf.substring(0, buf.indexOf("[")).trim();
-                    else
-                        keyword = buf;
+                } else if (buf.contains("[*]"))
+                    keyword = buf.substring(0, buf.indexOf("[")).trim();
+                else
+                    keyword = buf;
                 }
 
                 // text content containing one or no header element (<h3>) and a <p> element
@@ -169,28 +174,41 @@ public abstract class Importer {
                     }
                     descriptionHtml = descriptionHtml.trim();
                     //strips all the html tags and unescape resulting string from cleaner
-                    description = StringEscapeUtils.unescapeHtml4(Jsoup.clean(descriptionHtml, "", Whitelist.none(),new org.jsoup.nodes.Document.OutputSettings().prettyPrint(false)));
+                    description = StringEscapeUtils.unescapeHtml4(Jsoup.clean(descriptionHtml, "",
+                                                                  Whitelist.none(),
+                                                                  new org.jsoup.nodes.Document.OutputSettings().prettyPrint(false)));
                 }
             }
-            DictionaryEntry currentEntry = DictionaryEntry.create(sourceLanguage(), integerAbsent, integerAbsent, keyGroupIndex, keyword, description, Optional.of(descriptionHtml), wordType);
-            //save entry to the database within a transaction and return the new previous
-            //entry for referencing in the next iteration
-
-            EntryImportTransaction entryImp = new EntryImportTransaction(prevEntry, currentEntry, abbrvMatches);
-            DbHelper.transaction(entryImp);
-
+            //add entry to the bulk linkedHashMap with the dictionary entry and the related list of abbreviation matches
+            entryBulk.put(DictionaryEntry.create(sourceLanguage(), integerAbsent, integerAbsent,
+                                                 keyGroupIndex, keyword, description,
+                                                 Optional.of(descriptionHtml), wordType), abbrvMatches);
             processed++;
-            if (entryImp.isAdded())
-                added++;
             logCounter++;
-            if(logCounter >= logEntryBatchSize) {
+            if (logCounter >= logEntryBatchSize) {
                 logCounter = 0;
+                //save bulk of entries to the database within a transaction and return the new previous
+                //entry for referencing in the next iteration
+                EntryImportTransaction entryImp = new EntryImportTransaction(prevEntry, entryBulk, warningsPrinted);
+                //prevEntry is the last element of the current entry bulk
+
+                DbHelper.transaction(entryImp);
+                prevEntry = entryImp.getPrevE();
+                // warningsPrinted = entryImp.getWarningE();
+                added += entryImp.getAdded();
+                logger.info(processed + " of " + count + " entries processed...");
+                //clear bulk list for the next amount of dictionary entries
+                entryBulk = new LinkedHashMap<>();
+                System.gc();
             }
-            //prevEntry is the processed currentEntry !
-            prevEntry = entryImp.getPrevE();
-            // save all the abbreviation occurrences in the current entry
         }
-        logger.info("Processed dictionary entries: " + processed);
+        if (entryBulk.size() != 0) {
+            EntryImportTransaction entryImp = new EntryImportTransaction(prevEntry, entryBulk, warningsPrinted);
+            DbHelper.transaction(entryImp);
+            prevEntry = entryImp.getPrevE();
+            added += entryImp.getAdded();
+        }
+        logger.info("Processed entries: " + processed);
         logger.info("Added dictionary entries: " + added);
     }
 
@@ -233,7 +251,6 @@ public abstract class Importer {
                         e.printStackTrace();
                     }
                 }
-
             }
         }
         if (noFiles) {
@@ -245,29 +262,8 @@ public abstract class Importer {
         return this.abbreviations;
     }
 
-    public class AbbreviationOccurrenceImportTransaction extends DbHelper.Operations<Object> {
-        private DictionaryEntry entry;
-        private Abbreviation abbrv;
-
-        public AbbreviationOccurrenceImportTransaction(DictionaryEntry relevantEntry, Abbreviation relevantAbbreviation) {
-            entry = relevantEntry;
-            abbrv = relevantAbbreviation;
-        }
-
-        @Override
-        public Object perform(Session tx) {
-            //check if already existent
-            if (!AbbreviationOccurrence.exists(entry.getId(), abbrv.getId(), tx)) // no duplicate entry
-                AbbreviationOccurrence.create(entry.getId(), abbrv.getId(), tx);
-            else {
-                logger.warn(format("Skipping already added abbreviation occurrence relation: %s#%d - %s",
-                        entry.getKeyword(), entry.getKeywordGroupIndex(), abbrv.getShortForm()));
-            }
-            return null;
-        }
-    }
-
     public class AbbreviationsImportTransaction extends DbHelper.Operations<Object> {
+        private final byte warningThreshold = 10;
         private ArrayList<Abbreviation> abbreviations;
 
         public AbbreviationsImportTransaction(ArrayList<Abbreviation> currentAbbrvs) {
@@ -277,6 +273,7 @@ public abstract class Importer {
         @Override
         public Object perform(Session tx) {
             long added = 0;
+            short warningC = 0;
             for (int a = 0; a < abbreviations.size(); a++) {
                 Abbreviation abbrv = abbreviations.get(a);
                 List<Abbreviation> duplicates = abbrv.crud(tx).duplicateList();
@@ -285,9 +282,16 @@ public abstract class Importer {
                     abbrvWithId = abbrv.crud(tx).insertAsNew();
                     added++;
                 } else {
-                    String dupList = Joiner.on(" \n").join(duplicates);
-                    logger.warn(format("Already found abbreviations in database with same content as %s:%n%s%n - SKIPPED",
-                            abbrv, dupList));
+                    if (warningC == warningThreshold) {
+                        logger.warn("Too many abbreviation warnings occurred, rerun on similar data is assumed." +
+                                "\nFurther abbreviation related warnings are suppressed!");
+                        warningC++;
+                    } else if (warningC < warningThreshold) {
+                        String dupList = Joiner.on(" \n").join(duplicates);
+                        logger.warn(format("Already found abbreviations in database with same content as %s:%n%s%n - SKIPPED",
+                                abbrv, dupList));
+                        warningC++;
+                    }
                     //take entry from database for id instead of insert a new one
                     //because of the warning it's safe to use get() without check
                     abbrvWithId = Abbreviation.fetchByShortForm(abbrv.getShortForm()).get();
@@ -295,7 +299,6 @@ public abstract class Importer {
                 abbreviations.set(a, abbrvWithId);
 
             }
-            logger.info("Processed abbreviations: " + abbreviations.size());
             logger.info("Added abbreviations: " + added);
             return null;
         }
@@ -307,54 +310,69 @@ public abstract class Importer {
 
     public class EntryImportTransaction extends DbHelper.Operations<Object> {
         private Optional<DictionaryEntry> prevE;
-        private DictionaryEntry currentE;
-        private ArrayList<Abbreviation> abbrvMatches;
-        private boolean added;
+        private LinkedHashMap<DictionaryEntry,ArrayList<Abbreviation>> currentEntryBulk;
+        private int added;
+        static final short warningThreshold = 10;
+        private short warningE;
 
-        public EntryImportTransaction(Optional<DictionaryEntry> prevE, DictionaryEntry currentE, ArrayList<Abbreviation> abbrvMatches) {
+        public EntryImportTransaction(Optional<DictionaryEntry> prevE, LinkedHashMap<DictionaryEntry,ArrayList<Abbreviation>> currentEntryBulk,
+                                      short warningE) {
             this.prevE = prevE;
-            this.currentE = currentE;
-            this.abbrvMatches = abbrvMatches;
-            this.added = false;
+            this.currentEntryBulk = currentEntryBulk;
+            this.added = 0;
+            this.warningE = warningE;
         }
 
         @Override
         public Object perform(Session tx) {
-            List<DictionaryEntry> duplicates = currentE.crud(tx).duplicateList();
-            if (duplicates.isEmpty()) { // no duplicate entries!
-                if (prevE.isPresent()) {
+            for(Map.Entry<DictionaryEntry,ArrayList<Abbreviation>> bulkEntry : currentEntryBulk.entrySet()) {
+                DictionaryEntry currentE = bulkEntry.getKey();
+                ArrayList<Abbreviation> abbrvMatches = bulkEntry.getValue();
+                //empty list to avoid duplicate checks for entries (very costly ;))
+                //TODO: reworking of this behavior
+                List<DictionaryEntry> duplicates = ImmutableList.of();//currentE.crud(tx).duplicateList();
+                if (duplicates.isEmpty()) { // no duplicate entries!
+                    if (prevE.isPresent()) {
 
-                    currentE.setPreviousEntryId(Optional.of(prevE.get().getId()));
+                        currentE.setPreviousEntryId(Optional.of(prevE.get().getId()));
+                    }
+                    currentE = currentE.crud(tx).insertAsNew();
+                    if (prevE.isPresent()) {
+                        prevE.get().setNextEntryId(currentE.getIdOptional());
+                        prevE.get().crud(tx).update();
+                    }
+                    added++;
+                } else {
+                    if (warningE == warningThreshold) {
+                        logger.warn("Too many dictionary entry warnings occurred, rerun on similar data is assumed." +
+                                "\nFurther dictionary entry  related warnings are suppressed!");
+                        warningE++;
+                    } else if (warningE < warningThreshold) {
+                        String dupList = Joiner.on(" \n").join(duplicates);
+                        logger.warn(format("Already found entries in database with same content as dictionary entry %s(%d):%n%s%n - SKIPPED",
+                               currentE.getKeyword(),currentE.getKeywordGroupIndex() , dupList));
+                        warningE++;
+                    }
+                    //take entry from database for id instead of inserting it as a new one
+                    //because of the warning it's safe to use get() without check
+                    currentE = DictionaryEntry.fetchByKeywordAndGroupId(currentE.getKeyword(),
+                                                                        currentE.getKeywordGroupIndex()).get();
                 }
-                currentE = currentE.crud(tx).insertAsNew();
-                if (prevE.isPresent()) {
-                    prevE.get().setNextEntryId(currentE.getIdOptional());
-                    prevE.get().crud(tx).update();
+                //logger.debug("prev: " + prevE);
+                //logger.debug("current: " + currentE);
+                //logger.debug("abbrv matches: " + abbrvMatches.size());
+                //add abbreviation occurrences for current entry
+                for (Abbreviation abbrv : abbrvMatches) {
+                    if (!AbbreviationOccurrence.exists(currentE.getId(), abbrv.getId(), tx)) // no duplicate entry
+                        AbbreviationOccurrence.create(currentE.getId(), abbrv.getId(), tx);
+                    else if (warningE < warningThreshold) {
+                        logger.warn(format("Skipping already added abbreviation occurrence relation: %s(%d) - %s",
+                                currentE.getKeyword(), currentE.getKeywordGroupIndex(), abbrv.getShortForm()));
+                    }
                 }
-                added = true;
-            } else {
-                String dupList = Joiner.on(" \n").join(duplicates);
-                logger.warn(format("Already found entries in database with same content as %s:%n%s%n - SKIPPED",
-                        currentE, dupList));
-                //take entry from database for id instead of inserting it as a new one
-                //because of the warning it's safe to use get() without check
-                currentE = DictionaryEntry.fetchByKeywordAndGroupId(currentE.getKeyword(), currentE.getKeywordGroupIndex()).get();
-                added = false;
+                //set current Entry as previous Entry
+                prevE = Optional.of(currentE);
             }
-            logger.debug("prev: " + prevE);
-            logger.debug("current: " + currentE);
-            logger.debug("abbrv matches: " + abbrvMatches.size());
-            //add abbreviation occurrences for current entry
-            for (Abbreviation abbrv : abbrvMatches) {
-                if (!AbbreviationOccurrence.exists(currentE.getId(), abbrv.getId(), tx)) // no duplicate entry
-                    AbbreviationOccurrence.create(currentE.getId(), abbrv.getId(), tx);
-                else {
-                    logger.warn(format("Skipping already added abbreviation occurrence relation: %s#%d - %s",
-                            currentE.getKeyword(), currentE.getKeywordGroupIndex(), abbrv.getShortForm()));
-                }
-            }
-            //set current Entry as previous Entry
-            prevE = Optional.of(currentE);
             return null;
         }
 
@@ -362,8 +380,12 @@ public abstract class Importer {
             return prevE;
         }
 
-        public boolean isAdded() {
+        public int getAdded() {
             return added;
+        }
+
+        public short getWarningE() {
+            return warningE;
         }
     }
 }
