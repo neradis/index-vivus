@@ -7,14 +7,25 @@ import com.aliasi.spell.FixedWeightEditDistance;
 import com.aliasi.spell.TrainSpellChecker;
 import com.aliasi.util.ScoredObject;
 import com.aliasi.util.Streams;
+import com.google.common.base.Function;
+import com.google.common.base.Optional;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import de.fusionfactory.index_vivus.configuration.LocationProvider;
 import de.fusionfactory.index_vivus.models.scalaimpl.DictionaryEntry;
-import de.fusionfactory.index_vivus.testing.fixtures.FixtureData;
+import de.fusionfactory.index_vivus.persistence.DbHelper;
+import de.fusionfactory.index_vivus.services.Language;
+import org.apache.log4j.Logger;
+import scala.slick.session.Session;
 
+import javax.annotation.Nullable;
 import java.io.*;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.SortedSet;
+import java.util.*;
+import java.util.concurrent.*;
+
+import static java.lang.String.format;
 
 /**
  * Author: Eric Kurzhals <ek@attyh.com>
@@ -22,139 +33,214 @@ import java.util.SortedSet;
  * Time: 18:02
  */
 public class SpellChecker {
-	private static final double MATCH_WEIGHT = -0.0;
-	private static final double DELETE_WEIGHT = -4.0;
-	private static final double INSERT_WEIGHT = -1.0;
-	private static final double SUBSTITUTE_WEIGHT = -2.0;
-	private static final double TRANSPOSE_WEIGHT = -2.0;
-	private static final int NGRAM_LENGTH = 5;
-	private CompiledSpellChecker spellCheckerIndex = null;
-	private AutoCompleter autoCompleter;
+    public static final double MIN_SCORE = -25.0;
+    private static final double MATCH_WEIGHT = -0.0;
+    private static final double DELETE_WEIGHT = -4.0;
+    private static final double INSERT_WEIGHT = -1.0;
+    private static final double SUBSTITUTE_WEIGHT = -2.0;
+    private static final double TRANSPOSE_WEIGHT = -2.0;
+    private static final int NGRAM_LENGTH = 5;
+    private static final EnumSet<Language> ILLEGAL_LANGUAGES = EnumSet.of(Language.ALL, Language.NONE);
+    private final ExecutorService executor = Executors.newCachedThreadPool();
+    private final Future<Set<String>> keywordsFuture = executor.submit(
+            new Callable<Set<String>>() {
+                @Override
+                public Set<String> call() throws Exception {
+                    return fetchKeywords();
+                }
+            });
+    private final Future<CompiledSpellChecker> spellCheckerFuture = executor.submit(
+            new Callable<CompiledSpellChecker>() {
+                @Override
+                public CompiledSpellChecker call() throws Exception {
+                    return provideCompiledSpellCheckerModel(keywordsFuture);
+                }
+            });
+    private final Future<AutoCompleter> autoCompleterFuture = executor.submit(
+            new Callable<AutoCompleter>() {
+                @Override
+                public AutoCompleter call() throws Exception {
+                    return createAutoCompleter(keywordsFuture);
+                }
+            });
+    Logger logger = Logger.getLogger(SpellChecker.class);
+    private volatile Optional<CompiledSpellChecker> spellCheckerModel = Optional.absent();
+    private volatile Optional<AutoCompleter> autoCompleter = Optional.absent();
+    private Language language;
 
-	public SpellChecker() {
-		// read our index to be ready for spellchecking :o
-		try {
-			createIndex();
-		} catch (IOException e) {
-		} catch (ClassNotFoundException e) {
-		}
+    public SpellChecker(Language language) {
 
-		FixedWeightEditDistance fixedEdit = new FixedWeightEditDistance(MATCH_WEIGHT, DELETE_WEIGHT, INSERT_WEIGHT, SUBSTITUTE_WEIGHT, TRANSPOSE_WEIGHT);
-		try {
-			autoCompleter = new AutoCompleter(createAutocompletionIndex(), fixedEdit, 5, 10000, -25.0);
-		} catch (IOException e) {
-		}
-	}
-
-	/**
-	 * Creates our index for spellchecking
-	 *
-	 * @throws IOException
-	 */
-	public void createIndex() throws IOException, ClassNotFoundException {
-		FixedWeightEditDistance fixedEdit = new FixedWeightEditDistance(MATCH_WEIGHT, DELETE_WEIGHT, INSERT_WEIGHT, SUBSTITUTE_WEIGHT, TRANSPOSE_WEIGHT);
-		NGramProcessLM lm = new NGramProcessLM(NGRAM_LENGTH);
-		TrainSpellChecker tsc = new TrainSpellChecker(lm, fixedEdit);
-
-		for (DictionaryEntry de : FixtureData.DICTIONARY_ENTRIES) {
-			tsc.handle(de.getKeyword());
-		}
-
-		FileOutputStream fos;
-		BufferedOutputStream bos;
-		ObjectOutputStream oos;
-
-		fos = new FileOutputStream(spellcheckerModelPath());
-		bos = new BufferedOutputStream(fos);
-		oos = new ObjectOutputStream(bos);
-
-		tsc.compileTo(oos);
-
-		Streams.closeQuietly(oos);
-		Streams.closeQuietly(bos);
-		Streams.closeQuietly(fos);
-
-		readIndex();
-	}
-
-	/**
-	 * reads our index file and store it in an CompiledSpellChecker container
-	 *
-	 * @throws IOException
-	 * @throws ClassNotFoundException
-	 */
-	public void readIndex() throws IOException, ClassNotFoundException {
-		FileInputStream fis;
-		BufferedInputStream bis;
-		ObjectInputStream ois;
-
-		fis = new FileInputStream(spellcheckerModelPath());
-		bis = new BufferedInputStream(fis);
-		ois = new ObjectInputStream(bis);
-
-		spellCheckerIndex = (CompiledSpellChecker) ois.readObject();
-
-		Streams.closeQuietly(ois);
-		Streams.closeQuietly(bis);
-		Streams.closeQuietly(fis);
-	}
-
-	/**
-	 * returns the best alternative of given keyword
-	 *
-	 * @param keyword
-	 * @return
-	 * @throws SpellCheckerException
-	 */
-	public String getBestAlternativeWord(String keyword) throws SpellCheckerException {
-		if (spellCheckerIndex == null) {
-			throw new SpellCheckerException("uninitialised index");
-		}
-
-		String alternative = spellCheckerIndex.didYouMean(keyword);
-
-		return alternative;
-	}
-
-	/**
-	 * creates an simple Autocompletion Index
-	 *
-	 * @return
-	 * @throws IOException
-	 * @todo for the count object we should use the request frequency for given keywords, in this example we use the word size for weighting
-	 */
-	public Map<String, Float> createAutocompletionIndex() throws IOException {
-		Map<String, Float> m = new HashMap<String, Float>();
-		for (DictionaryEntry de : FixtureData.DICTIONARY_ENTRIES) {
-			m.put(de.getKeyword(), (float) de.getKeyword().length()); //TODO: please revise the decisions on using
-            //the word lengths here -> as I understand the AutoCompleter-Javadoc, word count is expected as weight
-            //until we have these, maybe a fixed value of 1 is better than word length?
-		}
-
-		return m;
-	}
-
-	/**
-	 * @param prefix
-	 * @return
-	 */
-	public String[] getAutocompleteSuggestions(String prefix) {
-		SortedSet<ScoredObject<String>> completions = autoCompleter.complete(prefix);
-
-		String[] r = new String[completions.size()];
-		int i = 0;
-		for (ScoredObject<String> so : completions) {
-			r[i++] = so.getObject();
-		}
-
-		return r;
-	}
-
-    protected File spellcheckerModelPath() {
-        return new File(LocationProvider.getInstance().getDataDir(), "spellchecker.model");
+        if (ILLEGAL_LANGUAGES.contains(language)) {
+            throw new IllegalArgumentException(format("invalid language %s"));
+        }
+        this.language = language;
     }
 
-    protected File autocompleterModelPath() {
-        return new File(LocationProvider.getInstance().getDataDir(), "completer.model");
+    /**
+     * Creates our index for spellchecking
+     *
+     * @throws IOException
+     */
+    protected void createIndex(Set<String> keywords) throws IOException, ClassNotFoundException {
+        NGramProcessLM lm = new NGramProcessLM(NGRAM_LENGTH);
+        TrainSpellChecker tsc = new TrainSpellChecker(lm, fixedWeightEditDistance());
+
+        for (String kw : keywords) {
+            tsc.handle(kw);
+        }
+
+        FileOutputStream fos = new FileOutputStream(spellcheckerModelPath());
+        BufferedOutputStream bos = new BufferedOutputStream(fos);
+        ObjectOutputStream oos = new ObjectOutputStream(bos);
+
+        tsc.compileTo(oos);
+
+        Streams.closeQuietly(oos);
+        Streams.closeQuietly(bos);
+        Streams.closeQuietly(fos);
+    }
+
+    private FixedWeightEditDistance fixedWeightEditDistance() {
+        return new FixedWeightEditDistance(MATCH_WEIGHT, DELETE_WEIGHT, INSERT_WEIGHT, SUBSTITUTE_WEIGHT, TRANSPOSE_WEIGHT);
+    }
+
+    /**
+     * reads the spell checker model
+     *
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
+    private CompiledSpellChecker provideCompiledSpellCheckerModel(Future<Set<String>> keywordsFuture) {
+
+        ensureCompiledSpellChecker(keywordsFuture);
+
+
+        CompiledSpellChecker spellChecker;
+        try {
+            FileInputStream fis = new FileInputStream(spellcheckerModelPath());
+            BufferedInputStream bis = new BufferedInputStream(fis);
+            ObjectInputStream ois = new ObjectInputStream(bis);
+
+            spellChecker = (CompiledSpellChecker) ois.readObject();
+
+            Streams.closeQuietly(ois);
+            Streams.closeQuietly(bis);
+            Streams.closeQuietly(fis);
+        } catch (IOException | ClassNotFoundException ex) {
+            throw new IllegalStateException("Error loading the spellchecker model", ex);
+        }
+        return spellChecker;
+    }
+
+    private synchronized void ensureCompiledSpellChecker(Future<Set<String>> keywordsFuture) {
+        if (!spellcheckerModelPath().isFile()) {
+            try {
+                createIndex(keywordsFuture.get());
+            } catch (ExecutionException | InterruptedException | IOException | ClassNotFoundException ex) {
+                throw new IllegalStateException("Error creating spellchecker index", ex);
+            }
+
+        }
+    }
+
+    protected AutoCompleter createAutoCompleter(Future<Set<String>> keywordsFuture) {
+
+        AutoCompleter autoCompleter = null;
+        try {
+            Set<String> keywords = keywordsFuture.get();
+            Map<String, Float> tokenMap = Maps.newHashMapWithExpectedSize(keywords.size());
+
+            for (String kw : keywords) {
+                tokenMap.put(kw, 1f);
+            }
+            autoCompleter = new AutoCompleter(tokenMap, fixedWeightEditDistance(), 5, 10000, MIN_SCORE);
+        } catch (ExecutionException | InterruptedException ex) {
+            throw new IllegalStateException("Error creating autocompleter", ex);
+        }
+        logger.debug("auto completer created");
+        return autoCompleter;
+    }
+
+    /**
+     * returns the best alternative of given keyword
+     *
+     * @param keyword
+     * @return
+     * @throws SpellCheckerException
+     */
+    public String getBestAlternativeWord(String keyword) throws SpellCheckerException {
+
+        if (spellCheckerFuture.isDone() && !spellCheckerFuture.isCancelled()) {
+            String alternative;
+            try {
+                alternative = spellCheckerFuture.get().didYouMean(keyword);
+            } catch (InterruptedException | ExecutionException ex) {
+                throw new IllegalStateException("error retrieving spellchecker", ex);
+            }
+
+            return alternative != null ? alternative : keyword;
+        }
+        return "domus";
+    }
+
+    protected Optional<AutoCompleter> getAutoCompleter() {
+        try {
+            return Optional.of(autoCompleterFuture.get(50, TimeUnit.MILLISECONDS));
+        } catch (InterruptedException | ExecutionException ex) {
+            throw new IllegalArgumentException("error waiting for autocompleter", ex);
+        } catch (TimeoutException e) {
+            return Optional.absent();
+        }
+    }
+
+    /**
+     * @param prefix
+     * @return
+     */
+    public List<String> getAutocompleteSuggestions(String prefix) {
+        final Optional<AutoCompleter> acOpt = getAutoCompleter();
+        if (acOpt.isPresent()) {
+            SortedSet<ScoredObject<String>> completions = acOpt.get().complete(prefix);
+
+            logger.debug(format("autocompleter was ready and out $d completions for $s", completions.size(), prefix));
+
+            List<String> completionsList = new ArrayList<>(completions.size());
+            for (ScoredObject<String> so : completions) {
+                completionsList.add(so.getObject());
+            }
+
+            return completionsList;
+        } else {
+            logger.debug("autocompleter not ready - returning empty list");
+            return ImmutableList.of();
+        }
+    }
+
+    protected Set<String> fetchKeywords() {
+        List<DictionaryEntry> entries = DbHelper.transaction(new DbHelper.Operations<List<DictionaryEntry>>() {
+            @Override
+            public List<DictionaryEntry> perform(Session tx) {
+                List<DictionaryEntry> ds = DictionaryEntry.fetchAll(tx);
+                logger.debug(format("%d entries retrieved as list for models", ds.size()));
+                return ds;
+            }
+        });
+        Set<String> entrySet = Sets.newHashSet(Lists.transform(entries, new Function<DictionaryEntry, String>() {
+            @Nullable
+            @Override
+            public String apply(@Nullable DictionaryEntry input) {
+                return input.getKeyword();
+            }
+        }));
+        logger.debug(format("%d keywords retrieved as set for models", entrySet.size()));
+        return entrySet;
+    }
+
+    protected File spellcheckerModelPath() {
+        return new File(LocationProvider.getInstance().getDataDir(), languageFilename("spellchecking"));
+    }
+
+    protected String languageFilename(String type) {
+        return String.format("%s_%s.model", language.name(), type);
     }
 }
