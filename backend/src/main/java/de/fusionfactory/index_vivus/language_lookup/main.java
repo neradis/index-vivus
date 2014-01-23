@@ -78,6 +78,22 @@ public class main {
 		}
 	}
 
+	private void testBatchRequest() {
+		ArrayList<String> requestedWordList = new ArrayList<>();
+		requestedWordList.addAll(Arrays.asList(
+				"machen", "schwimme", "call", "mouse", "maus", "was", "geht", "ab"
+		));
+		Lookup lookup = new Lookup(Language.GERMAN);
+		try {
+			ArrayList<String> result = lookup.GetListOfLanguageWords(requestedWordList);
+			for (String s : result) {
+				logger.info(s);
+			}
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+
 	public main(String[] args) {
 		logger = Logger.getLogger(main.class);
 		DbHelper.createMissingTables();
@@ -87,6 +103,8 @@ public class main {
 			return;
 		} else if (args[0].equals("wordListCheck")) {
 			testOurWordListFile();
+		} else if (args[0].equals("batchRequest")) {
+			testBatchRequest();
 		}
 	}
 
