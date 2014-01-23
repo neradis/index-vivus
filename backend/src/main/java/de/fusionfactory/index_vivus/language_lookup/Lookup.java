@@ -22,6 +22,10 @@ public class Lookup extends LookupMethod {
 	private GermanTokenMemory germanTokenMemory;
 	private static int MAX_BATCH_THREADS = 10;
 
+	/**
+	 * Sets the Max Threads to process the batch request.
+	 * @param i
+	 */
 	public static void SetMaxBatchThreads(int i) {
 		if (i < 1)
 			return;
@@ -39,6 +43,12 @@ public class Lookup extends LookupMethod {
 		germanTokenMemory = GermanTokenMemory.getInstance();
 	}
 
+	/**
+	 * Calls an Batch Language Check of given Wordlist.
+	 * @param listWords
+	 * @return
+	 * @throws InterruptedException
+	 */
 	public ArrayList<LanguageLookupResult> IsExpectedLanguageBatch(List<String> listWords) throws InterruptedException {
 		CountDownLatch countDownLatch = new CountDownLatch(listWords.size());
 		ExecutorService executorService = Executors.newFixedThreadPool(MAX_BATCH_THREADS);
@@ -49,6 +59,24 @@ public class Lookup extends LookupMethod {
 		}
 		countDownLatch.await();
 		return _isExpectedLanguage;
+	}
+
+	/**
+	 * Returns an List which contains only Words in given Language.
+	 * @param listWords
+	 * @return
+	 * @throws InterruptedException
+	 */
+	public ArrayList<String> GetListOfLanguageWords(List<String> listWords) throws InterruptedException {
+		ArrayList<LanguageLookupResult> list = IsExpectedLanguageBatch(listWords);
+		ArrayList<String> result = new ArrayList<String>();
+
+		for (LanguageLookupResult r : list) {
+			if (r.MatchedLanguage)
+				result.add(r.Word);
+		}
+
+		return result;
 	}
 
 	@Override
@@ -106,6 +134,9 @@ public class Lookup extends LookupMethod {
 		return null;
 	}
 
+	/**
+	 * THe Batch Thread Handler.
+	 */
 	private class BatchThreadHandler implements Runnable {
 		private final String word;
 		private final CountDownLatch latch;
