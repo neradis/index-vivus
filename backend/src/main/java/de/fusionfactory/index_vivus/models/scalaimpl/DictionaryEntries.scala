@@ -2,6 +2,8 @@ package de.fusionfactory.index_vivus.models.scalaimpl
 
 import scala.slick.driver.H2Driver.simple._
 import de.fusionfactory.index_vivus.models.scalaimpl.{DictionaryEntries => DEs}
+import de.fusionfactory.index_vivus.models.scalaimpl.DictionaryEntryBean.lang2Byte
+import de.fusionfactory.index_vivus.services.Language
 
 
 /**
@@ -10,6 +12,7 @@ import de.fusionfactory.index_vivus.models.scalaimpl.{DictionaryEntries => DEs}
  */
 
 object DictionaryEntries extends Table[DictionaryEntry]("DICTIONARY_ENTRIES") {
+  
   def id = column[Int]("ID", O.PrimaryKey, O.AutoInc)
 
   def sourceLanguage = column[Byte]("LANGUAGE")
@@ -30,7 +33,7 @@ object DictionaryEntries extends Table[DictionaryEntry]("DICTIONARY_ENTRIES") {
 
   def baseProjection = sourceLanguage ~ prevId ~ nextId ~ keywordGroupIndex ~ keyword ~ description ~ htmlDescription ~ pos
 
- def prevIdFK = foreignKey("PREV_ID_FK", prevId, DictionaryEntries)(_.id)
+  def prevIdFK = foreignKey("PREV_ID_FK", prevId, DictionaryEntries)(_.id)
 
   def nextIdFK = foreignKey("NEXT_ID_FK", nextId, DictionaryEntries)(_.id)
 
@@ -46,12 +49,17 @@ object DictionaryEntries extends Table[DictionaryEntry]("DICTIONARY_ENTRIES") {
 
   def byKeywordQuery(kw: String) = Query(DEs).filter(_.keyword === kw)
 
-  def joinOccuringAbbreviationsQuery =
-    for{
+  def bySourceLanguageQuery(lang: Language) =  Query(DEs) filter ( _.sourceLanguage === lang2Byte(lang) )
+
+  def joinOccurringAbbreviationsQuery =
+    for {
       (de, abbrOcc) <- DictionaryEntries innerJoin AbbreviationOccurrences on (_.id === _.entryId)
       (abbrOcc, abbr) <- AbbreviationOccurrences innerJoin Abbreviations on (_.entryId === _.id)
     } yield abbr
 
   def byKeywordAndKWGIndexQuery(kw: String, kwgi: Byte) =
     Query(DEs) filter (de => (de.keyword === kw) && (de.keywordGroupIndex === kwgi))
+
+  def byKeywordAndSourceLanguageQuery(kw: String, lang: Language) =
+    Query(DEs) filter (de => (de.keyword === kw) && (de.keywordGroupIndex === lang2Byte(lang)))
 }

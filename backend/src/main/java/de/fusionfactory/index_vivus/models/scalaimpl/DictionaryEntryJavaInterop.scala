@@ -23,10 +23,11 @@ object DictionaryEntryBean {
 
   lazy val posIdxRange = 0 until WordType.values.length
 
-
   def lang2Byte(wt: Language): Byte = Language.values().indexOf(wt).toByte 
     
   def byte2Lang(idx: Byte): Language = Language.values.apply(idx)
+
+  def int2Lang(idx: Int): Language = Language.values.apply(idx)
 
   def pos2Byte(wt: WordType): Option[Byte] = wt match {
     case WordType.UNKNOWN => None
@@ -40,13 +41,13 @@ object DictionaryEntryBean {
   }
 }
 
-
 trait DictionaryEntryBean extends ICrudOpsProvider[DictionaryEntry,DictionaryEntryCrudOps] with IDictionaryEntry { this: DictionaryEntry =>
 
   def getId: Int = id.get
 
   def getIdOptional: Optional[Integer] = id
 
+  def getLanguage: Language = byte2Lang(sourceLanguage)
 
   def getWordType: WordType = byte2Pos(posIdx)
 
