@@ -54,6 +54,7 @@ public abstract class Importer {
 
     public Importer() {
         // check for existing tables and create them, if not existent (for mode DEV and TEST)
+
         if (Environment.getActive().equals(Environment.DEVELOPMENT) || Environment.getActive().equals(Environment.TEST)) {
             DbHelper.createMissingTables();
         }
@@ -111,14 +112,18 @@ public abstract class Importer {
                 if (childContent.getNodeName().equals("lem")) {
                     String buf = childContent.getFirstChild().getNodeValue().trim();
                     //personal name ergo noun
+
                     if (Character.isUpperCase(buf.charAt(0)))
                         wordType = WordType.NOUN;
 
+
                     if (buf.contains("[") && !buf.contains("[*]")) {
                         //keyword without the ordinal number
+
                         keyword = buf.substring(0, buf.indexOf("[")).trim();
                         //take the number within square brackets
                         keyGroupIndex = Byte.parseByte(buf.substring(buf.indexOf("[") + 1, buf.indexOf("]")));
+
                     } else if (buf.contains("[*]"))  //@TODO find out what this means for an entry and if information is needed
                         keyword = buf.substring(0, buf.indexOf("[")).trim();
                     else
@@ -126,31 +131,40 @@ public abstract class Importer {
                 }
 
                 // text content containing one or no header element (<h3>) and a <p> element
+
                 else if (childContent.getNodeName().equals("text")) {
                     NodeList descContentNodes = childContent.getChildNodes();
+
                     for (int d = 0; d < descContentNodes.getLength(); d++) {
                         Node innerChild = descContentNodes.item(d);
                         //one of the description for the entry
+
                         if (innerChild.getNodeName().equals("p")) {
                             String html = this.extractInnerHtml(innerChild);
                             //look for abbreviations in the description and add <abbrv></abbrv> tags
                             String lastAbbrv = "";
+
                             for (Abbreviation abbrv : this.abbreviations) {
                                 String aBuf = abbrv.getShortForm();
                                 //don't search for a short name more than once (for instance n. = nach. & n. = generis neutrius.)
+
                                 if (lastAbbrv.equals(aBuf))
                                     continue;
                                 //abbreviation match, edit htmlDescription and add to list
+
                                 if (html.contains(" " + aBuf)) {
                                     //logger.info("HAHA: " + aBuf);
+
                                     html = html.replace(" " + aBuf, " <abbrv>" + aBuf + "</abbrv>");
                                     // no duplicate matches are tracked!
+
                                     if (!abbrvMatches.contains(abbrv))
                                         abbrvMatches.add(abbrv);
                                 }
                                 lastAbbrv = aBuf;
                             }
                             //WTF java: adding NULL as a word ?
+
                             if (descriptionHtml == null)
                                 descriptionHtml = html;
                             else
@@ -164,22 +178,22 @@ public abstract class Importer {
             DictionaryEntry currentEntry = DictionaryEntry.create(integerAbsent, integerAbsent, keyGroupIndex, keyword, description, Optional.of(descriptionHtml), wordType);
             //save entry to the database within a transaction and return the new previous
             //entry for referencing in the next iteration
+
             EntryImportTransaction entryImp = new EntryImportTransaction(prevEntry, currentEntry);
             DbHelper.transaction(entryImp);
 
             //prevEntry is the processed currentEntry !
             prevEntry = entryImp.getPrevE();
             // save all the abbreviation occurrences in the current entry
-            logger.info(prevEntry.get());
-            logger.info(abbrvMatches.size());
+
+
+            //logger.info(abbrvMatches.size());
+
             for (Abbreviation abbrv : abbrvMatches) {
                 AbbreviationOccurrenceImportTransaction abbrvOccImp = new AbbreviationOccurrenceImportTransaction(prevEntry.get(), abbrv);
                 DbHelper.transaction(abbrvOccImp);
             }
-            /* TODO: when implemented, activate these setters:
-              currentEntry.setWordType(wordType);*/
         }
-
     }
 
     public void importFromDefaultLocation() throws IOException, SAXException {
@@ -198,7 +212,8 @@ public abstract class Importer {
             for (File fileHandle : files) {
                 if (fileHandle.isFile() && fileHandle.getName().startsWith(sourceFilePrefix())
                         &&fileHandle.getName().contains(".xml")) {
-                    logger.info("Datei: '" + fileHandle.getAbsoluteFile() + "' wird verarbeitet.");
+
+                    logger.info("Processing '" + fileHandle.getAbsoluteFile() + "'...");
                     noFiles = false;
                     try {
                         DocumentBuilderFactory docBuildFac = DocumentBuilderFactory.newInstance();
@@ -212,6 +227,7 @@ public abstract class Importer {
                             this.parseAbbrvData((NodeList) XPathFactory.newInstance().newXPath().evaluate("//article[contains(lem,'Verzeichnis')]",
                                     content.getDocumentElement(),
                                     XPathConstants.NODESET));
+
                         } else {
                             // all entries in the file
                             this.parseEntryData(content.getElementsByTagName("article"));
@@ -220,7 +236,7 @@ public abstract class Importer {
                         e.printStackTrace();
                     }
                 }
-                //break;
+
             }
         }
         if(noFiles) {
@@ -254,28 +270,36 @@ public abstract class Importer {
         }
     }
 
-    public class AbbreviationImportTransaction extends DbHelper.Operations<Object> {
-        private Abbreviation currentA;
+    public class AbbreviationsImportTransaction extends DbHelper.Operations<Object> {
+        private ArrayList<Abbreviation> abbreviations;
 
-        public AbbreviationImportTransaction(Abbreviation currentAbbrv) {
-            currentA = currentAbbrv;
+        public AbbreviationsImportTransaction(ArrayList<Abbreviation> currentAbbrvs) {
+            abbreviations = currentAbbrvs;
         }
 
         @Override
         public Object perform(Session tx) {
-            List<Abbreviation> duplicates = currentA.crud(tx).duplicateList();
-            if (duplicates.isEmpty()) // no duplicate entries!
-                currentA = currentA.crud(tx).insertAsNew();
-            else {
-                String dupList = Joiner.on(" \n").join(duplicates);
-                logger.warn(format("Already found abbreviations in database with same content as %s:%n%s%n - SKIPPED",
-                        currentA, dupList));
+
+            for(int a = 0; a < abbreviations.size(); a++) {
+                Abbreviation abbrv = abbreviations.get(a);
+                List<Abbreviation> duplicates = abbrv.crud(tx).duplicateList();
+                Abbreviation abbrvWithId;
+                if(duplicates.isEmpty()) {
+                    abbrvWithId = abbrv.crud(tx).insertAsNew();
+                    abbreviations.set(a,abbrvWithId);
+                } else {
+                    String dupList = Joiner.on(" \n").join(duplicates);
+                    logger.warn(format("Already found abbreviations in database with same content as %s:%n%s%n - SKIPPED",
+                            abbrv, dupList));
+                }
+
             }
+            logger.info("Added Abbreviations: " + abbreviations.size());
             return null;
         }
 
-        public Abbreviation getCurrentA() {
-            return this.currentA;
+        public ArrayList<Abbreviation> getAbbreviations() {
+            return this.abbreviations;
         }
     }
 
@@ -293,10 +317,12 @@ public abstract class Importer {
             List<DictionaryEntry> duplicates = currentE.crud(tx).duplicateList();
             if (duplicates.isEmpty()) { // no duplicate entries!
                 if (prevE.isPresent()) {
+
                     currentE.setPreviousEntryId(Optional.of(prevE.get().getId()));
                 }
                 currentE = currentE.crud(tx).insertAsNew();
                 if (prevE.isPresent()) {
+
                     prevE.get().setNextEntryId(currentE.getIdOptional());
                     prevE.get().crud(tx).update();
                 }

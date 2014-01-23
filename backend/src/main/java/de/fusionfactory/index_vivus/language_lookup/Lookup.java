@@ -24,6 +24,7 @@ public class Lookup extends LookupMethod {
 
 	/**
 	 * Sets the Max Threads to process the batch request.
+	 *
 	 * @param i
 	 */
 	public static void SetMaxBatchThreads(int i) {
@@ -37,14 +38,16 @@ public class Lookup extends LookupMethod {
 		_lookupMethods.addAll(Arrays.asList(
 				new WordlistLookup(_language),
 				new WiktionaryLookup(_language),
-				new StemmedWordListLookup(_language),
-				new UniLeStemmedWordListLookup(_language)));
+				new StemmedWordListLookup(_language)
+				, new UniLeStemmedWordListLookup(_language)
+		));
 
 		germanTokenMemory = GermanTokenMemory.getInstance();
 	}
 
 	/**
 	 * Calls an Batch Language Check of given Wordlist.
+	 *
 	 * @param listWords
 	 * @return
 	 * @throws InterruptedException
@@ -63,6 +66,7 @@ public class Lookup extends LookupMethod {
 
 	/**
 	 * Returns an List which contains only Words in given Language.
+	 *
 	 * @param listWords
 	 * @return
 	 * @throws InterruptedException
@@ -115,7 +119,7 @@ public class Lookup extends LookupMethod {
 
 		boolean ret = false;
 		for (LanguageLookupResult r : _isExpectedLanguage) {
-			logger.info(r.DataProvider + " [" + r.Word + "]: " + r.MatchedLanguage);
+			logger.trace(r.DataProvider + " [" + r.Word + "]: " + r.MatchedLanguage);
 			if (r.MatchedLanguage)
 				ret = true;
 		}
@@ -152,8 +156,10 @@ public class Lookup extends LookupMethod {
 
 		@Override
 		public void run() {
-			boolean res = lookup.IsExpectedLanguage(word);
-			languageLookupResults.add(new LanguageLookupResult(word, Lookup.parseClassPathToName(Lookup.class.getCanonicalName()), res, lookup._language));
+			if (word.length() > 0) {
+				boolean res = lookup.IsExpectedLanguage(word);
+				languageLookupResults.add(new LanguageLookupResult(word, Lookup.parseClassPathToName(Lookup.class.getCanonicalName()), res, lookup._language));
+			}
 			latch.countDown();
 		}
 	}
