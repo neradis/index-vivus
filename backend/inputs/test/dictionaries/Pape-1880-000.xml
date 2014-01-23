@@ -1,0 +1,419 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- Die vorliegenden Daten sind Teil des von www.editura.de erstellten Datenbestandes und werden von TextGrid unter der Lizenz Creative Commons 
+Namensnennung 3.0 Deutschland Lizenz (by-Nennung TextGrid, www.editura.de)  zur Verfügung gestellt. 
+ (http://creativecommons.org/licenses/by/3.0/de/legalcode).
+ --><doc>
+ <META>
+ 
+ <DEFMENU>
+ <MENUITEM>
+ <ITEMCAPTION>Einführung</ITEMCAPTION>
+ <ITEMURL>/Pape-1880/M/Einf%C3%BChrung</ITEMURL>
+ </MENUITEM>
+ <MENUITEM>
+ <ITEMCAPTION>Stichwörter</ITEMCAPTION>
+ <ITEMURL>/Kategorien/T/Pape-1880</ITEMURL>
+ </MENUITEM>
+ </DEFMENU>
+ 
+ <DEFSERVER>
+ <LASTMOD>2008-01-01</LASTMOD>
+ <CHANGEFREQ>yearly</CHANGEFREQ>
+    <TITLE>Pape: Handwörterbuch der griechischen Sprache</TITLE>
+    <YEARS>1914</YEARS>
+ <DESCRIPTIONS>
+ <DESCRRULE match="A/.*">Wörterbucheintrag Griechisch-Deutsch zu &#x00BB;{articlename}&#x00AB;. {citation}</DESCRRULE>
+ <DESCRRULE match=".">Wilhelm Pape: Handwörterbuch der griechischen Sprache. {articlename}. {citation}</DESCRRULE>
+ </DESCRIPTIONS>
+ </DEFSERVER>
+ 
+ <DEFBOOK>
+ <BOOKNAME>Pape-GDHW Bd. 1</BOOKNAME>
+ <BOOKDESCR>Wilhelm Pape: Handwörterbuch der griechischen Sprache. Griechisch-deutsches Handwörterbuch, Bd. 1: &#913;&#8211;&#922; bearbeitet von Max Sengebusch, 3. Auflage, 6. Abdruck, Braunschweig: Vieweg &amp; Sohn, 1914.</BOOKDESCR>
+ <BOOKCITE>Wilhelm Pape: Handwörterbuch der griechischen Sprache. Braunschweig {3}1914, Band 1</BOOKCITE>
+ <BOOKTITLEFACS></BOOKTITLEFACS>
+ <BOOKYEAR>1914</BOOKYEAR>
+ <DEFDIVISION default="yes">
+ <DIVISIONNAME>Lexikalischer Teil</DIVISIONNAME>
+ <DIVISIONDESCR>Lexikalischer Teil.</DIVISIONDESCR>
+ <DIVISIONFACS>Pape-1880----01</DIVISIONFACS>
+ </DEFDIVISION>
+ <DEFDIVISION pagenumberformat="roman">
+ <DIVISIONNAME>Vorwort</DIVISIONNAME>
+ <DIVISIONDESCR>Römisch nummeriertes Vorwort.</DIVISIONDESCR>
+ <DIVISIONFACS>Pape-1880----00</DIVISIONFACS>
+ </DEFDIVISION>
+ </DEFBOOK>
+ 
+ <DEFBOOK>
+ <BOOKNAME>Pape-GDHW Bd. 2</BOOKNAME>
+ <BOOKDESCR>Wilhelm Pape: Handwörterbuch der griechischen Sprache. Griechisch-deutsches Handwörterbuch, Bd. 2: &#923;&#8211;&#937;, bearbeitet von Max Sengebusch, 3. Auflage, 6. Abdruck, Braunschweig: Vieweg &amp; Sohn, 1914.</BOOKDESCR>
+ <BOOKCITE>Wilhelm Pape: Handwörterbuch der griechischen Sprache. Braunschweig {3}1914, Band 2</BOOKCITE>
+ <BOOKTITLEFACS></BOOKTITLEFACS>
+ <BOOKYEAR>1914</BOOKYEAR>
+ <DEFDIVISION default="yes">
+ <DIVISIONNAME>Lexikalischer Teil</DIVISIONNAME>
+ <DIVISIONDESCR>Lexikalischer Teil.</DIVISIONDESCR>
+ <DIVISIONFACS>Pape-1880----02</DIVISIONFACS>
+ </DEFDIVISION>
+ </DEFBOOK>
+ 
+ </META> 
+ 
+ <autotoc maxlevels="9"></autotoc>
+ 
+ <catdiv name="Lizenz: Gemeinfrei">
+ 
+ <articlegroup name="-" sort="yes"> 
+ 
+ <article>
+ <lem>Hauptseite</lem>
+ <cat name="Hauptseite"></cat>
+ <text>
+ <div class="zenoCOTitles">
+ 
+ <h3>Wilhelm Pape (1807&#8211;1854)</h3>
+ 
+ <h2>Handwörterbuch der griechischen Sprache</h2>
+ 
+ <h3>Griechisch-deutsches Handwörterbuch</h3>
+ 
+ <h4>Bd. 1: &#913;&#8211;&#922;, Bd. 2: &#923;&#8211;&#937;, bearbeitet von Max Sengebusch, 3. Auflage, 6. Abdruck, Braunschweig: Vieweg &amp; Sohn, 1914.</h4>
+ 
+ </div>
+ <br></br>
+ <p>Die ersten beiden Bände des »Handwörterbuchs der griechischen Sprache« von Wilhelm Pape (1807&#8211;1854) wurden für den wissenschaftlichen Gebrauch erarbeitet und erschließen mit nahezu 99.000 Hauptstichwörtern den gesamten Reichtum des klassischen Griechisch. Das Wörterbuch bietet neben den Übersetzungen Angaben zur Etymologie, zum Bedeutungswandel und zur Phraseologie. Sein besonderer Vorzug liegt im detaillierten und übersichtlichen Nachweis der Bedeutungsschattierungen einzelner Stichwörter und grammatischer Konstruktionen. Zahlreiche Zitate aus den Schriften der klassischen Autoren dienen als Belege und unterstützen zugleich das Verständnis der Bedeutungsvarianten.</p>
+ <br></br>
+ 
+ <ul>
+ <li><b><link namespace="M" lem="Einführung/Vorwort">Vorwort</link></b></li>
+ <li><b><link namespace="M" lem="Einführung/Vorrede">Vorrede</link></b></li>
+ <li><b><link namespace="M" lem="Einführung/Vorrede zur dritten Auflage">Vorrede zur dritten Auflage</link></b></li>
+ <li><b><link namespace="M" lem="Einführung/Verzeichnis der Abkürzungen und der angeführten Schriftsteller">Verzeichnis der Abkürzungen und der angeführten Schriftsteller</link></b></li>
+ <li><b><plink href="/Kategorien/T/Pape-1880">Alle Artikel</plink></b></li>
+ </ul> 
+ </text>
+ 
+ </article>
+ </articlegroup> 
+ 
+ <articlegroup name="M">
+ <catdiv name="Wörterbuch">
+ <article><lem>Einführung</lem><text>
+ <h2>Einführung</h2>
+ </text>
+ 
+ <article><lem>Vorwort</lem><text>
+<sigel book="Pape-GDHW Bd. 1" division="Vorwort"></sigel>
+ <h3><startpage nr="3"></startpage>Vorwort.</h3>
+<p>Von allen Wörterbüchen, die über das unmittelbare Bedürfnis des Mittelschülers hinausgehen und für den Lehrer und Gelehrten bestimmt sind, ragt das Wörterbuch von W. Pape noch immer als das beste hervor, umso mehr als das Wörterbuch von Passow in der dritten Lieferung stecken blieb.</p>
+ <p class="zenoPLm4n0">Derzeit gibt es auf dem deutschen Büchermarkt kein einziges griechisch-deutsches Wörterbuch für den wissenschaftlichen Gebrauch, so daß dem Studium der griechischen Sprache durch die Herausgabe des vorliegenden Werkes wieder ein lang entbehrtes Hilfsmittel zur Verfügung stehen wird.</p>
+ <p class="zenoPLm4n0">Gleichzeitig mit dem Nachdruck von Pape erscheint in unserem Verlag auch ein Nachdruck des ebenfalls seit langer Zeit vergriffenen und sehr gesuchten THESAURUS GRAECAE LINGUAE von H. Estienne (Stephanus).</p>
+<p class="zenoPR">Der Verlag.</p>
+<page nr="3"></page> <startpage nr="5"></startpage></text>
+</article>
+
+<article><lem>Vorrede</lem><text>
+ <h3>Vorrede.</h3>
+<p>Der bei der ersten Ausarbeitung dieses Wörterbuchs zu Grunde gelegte Plan ist auch bei der zweiten Auflage unverändert beibehalten, nur im Einzelnen genauer ausgeführt. Es folgt daher hier die Vorrede zur ersten Auflage; die auf diese zweite Auflage Bezug habenden Bemerkungen sind in Klammern hinzugefügt.</p>
+<br></br>
+ <p class="zenoPLm4n0">Jedes Buch muß freilich sein Erscheinen selbst rechtfertigen; aber man pflegt von dem Verfasser zu erwarten, daß er in dem Vorwort erkläre, was er Neues und Besseres als seine Vorgänger zu bringen gedenkt, zumal wenn er ähnlichen Werken das seinige an die Seite zu setzen wagt. Der längst gehegte Plan des Verfassers war nun, ein Handwörterbuch der griechischen Sprache auszuarbeiten, welches den Sprachgebrauch der klassischen, besonders der attischen Schriftsteller vollständiger, als es bisher geschehen, berücksichtigen und überall mit den Beweisstellen der Autoren selbst versehen sein sollte. Wie er diesen Zweck erreichen zu können geglaubt, wird in Folgendem kurz angedeutet. In Beziehung aber auf die ähnlichen Unternehmungen begnügt sich der Verf. zu bemerken, daß er die schon angefangene Arbeit bei Ankündigung des Handwörterbuchs der griechischen Sprache von <spa>Pinzger</spa> erwartungsvoll unterbrach, sie aber, da die ersten Lieferungen seiner Ansicht nicht entsprachen, bald wieder aufnahm und sie, obgleich die späteren Lieferungen jenes Werkes, von den Herren <spa>Jakobitz</spa> und <spa>Seiler</spa> besorgt, nach einem mit dem seinigen übereinstimmenden Plane gearbeitet waren, nicht aufgeben wollte, da ihm die angeführten Stellen nicht immer hinzureichen und die sogleich näher anzugebenden Punkte nicht genug berücksichtigt schienen, besonders aber die Erscheinung des Ganzen sich zu sehr verzögerte. [Dieses Buch liegt jetzt bis auf die Eigennamen, für die ein besonderer Nachtrag verheißen ist, vollendet vor und ist in Recensionen häufig mit dem gegenwärtigen Werk zusammengestellt worden. Dabei ist nicht immer beachtet, daß Vollständigkeit der Citate aus späteren Schriftstellern, die besonders mit Hülfe der neueren Ausgaben des Stephanus leicht beizubringen waren, gar nicht durch den hier angedeuteten Plan gefordert wurde.] Das später angefangene Werk des um die Lexikographie so verdienten <spa>Rost</spa><pname name="N1"></pname><plink href="/Pape-1880/M/Einführung/Vorrede#F1"><sup>1</sup></plink>, auf einen viel größern Umfang berechnet, läßt eben deswegen nicht eine so baldige Vollendung erwarten, und wird überdies durch seinen Preis Vielen unzugänglich bleiben. [Ist leider aufgegeben. Die von demselben Verfasser 1841 angefangene und von mehrern Andern fortgesetzte neue Bearbeitung des Passow ist in ihrer zeitgemäßen Umgestaltung dem vorliegenden Werke an die Seite getreten, aber noch nicht beendet.] So entschloß sich denn <page nr="5"></page> der Verfasser, seine Arbeit abzuschließen und sie, den Aufforderungen des geehrten Verlegers folgend, schon jetzt den Freunden der griechischen Literatur mit dem Wunsche vorzulegen, daß sie seine Absicht, das Studium derselben zu fördern, nicht verkennen und die Art, wie er diese nach Kräften zu erreichen sich bemüht hat, nicht mißbilligen mögen. [Vielen theilnehmenden Freunden nah und fern, die mir in Recensionen und noch mehr durch besondere Mittheilungen durch Rath und That förderlich waren, sage ich hiermit herzlichen Dank, besonders dem Herrn August <spa>Menke</spa> in Bremen und Herrn<spa> Schmidt</spa> in Stettin.]</p>
+ <p class="zenoPLm4n0">Was nun erstens den äußern Umfang betrifft, so hat der Verfasser theils aus eigenem Lesen der unten noch zu nennenden Schriftsteller und einzelner unter den späteren, theils aus der an Vollständigkeit jetzt den ersten Rang unter den griechischen Wörterbüchern einnehmenden Pariser Ausgabe des Stephanus, so weit diese erschienen, und der Londoner in dem übrigen Theile die Zahl der behandelten Wörter möglichst zu vervollständigen gesucht. Die Ungleichheit, daß unter den späteren Schriftstellern die Dichter mehr als die Prosaiker benutzt sind, ist durch frühere etymologische Forschungen, welche den Verfasser auf die Dichter der Anthologie und die übrigen der spätem Zeit geführt hatten, veranlaßt. Die hierdurch gewonnenen Resultate schienen ihm nicht zu verwerfen, wenn er auch die Prosaiker der Zeit nicht alle in demselben Umfange durchgearbeitet, ja manche, besonders die späteren Philosophen, Geschichtschreiber und Kirchenschriftsteller gar nicht berücksichtigt hatte. Dunkle oder offenbar verderbte Glossen der alten griechischen Lexikographen sind nicht aufgenommen worden, da Erörterungen über diese zu viel Raum einnehmen und das Verständniß der alten Schriftsteller selbst nicht wesentlich fördern würden. Damit soll das Studium der alten Lexikographen und Scholiasten so wenig heruntergesetzt werden, als es gewiß jedem wünschenswerth erscheinen muß, daß sie in der von Lehrs angeregten Weise studirt und bearbeitet werden möchten, damit daraus ein altgriechisches Wörterbuch entstände, welches die Sprachwissenschaft überhaupt und besonders die griechische Lexikographie sehr fördern würde. Jetzt aber, wo Suidas noch nicht vollständig bearbeitet ist, Hesychius noch einen neuen Herausgeber erwartet, und die Schollen nur für die Erklärung der einzelnen Schriftsteller benutzt und nicht auf ihre Quellen zurückgeführt sind, bleibt nichts übrig, als die Glossen, welche außer allem Zusammenhang mit andern bekannten Wörtern zu stehen scheinen, in einem Wörterbuche von mäßigen! Umfange zu übergehen.</p>
+ <p class="zenoPLm4n0">Mehr mußte in der Erklärung der einzelnen Wörter geschehen; denn gerade darin standen die griechischen Lexika den lateinischen nach, daß sie neben einer großen Anzahl deutscher Erklärungen gar keine oder zu wenig Stellen aus den alten Schriftstellern selbst gaben, aus denen die verschiedenen Schätzungen im Begriff eines Wortes immer besser erkannt werden, als durch Häufung deutscher Wörter von ähnlicher Bedeutung und durch immer neue Umschreibungen. Einen bedeutenden Anfang zu einer zweckmäßigeren Behandlung hat <spa>Passow</spa> durch besondere Berücksichtigung des Homer und Hesiod gemacht. Es blieb aber der ganze Reichthum der attischen Literatur, die gebildete Schriftsprache der Prosa übrig, welche neben Herodot, Pindar und den Tragikern vorzüglich durchforscht werden mußte. Leider wird man hierbei nicht wie bei Homer durch tüchtige Speciallexika unterstützt; nur <spa>Ast</spa> zum Plato und besonders<spa> Ellendt</spa> zum Sophokles müssen mit Dank erwähnt werden, denen <spa>Sturz</spa> zum Xenophon an die Seite zu setzen wäre, wenn nicht die neueren, kritisch besser bearbeiteten Ausgaben dieses Schriftstellers auch eine neue Bearbeitung des Lexikons forderten. Auch von den Indices sind nur wenige sorgfältig und zuverlässig gearbeitet, und können durch Vollständigkeit befriedigen, wie etwa der zu <spa>Böckh's</spa> Pindar und zu<spa> Wellauer's</spa> Aeschylus. Der Verf. hat <page nr="6"></page> daher die Mühe nicht scheuen dürfen, außer den eben erwähnten Autoren, den Xenophon, Thucydides und die attischen Redner genauer durchzulesen, wie er auch einzelne Schriften des Aristoteles, Plutarch und Lucian für diesen lexikalischen Zweck bearbeitet hat. Sein Hauptziel war, den Sprachgebrauch der Klassiker bis Aristoteles möglichst vollständig zu geben und überall durch kurze, aber für sich verständliche Beispiele aus den genannten Schriftstellern zu belegen; aus der folgenden Zeit aber nur einzelnes mit dem früheren Zusammenstimmende oder davon Abweichende anzuführen, so daß sich aus einem jeden Artikel in kurzem die geschichtliche Entwickelung des Wortbegriffs ergäbe, ohne daß diese geradezu ausgesprochen wäre. Ueberall ist daher der Schriftsteller, bei welchem sich ein Wort zuerst findet, angeführt, und aus den Stellen, die darauf folgen, oder den kürzeren Andeutungen, wie: <spa>überall, u. die Folgenden,</spa> <i>Sp.,</i> ist abzunehmen, wie weit sich der Gebrauch des Wortes erstreckt; wo daher nur Eine Stelle ohne weitern Zusatz citirt wird, ist anzunehmen, daß sich das Wort nur einmal findet. Ueber die Citate sei noch beiläufig bemerkt, daß der Verf., wo die Stelle des Autors genau angegeben ist, sie selbst gefunden oder nachgeschlagen hat, indem er sich dabei der in dem Verzeichniß, welches diesem Vorwort angehängt ist, aufgeführten Ausgaben bediente, und daß er daher, wo es ihm nicht möglich war oder nicht nothwendig erschien, ein Citat selbst zu vergleichen, lieber den bloßen Namen des Schriftstellers hingesetzt hat. [Für Berichtigung der Citate ist in dieser zweiten Auflage möglichst gesorgt. Für Homer ist nach der Bekker'schen Ausgabe viel nachzutragen gewesen, wie nach der Ausgabe desselben Gelehrten von Pollux manches geändert werden mußte. Sonst sind besonders aus den attischen Rednern, aus Thucydides, Plutarch und Sextus Empiricus Nachträge hinzugekommen; Einzelnes auch aus Strabo nach Kramer's Ausgabe. Den mit ebenso großem Fleiß wie gründlicher Kenntniß von Herrn H. Jacobi angefangenen Index zu den Meineke'schen Fragmenten der Komiker habe ich leider nur in dem ersten Viertel benutzen können, mich aber mancher Mittheilungen des geehrten Herrn Verf. zu erfreuen gehabt.] Bei den Dichtern der Anthologie, wo auf den vielfach verbesserten Abdruck des <i>cod. Platinus</i> zurückgegangen werden mußte, sind doch überall auch die Namen der Dichter bemerkt, weil diese nothwendig sind, um über die Zeit, in welcher das Wort vorkommt, entscheiden zu können. Die Citate enthalten ferner Erklärungen, welche die Schriftsteller selbst oder die Scholiasten und alten Lexikographen geben, die Gleichstellung oder Unterscheidung mit synonymisch gebrauchten Wörtern, die den entgegengesetzten Begriff ausdrückenden Verbindungen, die charakteristischen Prädikate, welche zur genauern Bestimmung des Wortbegriffs beitragen, wie die grammatischen Verbindungen, welche dies Wort eingeht. Verweisungen auf die grammatischen Lehrbücher sind nur selten hinzugefügt, die Beziehung auf diese versteht sich überall von selbst. Uebrigens verhehlt sich der Verfasser nicht, daß er namentlich bei größeren Artikeln, wo schon die Fülle der Beispiele die Wahl erschwert, eine gewisse Gleichmäßigkeit und Abrundung nicht immer erreicht hat. Billige Beurtheiler mögen, außer der Schwierigkeit, die in der Sache selbst und in der hier zum Theil zuerst versuchten Art der Bearbeitung liegt, auch die durch die Berufsarbeiten vielfach in Anspruch genommene und zerstückelte Zeit des Verf. berücksichtigen, welche ihm das zur consequenten Durchführung eines solchen Plans erforderliche ruhige Ueberschauen des Ganzen sehr erschwert hat. Leichter wird sich jedenfalls auf der so gewonnenen neuen Grundlage fortbauen lassen; dies aber nach besten Kräften zu thun und Winke erfahrner Männer dankbar zu benutzen, wird hinfort des Verfassers Hauptaufgabe sein.</p>
+ <p class="zenoPLm4n0">Es sind nun noch einige Worte über die grammatischen, etymologischen und kritischen Elemente des Wörterbuchs zu sagen, welche der Verf. nicht zu übersehen bittet, da sie einige von <page nr="7"></page> dem Herkömmlichen abweichende Einrichtungen des Buches erklären und etwaigen Anklagen begegnen sollen.</p>
+ <p class="zenoPLm4n0">1. Die regelmäßige Formenlehre der Grammatik wird als bekannt vorausgesetzt und darauf Bezügliches nicht bemerkt; bei den Femininis auf <i>&#945;</i> und <i>&#951;</i> ist daher der Genitiv <i>&#945;&#962;</i> oder <i>&#951;&#962;,</i> bei den Masculinis auf<i> &#945;&#962;</i> und <i>&#951;&#962;,</i> wie bei den Masculinis und Femininis auf<i> &#959;&#962;</i> der Genitiv <i>&#959;&#965;,</i> bei den Neutris auf <i>&#959;&#962;</i> der Genitiv<i> &#959;&#965;&#962;</i> u.s.w. zu ergänzen; der Genitiv ist also nur in der dritten Deklination, wo die Bildung desselben fraglich sein kann und der eigentliche Wortstamm erst durch diese Angabe vollständig dargelegt wird, hinzugesetzt. Bei den Adjectivis sind die einfachen auf <i>&#959;&#962;</i> dreier, die zusammengesetzten zweier Endungen; Abweichungen hiervon sind bemerkt. Adverbia werden, wo nichts gesagt ist, nach der aus der Grammatik bekannten Weise abgeleitet. Bei den Verbis sind nur die unregelmäßig gebildeten Tempora beim Simplex angegeben, in den zusammengesetzten durch eine Klammer, <i>&#7936;&#957;-&#8055;&#963;&#964;&#951;&#956;&#953;</i> (s. <i>&#7989;&#963;&#964;&#951;&#956;&#953;</i>), auf die einfachen verwiesen, welche Verweisung bei den regelmäßigen Verbis fehlt, so daß auch der Ungeübte die unregelmäßigen Zeitwörter leicht erkennen wird; nur wo die Composita eigenthümliche Unregelmäßigkeiten darbieten, sind diese bemerkt. In die Reihe der erklärten Wörter sind aber nur die Formen, welche einen andern Stamm als das Präsens voraussetzen, oder die Aoriste, welche den Verbalstamm in der einfachsten Gestalt enthalten, aufgenommen worden. Selbst Anfänger werden unter zweckmäßiger Anleitung sich in diese Anordnung finden und das Lexikon benutzen können. Die Adjectiva verbalia sind nur da, wo ihre Bildung zweifelhaft sein könnte, oder ihr Gebrauch Eigenthümlichkeiten darbietet, besonders aufgeführt. In prosodischer Beziehung sind nur die Naturlängen, so weit sie sich nicht durch die Accentuation kund geben, bezeichnet, der Vocal also, der keine Prosodische Bezeichnung hat, ist als von Natur kurz anzusehen.</p>
+ <p class="zenoPLm4n0">2. In etymologischer Beziehung sind zunächst die zusammengesetzten Wörter durch einen einfachen Trennungsstrich in ihre Vestandtheile zerlegt, was bei Wörtern, wie <i>&#7936;-&#948;&#8057;&#954;&#953;&#956;&#959;&#962;, &#7936;&#947;&#967;&#953;-&#947;&#949;&#8055;&#964;&#969;&#957;, &#963;&#965;&#957;-&#8055;&#963;&#964;&#951;&#956;&#953;, &#7952;&#960;-&#945;&#957;-&#8051;&#961;&#967;&#959;&#956;&#945;&#953;,</i> unmittelbar verständlich und Raum ersparender ist als die weitläufige Andeutung <i>&#963;&#965;&#957;&#8055;&#963;&#964;&#951;&#956;&#953; (&#7989;&#963;&#964;&#951;&#956;&#953;), &#7936;&#948;&#8057;&#954;&#953;&#956;&#959;&#962; (&#948;&#8057;&#954;&#953;&#956;&#959;&#962;);</i> was aber auch da, wo die einzelnen Bestandtheile in der Zusammensetzung Veränderungen erfahren haben, von denen, welche besonnen zu Werke gehen, nicht falsch verstanden werden wird. Man vergleiche z.B. <i>&#7940;-&#948;&#969;&#961;&#959;&#962;, &#7940;-&#949;&#953;&#948;&#8053;&#962;, &#945;&#7984;&#947;&#959;-&#960;&#961;&#8057;&#962;&#969;&#960;&#959;&#962;, &#7936;&#947;&#955;&#945;&#8057;-&#956;&#959;&#961;&#966;&#959;&#962;</i> mit <i>&#7940;&#948;&#969;&#961;&#959;&#962; (&#948;&#8182;&#961;&#959;&#957;), &#7936;&#949;&#953;&#948;&#8053;&#962; (&#949;&#7990;&#948;&#959;&#962;, &#917;&#921;&#916;&#937;), &#945;&#7984;&#947;&#959;&#960;&#961;&#8057;&#962;&#969;&#960;&#959;&#962; (&#960;&#961;&#8057;&#962;&#969;&#960;&#959;&#957;), &#7936;&#947;&#955;&#945;&#8057;&#956;&#959;&#961;&#966;&#959;&#962; (&#956;&#959;&#961;&#966;&#8053;)</i> und bemerke, daß bei der ersteren kürzeren Bezeichnungsart die Wortstämme <i>(&#948;&#969;&#961;, &#949;&#7984;&#948;, &#956;&#959;&#961;&#966;)</i> ebenso deutlich hervortreten und die wirklichen Nominativendungen <i>(&#948;&#8182;&#961;&#959;&#957;, &#949;&#7990;&#948;&#959;&#962;, &#956;&#959;&#961;&#966;&#8053;)</i> leicht aus dem Gedächtniß oder dem Buche selbst ergänzt werden können, was zum Theil bei der zweiten Art der Bezeichnung doch ebenfalls nöthig ist, da <i>&#945;&#7984;&#947;&#959;</i>- und <i>&#7936;&#947;&#955;&#945;&#959;</i>- nicht auf <i>&#945;&#7988;&#958;</i> und <i>&#7936;&#947;&#955;&#945;&#8057;&#962;</i> zurückgeführt sind. So wird man sich leicht gewöhnen, bei <i>&#7936;&#949;&#8055;-&#946;&#959;&#955;&#959;&#962;</i> z.B. nicht an <i>&#946;&#8057;&#955;&#959;&#962;</i> oder <i>&#946;&#959;&#955;&#8053;,</i> sondern an die Wurzel <i>&#946;&#959;&#955;</i> = <i>&#946;&#949;&#955;</i> = <i>&#946;&#945;&#955;</i> zu denken und den Zusatz <i>(&#946;&#8049;&#955;&#955;&#969;)</i> nicht vermissen. Mehr Anstoß könnte diese Bezeichnung bei den von Compositis abgeleiteten Wörtern erregen. Wo es die natürliche Folge der Wörter möglich machte, ist freilich z.B. bei<i> &#7936;&#977;&#949;&#945;&#956;&#959;&#963;&#8059;&#957;&#951;</i> durch den Zusatz <spa>Von</spa> auf <i>&#7936;&#977;&#949;&#8049;&#956;&#969;&#957;</i> hingewiesen worden; bei andern ist auch hier z.B. <i>&#7936;-&#977;&#949;&#961;&#945;&#960;&#949;&#8055;&#945;, &#7936;-&#977;&#949;&#961;&#945;&#960;&#949;&#965;&#963;&#8055;&#945;</i> geschrieben. Dabei soll ausdrücklich erinnert werden, daß nicht an eine Zusammensetzung von <i>&#977;&#949;&#961;&#945;&#960;&#949;&#8055;&#945;</i> und <i>&#977;&#949;&#961;&#945;&#960;&#949;&#965;&#963;&#8055;&#945;</i> zu denken, sondern auf den Stamm <i>&#977;&#949;&#961;&#945;&#960;&#949;&#8059;&#969;</i> und das Compositum <i>&#7936;&#977;&#949;&#961;&#8049;&#960;&#949;&#965;&#964;&#959;&#962;</i> zurückzugehen ist; was in keinem Fall, bei der Nähe der verwandten Wörter, Schwierigkeit hat. [Es scheint nothwendig, um Mißverständnissen vorzubeugen, auf diesen Punkt besonders aufmerksam zu machen.] Bei den <page nr="8"></page> einfachen Wörtern würde am angemessensten auf dieselbe Weise Wurzel- und Ableitungssylbe (Präfixum und Suffixum) geschieden und <i>&#7940;&#947;-&#948;&#951;&#957;, &#7936;&#947;-&#945;&#957;&#8057;&#962;, &#945;&#7984;&#947;-&#8055;&#962;, &#945;&#7984;&#948;&#8053;- &#956;&#969;&#957;</i> und <i>&#945;&#7984;&#948;-&#959;&#8150;&#959;&#962;, &#945;&#7984;&#977;-&#8053;&#961;</i> und <i>&#945;&#7988;&#977;-&#961;&#951;</i> würden unmittelbar ihre Wurzeln und ihren Zusammenhang unter einander erkennen lassen, wenn man sich nur erst an eine solche Zerlegung eines Wortes in seine Elemente gewöhnt hätte. Bezeichnete man ferner die Wurzel mit Unzialbuchstaben, so würden folgende Formen ohne weiteren Zusatz etymologisch erklärt sein:<i> &#946;&#949;-&#914;&#913;&#953;&#8055;-&#964;&#951;&#962;, &#914;&#917;&#923;-&#8057;&#957;&#951;, &#915;&#917;&#929;&#959;&#957;&#964;&#959;-&#948;&#953;&#916;&#902;&#963;&#954;-&#945;&#955;&#959;&#962;, &#948;&#953;&#945;-&#946;&#953;-&#914;&#929;&#911;&#963;&#954;&#969;, &#7936;-&#920;&#913;&#933;&#924;&#945;&#963;&#964;-&#8055;&#945;,</i> besonders wenn die Wurzeln <i>&#914;&#913;, &#914;&#917;&#923;</i> = <i>&#914;&#913;&#923;,</i> = <i>&#915;&#917;&#929;</i> = <i>&#915;&#919;&#929; = &#915;&#929;&#913;, &#916;&#913;</i> u.s.w. an ihrem Orte erklärt würden. Da aber letzteres erst die Ausarbeitung eines griechischen Wurzellexikons, in welchem auch die Präfixa und Suffixa behandelt sein müßten, voraussetzt, und das ganze Verfahren jetzt wenigstens selbst für die Augen zu viel Auffallendes haben würde, hat der Verf. diese in einem Theil des Manuscripts schon durchgeführte Bezeichnungsart auf den Rath seiner Freunde zurückgenommen und nur in den primitiven (d.i. von der Wurzel unmittelbar abgeleiteten) Wörtern die Wurzel durch den Druck unterschieden, aber im Uebrigen sich begnügt, auf die verwandten Stammwörter kurz hinzudeuten. Ungleichheiten, welche in dieser Bezeichnung durch den erwähnten Umstand veranlaßt worden, bittet er entschuldigen zu wollen. Selten ist auf andere Sprachen verwiesen, weil, wie der Verf. an einem andern Ort seine Ueberzeugung ausgesprochen hat, erst innerhalb der griechischen Sprache selbst die etymologischen Beziehungen der Wörter zu einander genauer erforscht werden müssen, und Vergleichung der gleichen Wörter in den stammverwandten Sprachen zu viel Raum erfordern würde, wenn sie mehr als bloßer Schein sein sollte. Ueberall aber wo die Wurzel innerhalb des Griechischen mit Sicherheit nicht zu ermitteln schien, ist durch ein allein oder mit den etwaigen Ableitungsversuchen hinzugesetztes (?) darauf hingewiesen. Daß die etymologischen Erklärungsversuche der griechischen Grammatiker selbst öfter, als bei den vielfachen Mißgriffen derselben zweckmäßig scheinen dürfte, angeführt sind, mag dadurch gerechtfertigt werden, daß aus ihnen die eigentliche Bedeutung der Wörter und das Bewußtsein über den Zusammenhang derselben unter einander, wieweit es sich noch erhalten hatte oder untergegangen war, entnommen werden kann. Die Verweisungen auf Buttmann's etymologische Forschungen werden, wenn diese auch nicht mehr überall den jetzigen Forderungen der Wissenschaft genügen, wenigstens jüngeren Freunden der griechischen Sprachforschung von Nutzen sein.</p>
+ <p class="zenoPLm4n0">3. Von der Kritik ist die Lexikographie freilich abhängig; aber diejenige, welche über die Echtheit und den Werth der erhaltenen Schriften urtheilt, hat nur den Einfluß auf das Lexikon, daß sich danach das Urtheil über früheres oder späteres Vorkommen eines Wortes, wie über den eigenthümlichen Gebrauch eines Schriftstellers modificirt, die Wörter eines dem Plato oder Xenophon z.B. abgesprochenen Buches müssen doch im Wörterbuche aufgezeichnet werden. Es ist deshalb nirgend <i>Pseudoplato Axiochus, Pseudoxenophon Ath.</i> u. dgl. bemerkt; der Gelehrte ergänzt einen solchen Zusatz ohnehin von selbst; die Sucht der neuesten Zeit, den Scharfsinn in immer neuen Anfeindungen und Verdächtigungen zu zeigen, darf nicht in das Gebiet des Lexikons übergreifen, aus welchem erst, wenn es den Sprachgebrauch der verschiedenen Zeiten in Beispielen anschaulich macht, das Urtheil über die Echtheit eines Buches mitbegründet werden kann. Anders steht es mit der Wortkritik, welche erst das eigentliche Material des Lexikons feststellen muß. Wenn auch nicht verlangt werden kann, daß in diesem alle fehlerhaften Formen der Handschriften oder willkürliche Aenderungen der Herausgeber aufgenommen werden, so bleibt doch, auch wenn man diese ausschließt, noch so manches Zweifelhafte übrig, was das Lexikon neben einander aufführen und nach der Analogie beurtheilen muß. Um aber auf diese Weise <page nr="9"></page> den Umfang des Buches nicht zu sehr zu vergrößern, schien es angemessen, bei allen Schriftstellern die zum Grunde gelegten Ausgaben anzugeben und Abweichungen von dem Text derselben nur da, wo sie sich durch größere Beglaubigung der Handschriften, angemessenere Wortbildung oder richtigere syntaktische Verbindung empfehlen, aufzunehmen, dabei aber die recipirte Leseart zu bemerken. Am seltensten sind natürlich bloße Conjecturen aufgenommen.</p>
+ <p class="zenoPLm4n0">Die Eigennamen sind ganz ausgeschlossen und in einem besonderen Theile zusammengestellt, woselbst die Vorrede die Gründe dieses Verfahrens auseinandersetzen wird.</p>
+ <p class="zenoPLm4n0">Schließlich sage ich meinen hiesigen Freunden und dem Herrn Professor <spa>Emperius</spa> in Braunschweig [auch dies bleibe zum Andenken des früh Verewigten stehen, obwohl seine Theilnahme sich nur auf die ersten Bogen der ersten Auflage erstreckt hat] herzlichen Dank für die Theilnahme, welche sie dem Werke durch freundliche Mittheilung ihrer Bemerkungen und Berichtigungen, wie durch Durchsicht der Correcturbogen gewidmet haben. Auch der geehrte Herr Verleger hat durch die sorgfältige äußere Ausstattung, welche Gedrängtheit mit Deutlichkeit vereinigt, und durch den billigen Preis sich gerechte Ansprüche auf meinen Dank erworben.</p>
+<br></br>
+<p><spa>Berlin</spa> im Januar 1842.</p>
+<br></br>
+ <p class="zenoPLm4n0">So möge denn auch diese Auflage den Freunden der griechischen Sprache empfohlen sein und bald im neu aufblühenden deutschen Vaterlande günstigere Zeiten erleben, als ihr Entstehen so sehr erschwerten.</p>
+<br></br>
+ <p class="zenoPLm4n0"><spa>Berlin</spa> im December 1848.</p>
+ <p class="zenoPR"><spa>Der Verfasser</spa>.</p><page nr="10"></page>
+<br></br> 
+ <h5>Fußnote</h5>
+<br></br>
+ <p><pname name="F1"></pname><plink href="/Pape-1880/M/Einführung/Vorrede#N1">1</plink> So urtheile ich auch jetzt noch nach dem heftigen, wahrer Wissenschaftlichkeit wenig angemessenen Angriff dieses Gelehrten auf mein deutsch-griechisches Wörterbuch, der mindestens zeigt, daß er meine Vorrede nicht gelesen; mehreres darauf vielleicht später in der Vorrede zu jenem Theile.</p>
+ </text>
+</article>
+
+
+<article><lem>Vorrede zur dritten Auflage</lem><text>
+ <h3>Vorrede zur dritten Auflage.</h3>
+<p>Diese dritte Auflage des Pape'schen Griechisch-Deutschen Wörterbuches erscheint weit später als beabsichtigt und vorausgesehen war. Überhäufung mit Amtsgeschäften, allerlei verwickelte Privatangelegenheiten, z.B. eine schwierige Vormundschaft, die Besorgung von zwei neuen Auflagen des Pape'schen Deutsch-Griechischen Wörterbuchs, die daran sich knüpfende Fehde mit dem <i>Dr</i> Rost, anderweitige wissenschaftliche Arbeiten, nothwendige Reisen, mehrere schwere und langwierige Krankheiten, endlich während der letzten fünf Jahre ein fast ununterbrochenes Kranksein, alle diese Widerwärtigkeiten waren Hindernisse, zum Theil fast unüberwindliche Hindernisse für das Fortschreiten der Arbeit an diesem Griechisch-Deutschen Wörterbuche. Nur große Geduld und ich darf wohl sagen eiserne Beharrlichkeit konnten bis zum Ende durchdringen.</p>
+ <p class="zenoPLm4n0">Während dieser langen, schwierigen Zeit traten von vielen verschiedenen Seiten gar manche Anforderungen in Bezug auf die Bearbeitung des Buches an mich heran. Da verlangte der Eine, ich solle die Griechischen Mediciner in der neuen Auflage weit mehr berücksichtigen als in den beiden ersten Auflagen geschehen sei. Der Andere bezeigte ein ähnliches noch dringenderes Verlangen hinsichtlich der Griechischen Erotiker. Ein Dritter wollte den Theophrast genau, aber ganz genau in dies Buch lexicalisch hineingearbeitet wissen. Ein Vierter begehrte aufs Ernstlichste umfassende lexicalische Beachtung der Byzantiner. Einem Fünften gewährte Anstoß und Ärgerniß die Bezeichnung »Spätere«, <i>»Sp.«,</i> ohne Nennung einzelner bestimmter Stellen; es müsse überall ganz genau angeführt werden, die Schriftsteller müßten genannt und die Stellen bezeichnet werden. Ein Sechster meinte, ich solle dem Buche einen »inneren Ausbau« angedeihen lassen; aber wie dieser »innere Ausbau« denn eigentlich beschaffen sein solle, das sagte er nicht. So wurden Wünsche in großer Anzahl laut; meistens wollte der Wünschende, daß derjenige Schriftsteller oder diejenigen Schriftsteller mehr berücksichtigt würden, mit welchen er sich eingehend beschäftigte. Der Wünschende übersah dabei, welche Folgen die Erfüllung seines Wunsches haben würde. Erfüllte man nämlich <spa>einen</spa> dieser Wünsche, so mußte man<spa> alle</spa> diese Wünsche erfüllen, da es unthunlich gewesen sein würde, einen oder ein Paar solche Schriftsteller vor den andern so auffallend zu begünstigen. Bei gleichmäßiger Berücksichtigung aller würde aber eine Arbeit sich aufgethürmt haben, welche nur eine ganze Schaar von Gelehrten in einer langen Reihe von Jahren zweckdienlich hätte bewältigen können; und, <spa>was die Hauptsache ist,</spa> das Buch würde einen solchen Umfang angenommen, der Preis eine solche Höhe erreicht haben, daß Unverkäuflichkeit die nothwendige Folge gewesen wäre.</p>
+ <p class="zenoPLm4n0">Ich will hier eine Thatsache anführen, welche wohl nur sehr Wenigen bekannt sein dürfte. Möge diese Thatsache namentlich den Gelehrten eine Warnung sein, welche nach mir dies Buch bearbeiten werden. Ursprünglich hatte Pape demselben einen bedeutend größeren Umfang gegeben; es sollten, glaube ich, vier Quartbände werden. Da lehnte der einsichtige Buchhändler den Verlag ab, weil ein solches Buch unverkäuflich sein würde; stellte jedoch seine Mitwirkung in Aussicht für den Fall, daß der Verfasser sehr bedeutende Kürzungen eintreten lasse, so daß der Umfang wenigstens bis auf die Hälfte zusammenschrumpfe. Auf diesen Vorschlag gieng Pape <page nr="11"></page> ein, und so entstand dies Buch. Wollte man nun es wieder bedeutend erweitern, so würde man die Pferde hinter den Wagen spannen und das schlecht machen, was Pape und sein Verleger gut gemacht haben. Dem praktischen Menschen fällt dabei ein gewisser Vers des Hesiodos ein: <i>&#957;&#8053;&#960;&#953;&#959;&#953;, &#959;&#8016;&#948;&#8050; &#7988;&#963;&#945;&#963;&#953;&#957;, &#8005;&#963;&#8179; &#960;&#955;&#8051;&#959;&#957; &#7973;&#956;&#953;&#963;&#965; &#960;&#945;&#957;&#964;&#8057;&#962;.</i></p>
+ <p class="zenoPLm4n0">»Dies Buch«, sagte mir der Verleger in einer unserer Unterredungen, »soll kein <i>thesaurus linguae Graecae</i> sein oder werden, sondern jungen <spa>streb </spa><spa>samen</spa> Leuten, Schülern der oberen Gymnasialclassen, Studirenden, Candidaten ein Handbuch, und ausgebildeten Gelehrten ein Hülfsmittel so für den ersten Anlauf.« Diese Ansicht des Verlegers ist in der That die einzig richtige. Wer sich mit einem Schriftsteller sehr eingehend beschäftigt, der mag sich die auf jeden Fall ihm nöthigen Hülfsmittel verschaffen, besondere Wörterbücher und <i>indices</i> über diesen Schriftsteller, Commentare, Scholien u.s.w.; und diese Forderung scheint um so gerechtfertigter zu sein, je weiter der Schriftsteller von dem Kreise jugendlicher Anfängerstudien entfernt ist.</p>
+ <p class="zenoPLm4n0">Den verhältnißmäßig kleinen Raum, welchen ich mir für die Erweiterung des Buches zugestand, habe ich benutzt, um Dinge hineinzubringen, welche nach meinem Dafürhalten anregend auf den jungen Studirenden einwirken können. Eine Anzahl von Artikeln ist sogar recht ausführlich geworden. Es sind das namentlich solche Artikel, über deren Gegenstand Pape offenbar völlig im Unklaren gewesen war, ich selbst aber mir wenigstens noch keine feste, bestimmte Ansicht gebildet hatte. In solchen Fällen konnte ich mich nicht enthalten, die Sache genauer zu untersuchen; das führte dann weiter und weiter, und die Artikel schwollen mir unter den Händen an. Schließlich hätte sich vielleicht Manches wieder kürzen lassen; aber ich konnte mich nicht dazu verstehen, das eben erst Gewonnene und mit vieler Arbeit Zusammengebrachte gleich wieder auszustreichen. Namentlich dort durfte ich das nicht, wo es meines Wissens noch keine klare und genaue Darlegung aus der Feder eines Andern gab.</p>
+ <p class="zenoPLm4n0">Von den neueren Homerstudien, wie sie seit nun bald fünfzig Jahren sich entwickelt haben, wußte Pape Nichts, oder so gut wie Nichts. Hier mußte natürlich Vieles von mir neu gearbeitet werden; denn grade diese Dinge liegen der studirenden Jugend am Nächsten und müssen immer Grundlage und Mittelpunct aller Griechischen Studien sein.</p>
+ <p class="zenoPLm4n0">Nirgends sonst auf dem Felde der Griechischen Literatur ist jemals ein solcher Umschwung, eine solche Neugestaltung eingetreten, wie in dem Homerischen Gebiete zu unserer Zeit.</p>
+ <p class="zenoPLm4n0">Die meisten Umarbeitungen und Erweiterungen sind dem ersten Viertel des Buches geworden, den Buchstaben <i>&#913;&#914;&#915;&#916;.</i> Zum Theil hat dies seinen Grund in dem Umstände, daß diese Gegend des Buches, bei welcher Pape ohne Zweifel seine Arbeit begann, in der That die schwächste war; zum Theil muß ich aber auch den Umstand in Anschlag bringen, daß ich zu der Zeit, wo ich diese Buchstaben bearbeitete, gesunder, kräftiger, frischer war als vorher und nachher. Am meisten Neues enthält wohl der Buchstabe <i>&#916;.</i> Wer ein Urtheil sich bilden will über diese neue Auflage, der muß wohl namentlich diesen Buchstaben, und dann die andern drei genannten, <i>&#913;, &#914;, &#915;,</i> mit der vorigen Auflage genau vergleichen. Beispielsweise nenne ich die Artikel <i>&#7936;&#947;&#947;&#949;&#955;&#8055;&#951;&#962;, &#7936;&#947;&#949;&#961;&#969;&#967;&#959;&#962;, &#7940;&#947;&#969;, &#7937;&#948;&#961;&#959;&#964;&#8053;&#962;, &#945;&#7984;&#977;&#8053;&#961;, &#7936;&#954;&#961;&#8057;&#960;&#959;&#955;&#953;&#962;, &#7936;&#955;&#945;&#955;&#954;&#959;&#956;&#949;&#957;&#951;&#8147;&#962;, &#7940;&#955;&#955;&#965;&#948;&#953;&#962;, &#7941;&#955;&#962;, &#7936;&#955;&#966;&#8049;&#957;&#969;, &#7936;&#955;&#966;&#949;&#963;&#8055;&#946;&#959;&#953;&#959;&#962;, &#7940;&#956;&#945;&#977;&#959;&#962;, &#7936;&#956;&#945;&#953;&#956;&#8049;&#954;&#949;&#964;&#959;&#962;, &#7936;&#956;&#946;&#961;&#959;&#963;&#953;&#945;, &#7936;&#956;&#8053;&#967;&#945;&#957;&#959;&#962;, &#7936;&#956;&#957;&#8055;&#959;&#957;, &#7940;&#956;&#965;&#948;&#953;&#962;, &#7936;&#956;&#8059;&#956;&#969;&#957;, &#7936;&#956;&#966;&#953;&#946;&#945;&#8055;&#957;&#969;, &#7940;&#957;, &#7936;&#957;&#8049;&#947;&#969;, &#7936;&#957;&#8049;&#949;&#948;&#957;&#959;&#962;, &#7940;&#957;&#949;&#969;&#962;, &#7940;&#957;&#953;&#960;&#964;&#959;&#962;, &#7936;&#957;&#8057;&#960;&#945;&#953;&#945;, &#7940;&#957;&#964;&#945;, &#7940;&#957;&#969;</i> <i>advb</i>., <i>&#7940;&#958;&#965;&#955;&#959;&#962;, &#7936;&#960;&#945;&#965;&#961;&#8049;&#969;, &#7936;&#960;&#953;&#957;&#8059;&#963;&#963;&#969;, &#7940;&#960;&#953;&#959;&#962;, &#7940;&#960;&#965;&#961;&#959;&#962;, &#7936;&#961;&#947;&#949;&#953;&#966;&#8057;&#957;&#964;&#951;&#962;, &#7936;&#961;&#947;&#949;&#963;&#964;&#8053;&#962;, &#7936;&#961;&#949;&#8055;&#969;&#957;, &#7936;&#961;&#953;&#963;&#964;&#949;&#961;&#8057;&#962;, &#7940;&#961;&#953;&#963;&#964;&#959;&#957;, &#7936;&#961;&#956;&#959;&#957;&#8055;&#945;, &#945;&#8020;&#964;&#969;&#962;, &#7936;&#966;&#8053;&#964;&#969;&#961;, &#946;&#945;&#977;&#8059;&#954;&#959;&#955;&#960;&#959;&#962;, &#946;&#945;&#8055;&#957;&#969;, &#946;&#8049;&#955;&#955;&#969;, &#946;&#945;&#961;&#946;&#945;&#961;&#8057;&#966;&#969;&#957;&#959;&#962;, &#946;&#945;&#963;&#953;&#955;&#949;&#8059;&#962;, &#946;&#8049;&#963;&#954;&#969;, &#946;&#8051;&#955;&#959;&#962;, &#946;&#951;&#955;&#8057;&#962;, &#946;&#8055;&#945;, &#946;&#8055;&#959;&#962;, &#946;&#953;&#8057;&#962;, &#946;&#955;&#949;&#956;&#949;&#945;&#8055;&#957;&#969;, &#946;&#959;&#964;&#8049;&#957;&#951;, &#946;&#959;&#965;&#947;&#8049;&#970;&#959;&#962;, &#946;&#959;&#965;&#957;&#8057;&#962;, &#946;&#959;&#8166;&#962;, &#946;&#959;&#8061;&#960;&#951;&#962;, &#946;&#961;&#959;&#964;&#8057;&#962;, &#946;&#961;&#8057;&#964;&#959;&#962;, &#947;&#945;&#8055;&#969;, <page nr="12"></page> &#947;&#8051;&#947;&#969;&#957;&#945;, &#947;&#8051;&#955;&#959;&#962;, &#947;&#949;&#957;&#949;&#8049;, &#947;&#949;&#957;&#949;&#964;&#8053;, &#947;&#949;&#957;&#957;&#945;&#8150;&#959;&#962;, &#947;&#8051;&#957;&#964;&#959;, &#947;&#957;&#969;&#964;&#8057;&#962;, &#947;&#961;&#8049;&#966;&#969;, &#947;&#8059;&#945;&#955;&#959;&#957;, &#947;&#965;&#8150;&#959;&#957;, &#948;&#945;&#8055;, &#948;&#945;&#8055;&#962;, &#948;&#945;&#8147;&#966;&#961;&#969;&#957;, &#948;&#945;&#962;&#960;&#955;&#8134;&#964;&#953;&#962;, &#948;&#8051;, &#8211; &#948;&#8051;</i> Suffixum, <i>&#948;&#949;&#8055;&#955;&#945;&#964;&#945;, &#948;&#949;&#8055;&#955;&#949;&#964;&#959;, &#948;&#949;&#8150;&#960;&#957;&#959;&#957;, &#948;&#8051;&#954;&#945;, &#948;&#949;&#958;&#953;&#8057;&#962;, &#948;&#8051;&#960;&#945;&#962;, &#948;&#8051;&#963;&#960;&#959;&#953;&#957;&#945;, &#948;&#8053;&#957;, &#948;&#951;&#961;&#8057;&#957;, &#948;&#949;&#953;&#961;&#8057;&#962;, &#948;&#8150;&#959;&#962;, &#948;&#956;&#969;&#8053;, &#948;&#959;&#8049;&#963;&#963;&#945;&#964;&#959;, &#948;&#8057;&#961;&#965;, &#948;&#959;&#8059;&#955;&#951;, &#948;&#959;&#965;&#960;&#8051;&#969;, &#948;&#961;&#8166;&#962;, &#948;&#8059;&#959;, &#948;&#8182;.</i></p>
+ <p class="zenoPLm4n0">Aber auch die andern Gegenden des Buches habe ich nicht ohne Umarbeitungen und Erweiterungen gelassen, wo sie mir nothwendig zu sein schienen. Beispielsweise greife ich aus dem letzten Viertel des Buches einige Artikel heraus: <i>&#961;&#8051;&#977;&#959;&#962;, &#963;&#949;&#8055;&#961;&#953;&#959;&#962;, &#963;&#954;&#8059;&#966;&#959;&#962;, &#963;&#960;&#959;&#965;&#948;&#8053;, &#963;&#964;&#8051;&#956;&#956;&#945;, &#963;&#964;&#949;&#961;&#8051;&#956;&#957;&#953;&#959;&#962;, &#963;&#964;&#949;&#966;&#8049;&#957;&#951;, &#963;&#964;&#8051;&#966;&#945;&#957;&#959;&#962;, &#963;&#8182;&#956;&#945;, &#964;&#8049;&#961;, &#964;&#8049;&#967;&#945;, &#964;&#8051;&#956;&#949;&#957;&#959;&#962;, &#964;&#8051;&#961;&#963;&#959;&#956;&#945;&#953;, &#964;&#8055;&#954;&#964;&#969;, &#964;&#8055;&#962;</i> Fragewort, <i>&#964;&#8059;&#960;&#964;&#969;, &#965;&#7985;&#8053;&#962;, &#8021;&#960;&#945;&#953;&#977;&#945;, &#8016;&#960;&#8051;&#961;&#964;&#949;&#961;&#959;&#962;, &#8017;&#960;&#959;&#948;&#956;&#8061;&#962;, &#8017;&#966;&#951;&#957;&#8055;&#959;&#967;&#959;&#962;, &#966;&#951;&#956;&#8055;, &#966;&#961;&#8049;&#950;&#969;, &#966;&#8059;&#950;&#945;, &#967;&#8049;&#961;&#956;&#951;, &#967;&#951;&#961;&#945;&#956;&#8057;&#962;, &#967;&#961;&#8053;, &#968;&#8049;&#956;&#945;&#977;&#959;&#962;, &#8039;&#948;&#949;, &#8037;&#962;, &#8032;&#964;&#949;&#953;&#955;&#8053;.</i></p>
+ <p class="zenoPLm4n0">Aus den mittleren Gegenden des Buches will ich beispielsweise auch noch ein Paar Artikel nennen:<i> &#7952;&#8049;&#966;&#977;&#951;, &#7952;&#947;&#967;&#949;&#963;&#8055;&#956;&#969;&#961;&#959;&#962;, &#7957;&#948;&#957;&#959;&#957;, &#7952;&#977;&#8051;&#955;&#969;, &#949;&#7984;&#961;&#8049;&#969;&#957;, &#7952;&#954;&#964;&#959;&#960;&#8055;&#950;&#969;, &#7956;&#957;&#945;&#961;&#945;, &#7952;&#957;&#964;&#965;&#960;&#8049;&#962;, &#7952;&#958;&#969;&#954;&#949;&#945;&#957;&#8055;&#950;&#969;, &#7952;&#960;&#8049;&#961;&#959;&#965;&#961;&#959;&#962;, &#7952;&#960;&#951;&#964;&#8053;&#962;, &#7952;&#960;&#953;&#946;&#959;&#965;&#954;&#8057;&#955;&#959;&#962;, &#7952;&#960;&#8055;&#955;&#951;&#977;&#959;&#962;, &#7952;&#961;&#8051;&#967;&#977;&#949;&#959;&#957;, &#7956;&#8164;&#8165;&#969;, &#949;&#8016;&#957;&#959;&#956;&#8055;&#945;, &#949;&#8016;&#967;&#949;&#964;&#8049;&#959;&#956;&#945;&#953;, &#7953;&#8182;&#956;&#949;&#957;, &#950;&#8182;&#956;&#945;, &#7972;,</i> und <i>&#7974;, &#7968;&#956;&#8055;, &#7972;&#964;&#959;&#953;, &#977;&#965;&#956;&#959;&#955;&#8051;&#969;&#957;, &#977;&#8059;&#961;&#945;, &#977;&#8059;&#969;, &#977;&#8061;&#961;&#945;&#958;, &#953;, &#7989;, &#7985;&#949;&#961;&#8057;&#962;, &#7984;&#958;&#959;&#966;&#8057;&#961;&#959;&#962;, &#7984;&#959;&#967;&#8051;&#945;&#953;&#961;&#945;, &#7989;&#963;&#964;&#951;&#956;&#953;, &#954;&#8049;, &#954;&#8049;&#957;, &#954;&#945;&#961;, &#954;&#949;&#955;&#949;&#8059;&#977;&#959;&#956;&#945;&#953;, &#954;&#8051;&#957;&#964;&#959;, &#954;&#957;&#8150;&#963;&#959;&#962;, &#954;&#959;&#964;&#8051;&#969;, &#956;&#949;&#955;&#945;&#957;&#8051;&#969;, &#956;&#8051;&#955;&#955;&#969;, &#956;&#8051;&#955;&#960;&#969;, &#957;&#8051;&#945;&#964;&#959;&#962;, &#957;&#8053;&#948;&#965;&#956;&#959;&#962;, &#957;&#951;</i> &#8211; Präfixum, <i>&#957;&#8057;&#956;&#959;&#962;, &#959;&#8016;&#948;&#8057;&#962;, &#960;&#945;&#957;&#953;&#954;&#8057;&#962;, &#960;&#949;&#8150;&#961;&#945;&#961;, &#960;&#8051;&#955;&#945;&#947;&#959;&#962;, &#960;&#959;&#955;&#8059;&#963;&#964;&#953;&#967;&#959;&#962;, &#960;&#959;&#961;&#963;&#945;&#8055;&#957;&#969;, &#960;&#961;&#959;&#945;&#977;&#949;&#964;&#8051;&#969;, &#960;&#961;&#959;&#946;&#8049;&#964;&#949;&#961;&#959;&#962;, &#960;&#961;&#8057;&#946;&#945;&#964;&#959;&#957;, &#960;&#961;&#959;&#977;&#8051;&#969;, &#960;&#961;&#959;&#8147;&#958;, &#960;&#961;&#8057;&#954;&#961;&#959;&#963;&#963;&#959;&#962;, &#960;&#8059;&#970;&#961;.</i></p>
+ <p class="zenoPLm4n0">Was die Nichtigkeit namentlich der Ziffern in den Citaten betrifft, so verlangte Jemand von mir, ich solle jedes einzelne Citat nachschlagen. Das war ein Verlangen, welches bewies, daß der, welcher es äußerte, gar keine Vorstellung von der Masse der Arbeit hatte, welche ein solches Buch erfordert; keine Vorstellung davon, daß der Bearbeiter um eines einzigen unrichtigen Citates willen zuweilen ein Paar Stunden suchen kann. Hätte ich jedes einzelne Citat nachschlagen wollen, so würde ich niemals fertig geworden sein. Ich mußte mich begnügen, diejenigen Citate nachzuschlagen, welche mir verdächtig vorkamen. Eine Prüfung <spa>aller</spa> Citate muß unter eine Reihe künftiger Auflagen vertheilt werden, so daß in jeder Auflage etwa eine Classe von Schriftstellern berücksichtigt wird.</p>
+ <p class="zenoPLm4n0">Keineswegs aber habe ich Alles geändert oder ausgestrichen, was mir verdächtig oder gar entschieden unrichtig zu sein schien. Ich will hier ein warnendes Stücklein von Jemandem erzählen, welcher eine neue Auflage eines geschichtlichen Werkes über einen Krieg des 18. Jahrhunderts besorgte. Dieses Buch sagte irgendwo in dem Bericht über eine Belagerung, seit der Belagerung von Alexia habe man dergleichen nicht gesehn. »Alexia, &#8211; Alexia«, sprach der Herausgeber bei sich, »hm, das ist ja offenbar verkehrt; das &#8211; das muß Alexandria heißen.« Sprachs und schrieb und ließ den Verfasser sagen, seit der Belagerung von Alexandria habe man dergleichen nicht gesehn. Vor solchen Alexia-Besserungen habe ich mich möglichst zu hüten gesucht und habe lieber Etwas stehn lassen, was mir unrichtig zu sein schien, als durch Ausstreichen die Spur des vom Verfasser Beabsichtigten verwischt. Freilich sieht an solchen Stellen Niemand, daß ich stundenlang überall gesucht habe, um die Sache ins Reine zu bringen, so daß es einem Jeden frei steht, mich lüderlicher Arbeit zu zeihen.</p>
+ <p class="zenoPLm4n0">Manche Ungenauigkeiten sind auf folgenden zwei Wegen in dies Buch hineingeschlüpft:</p>
+ <p class="zenoPLm4n0">Erstens ist Pape offenbar beim Abkürzen seines ursprünglichen Werkes manchmal zu sehr in die Hitze des Ausstreichens gerathen, welche ihn übersehn ließ, daß er z.B. von dem einen Citat die Worte, von dem andern danebenstehenden den Titel der Schrift und die Ziffern beibehielt. Dergleichen habe ich mehrmals gefunden.</p>
+ <p class="zenoPLm4n0"><page nr="13"></page> Zweitens hat Pape die Bogen seines Werkes in der Correctur nicht selbst gelesen. Freilich war das ein gewaltiges Stück Arbeit; denn ein Druckbogen dieses Buches enthielt und enthält wenigstens so Viel wie zwei Bogen gewöhnliches Druckes; die in runder Summe etwa 2800 Seiten der zweiten Auflage enthielten also wenigstens so Viel wie 5600 Seiten gewöhnliches Druckes.</p>
+ <p class="zenoPLm4n0">Wenn ich durch diese Bemerkungen Pape zu tadeln scheine, so will ich doch gleich hinzufügen, daß ich bei dem Durcharbeiten des Buches wieder und immer wieder erkannte, Pape habe weit mehr Griechisch verstanden als gar mancher der sich über ihn ohne Zweifel hoch erhaben Dünkenden. Beim Nachschlagen und Vergleichen von Büchern Anderer habe ich mir eine kleine Sammlung lehrreicher und erstaunlicher Beispiele von Unkenntniß und Unwissenheit angelegt. Aus dieser Sammlung könnte ich hier allerlei Wunderbares vorführen; aber &#8211; warum soll ich Leuten, die mich nicht herausgefordert und gereizt haben, unangenehme Dinge sagen?</p>
+ <p class="zenoPLm4n0">Von dieser dritten Auflage habe ich selbst überall wenigstens die letzte Correctur gelesen. Allerdings weiß ich nicht, wie weit meine letzten Besserungen im Satz ausgeführt sind; an einigen Stellen habe ich bemerkt, daß die Besserung nicht in den Satz gekommen ist. Den herzlichsten Dank muß ich für seine geduldige und gründliche Hülfe dem Professor <i>Dr</i> Otto Müller sagen, dem Herausgeber des Statius, meinem langjährigen und stets bewährt erfundenen Freunde. Er hat, seinen eignen Studien die Zeit abbrechend, die Correctur großer Strecken des Buches, zusammen sechzig und einiger Bogen, sehr wesentlich gefördert.</p>
+ <p class="zenoPLm4n0">Die letzten fünf Jahre, d.h. die Mußestunden, welche mir während dieser Jahre mein Amt, mein Kranksein und andere Hindernisse übrig ließen, sind nur zum Correcturlesen verwandt worden. Die für wissenschaftliche Arbeit freien Stunden der zwei zunächst vorhergehenden Jahre verwandte ich nur auf die Glättung des Werkes, welche freilich eben so nothwendig wie mühevoll war. Überall suchte ich namentlich die Deutlichkeit und Übersichtlichkeit zu fördern, änderte deshalb eine Menge zu langer und verworrener Perioden, strich viele Klammern und viele Tausende von überflüssigen Interpunctionen, und was dergleichen mehr sein mag. Die für wissenschaftliche Arbeit freien Stunden der zunächst vorhergehenden Jahre wurden in Anspruch genommen durch die Besorgung der dritten Auflage von Pape's Deutsch-Griechischem Wörterbuche. So konnte ich denn für dies Griechisch-Deutsche Wörterbuch Schriften Anderer, welche nach 1870 erschienen sind, nur ausnahmsweise in einzelnen Fällen vergleichen.</p>
+ <p class="zenoPLm4n0">Ohne Zweifel leidet dies Buch noch an vielen Mängeln und Unebenheiten. Indessen ist diese dritte Auflage doch unläugbar weit besser als die mit so großem Beifall aufgenommene und in vielen taufend Exemplaren verbreitete zweite Auflage, welche von dieser dritten weit übertroffen wird namentlich durch Deutlichkeit und Correctheit und durch eine lange Reihe solcher Artikel, wie sie meines Wissens kein anderes Griechisch-Deutsches Wörterbuch aufweis't, auch nicht der Pariser Stephanus. Wären die Umstände günstiger gewesen, so wäre mehr geleistet worden.</p>
+<br></br>
+ <p class="zenoPLm4n0">Berlin d. 30. Januar 1880.</p>
+<p class="zenoPR">M. <spa>Sengebusch.</spa></p>
+<page nr="14"></page> </text>
+</article>
+
+
+<article><lem>Verzeichnis der Abkürzungen und der angeführten Schriftsteller</lem><text>
+ <h3>Verzeichnis der Abkürzungen und der angeführten Schriftsteller.</h3>
+<p>Die allgemein üblichen Abkürzungen sind hier nicht aufgenommen, wie: z.B., u., vgl., S., u.s.w., u.ä., &#8211;<i> praes., imperf., act.</i> Bei den Schriftstellern ist die Ausgabe, nach welcher citirt wird, bemerkt; wo dies nicht der Fall ist, ist das Citat entlehnt und soll daher nicht verbürgt werden. Die hinzugesetzten Zahlen bezeichnen die Jahrhunderte, und zwar römische Ziffern die vor Chr. G., deutsche die nach Chr. G. Diese Andeutungen sollen nur zur leichteren Uebersicht für den Augenblick dienen. Bei den Dichtern der Anthologie bezeichnet in den Citaten die unmittelbar dabeistehende Zahl die Nummern der Epigramme in <spa>Brunck's</spa> Analecten oder Jacobs' <i>Anthologia ed. Lips.</i> 1794, die in Klammern hinzugesetzten aber das Buch und die Nummern der einzelnen Gedichte in der <i>Anthologia Palatina.</i> Die attischen Redner sind nach den Paragraphen der Bekker'schen Ausgabe citirt.</p>
+<br></br>
+<p class="zenoPLm0n4">Ach. Tat. &#8211; Achilles Tatius. 4. ed. Iac.</p>
+ <p class="zenoPLm0n4">Adam. &#8211; Adamantius. 5.</p>
+ <p class="zenoPLm0n4">Add. &#8211; Addaeus. IV. Dichter der Anthologie.</p>
+ <p class="zenoPLm0n4">Ael. &#8211; Aelianus. 3. V.H. = variae historiae, ed. Kühn. &#8211; N.H. oder H.A. = de animalium natura, ed. Schneider.</p>
+ <p class="zenoPLm0n4">Aen. Tact. &#8211; Aeneas Tacticus.</p>
+ <p class="zenoPLm0n4">Aemili. &#8211; Aemilianus.? Dichter der Anthologie.</p>
+ <p class="zenoPLm0n4">Aesch. &#8211; a) Aeschylus (wenn dabei das Stück genannt ist, Pr. = Prometheus, S. od. Spt. = Septem contra Thebas, Pers. = Persae, Ag. = Agamemnon, Ch. = Choephorae, Eum. = Eumenides, Suppl. = Supplices, frg. = fragmenta). V. ed. Wellauer, dessen lexicon Aeschyleum benutzt ist. b) Aeschines (wenn zwei Zahlen, z.B. 2, 26, folgen). IV. nach den oratores attici ed. Bekker, wie auch die andern Redner nach den Bekker'schen Paragraphen citirt</p>
+ <p class="zenoPLm0n4">Aes. &#8211; Aesopus, ed. Lips. 1810.</p>
+ <p class="zenoPLm0n4">Ag. oder Agath. &#8211; Agathias. 6. Dichter der Anthologie.</p>
+ <p class="zenoPLm0n4">Alc. frg. &#8211; Alcaei fragmenta. VII.</p>
+ <p class="zenoPLm0n4">Alc., Alciphr. &#8211; Alciphron. 2. ed. Wagner.</p>
+ <p class="zenoPLm0n4">Alc. Mess. &#8211; Alcaeus Messenius. II. Dichter der Anthologie.</p>
+ <p class="zenoPLm0n4">Alcid., Alcidam. &#8211; Alcidamas in Bekker's oratt. att.</p>
+ <p class="zenoPLm0n4">Alcm. &#8211; Alcman. VII. ed. Welcker.</p>
+ <p class="zenoPLm0n4">Alex. &#8211; Allexandriner.</p>
+ <p class="zenoPLm0n4">Alex. Aet. &#8211; Alexander Aetolus. III. ed. Capellmann.</p>
+ <p class="zenoPLm0n4">Alex. Aphrod &#8211; Alexander von Aphrodisias. 3.</p>
+ <p class="zenoPLm0n4">Alex. Trall. &#8211; Alexander von Tralles. 6.</p>
+ <p class="zenoPLm0n4">Alph. &#8211; Alpheus. I. Dichter der Anthologie.</p>
+ <p class="zenoPLm0n4">Ammi. &#8211; Ammianus. 2. Dichter der Anthologie.</p>
+ <p class="zenoPLm0n4">Ammon. &#8211; Ammonius.</p>
+ <p class="zenoPLm0n4">Anacr. &#8211; Anacreontica, ed. Mehlhorn.</p>
+ <p class="zenoPLm0n4">Anax. &#8211; Anaxagoras. V. ed. Schaubach.</p>
+ <p class="zenoPLm0n4">Andoc. &#8211; Andocides. V. ed. Bekker in oratt. att.</p>
+ <p class="zenoPLm0n4">Anth. &#8211; Anthologie, ed. Tauchnitz (Abdruck der Palatina).</p>
+ <p class="zenoPLm0n4">Ant. Sid. &#8211; Antipater Sidonius I. Dichter der Anthologie.</p>
+ <p class="zenoPLm0n4">Ant. Th. &#8211; Antipater aus Thessalonice. I. Dichter der Anthologie.</p>
+ <p class="zenoPLm0n4">Antim. &#8211; Antimachus. V. ed. Schellenberg.</p>
+ <p class="zenoPLm0n4">Antiph. &#8211; Antipho.V. ed. Bekker in oratt. att.</p>
+ <p class="zenoPLm0n4">Antiphan. &#8211; Antiphanes. IV.</p>
+ <p class="zenoPLm0n4">Antiphil. &#8211; Antiphilus. 1. Dichter der Anthologie.</p>
+ <p class="zenoPLm0n4">Ant. Lib. &#8211; Antoninus Liberalis. 2. ed. Teucher.</p>
+ <p class="zenoPLm0n4">M. Anton. &#8211; Marcus Antoninus. 2. ed. Lips.</p>
+ <p class="zenoPLm0n4">Anyt. &#8211; Anyte. III. Dichterin der Anthologie.</p>
+ <p class="zenoPLm0n4">Ap. Dysc. &#8211; Apollonius Dyscolus. II. ed. Bekker.</p>
+ <p class="zenoPLm0n4">Ap. L.H. &#8211; Apollonins (1.) lexicon Homericum, ed. Bekker.</p>
+ <p class="zenoPLm0n4">Ap. Rh. &#8211; Apollonius Rhodius. III. ed. Schäfer.</p>
+ <p class="zenoPLm0n4">Apolld. &#8211; Apollodorus. II. ed. Heyne.</p>
+ <p class="zenoPLm0n4">Apollnd. &#8211; Apollonides. 1 .Dichter der Anthologie.</p>
+ <page nr="15"></page> <p class="zenoPLm0n4">App. &#8211; Appianus. 2. ed. Teuchner (Mithr., B.C., Pun.).</p>
+ <p class="zenoPLm0n4">(App.) &#8211; bebeutet Appendix Anthologiae Palatinae.</p>
+ <p class="zenoPLm0n4">Ar. &#8211; Aristophanes. V. ed. Bekker (Ach. Aristophanes. V. ed. Bekker (Ach. Acharnenses, Equ. = Equites, Pac. = Pax, Pl. = Plutus, Th. =</p>
+<p class="zenoPLm0n4">Thesmophoriazusae, Eccl. = Ecclesiazusae, Lys. = Lysistrata, Ran. = Ranae).</p>
+ <p class="zenoPLm0n4">Arat &#8211; Aratus. III. ed. Buttmann (Phaen. Dios.).</p>
+ <p class="zenoPLm0n4">Arc. &#8211; Arcadius. 3. ed. Barker.</p>
+ <p class="zenoPLm0n4">Archi. &#8211; Archias. I. Dichter der Anthologie.</p>
+ <p class="zenoPLm0n4">Archil. &#8211; Archilochus. VII. ed. Liebel.</p>
+ <p class="zenoPLm0n4">Archimel. &#8211; Archimelus, Dichter der Anthologie.</p>
+ <p class="zenoPLm0n4">Aret. &#8211; Aretaeus. 2.</p>
+ <p class="zenoPLm0n4">M. Arg. &#8211; Marcus Argentarius, Dichter der Anthologie.</p>
+ <p class="zenoPLm0n4">Arist. &#8211; Aristoteles. IV. ed. Tauchnitz. Die hinzugefügten Seitenzahlen nach Bekker Berol. 4°. (H.A. = historia animalium, Pol. = Politica, Eth. = Ethica ad Nicomachum, die andern Abkürzungen: de an. = de anima, rhet. poet. = rhetorica u. poetica, sind an sich deutlich).)</p>
+ <p class="zenoPLm0n4">Aristaen. &#8211; Aristaenetus. 4. ed. Pauw.</p>
+ <p class="zenoPLm0n4">Aristid. &#8211; Aelius Aristides. 2.</p>
+<p class="zenoPLm0n4">Arithm. probl. Arithmetica problemata in der Anthologie.</p>
+ <p class="zenoPLm0n4">Arr. Arrianus. &#8211; 2. An. = Expeditio Alexandri, ed. Krüger; Ind. = Indica, ed. Schmieder.</p>
+ <p class="zenoPLm0n4">Artem. &#8211; Artemidorus. 2. ed. Reiff.</p>
+ <p class="zenoPLm0n4">Asclep. &#8211; Asclepiades. III.? Dichter der Anthologie.</p>
+ <p class="zenoPLm0n4">Ath. &#8211; Athenaeus. 3. ed.Tauchnitz. Seitenzahlen nach Casaubonus.</p>
+ <p class="zenoPLm0n4">Att. Seew. &#8211; Urkunden über das Seewesen des attischen Staats von Böckh, Berlin 1840.</p>
+ <p class="zenoPLm0n4">B.A. &#8211; Anecdota Graeca Bekkeri.</p>
+ <p class="zenoPLm0n4">Babr. &#8211; Babrius. 2. ed. Lachmann.</p>
+ <p class="zenoPLm0n4">Bacchyl. &#8211; Bacchylides. V.</p>
+ <p class="zenoPLm0n4">Batr. &#8211; Batrachomyomachia Homeri.</p>
+ <p class="zenoPLm0n4">Bian. &#8211; Bianor. 1. Dichter der Anthologie.</p>
+ <p class="zenoPLm0n4">Buttm. &#8211; Lex. Buttmanns Lexilogus.</p>
+ <p class="zenoPLm0n4">Callim. &#8211; Callimachus. III. ed. Ernesti. Die Epigramme nach der Anthologie.</p>
+ <p class="zenoPLm0n4">ch. &#8211; bedeutet, daß die Stelle in dem Chor eines Tragikers vorkommt.</p>
+ <p class="zenoPLm0n4">Christod. &#8211; Christodorus. 5. Anthologie.</p>
+ <p class="zenoPLm0n4">Cic. &#8211; Cicero (fam. = epistolae ad familiares).</p>
+ <p class="zenoPLm0n4">Clem. Al. &#8211; Clemens Alexandrinus. 2.</p>
+ <p class="zenoPLm0n4">Col., Coluth. &#8211; Coluthus. 6. ed. Schäfer.</p>
+ <p class="zenoPLm0n4">Cr. An. &#8211; Crameri Anecdota.</p>
+ <p class="zenoPLm0n4">Crat., Cratin. &#8211; Cratinus.</p>
+ <p class="zenoPLm0n4">Crat. Theb. &#8211; Crates Thebanus in der Anthologie.</p>
+ <p class="zenoPLm0n4">Crin., Crinag. &#8211; Crinagoras. 1. Dichter der Anthologie</p>
+ <p class="zenoPLm0n4">Ctes. &#8211; Ctesias. IV.</p>
+ <p class="zenoPLm0n4">Dem. &#8211; Demosthenes. IV. ed. Bekker in oratores attici (Lept. = Leptinea, ed. Wolf; Mid. = Midiana, ed. Buttmann).</p>
+ <p class="zenoPLm0n4">Demad. &#8211; Demades. IV. ed. Bekker in oratores attici.</p>
+ <p class="zenoPLm0n4">Demetr. &#8211; Demetrius.</p>
+ <p class="zenoPLm0n4">Democr. &#8211; Democritus.</p>
+ <p class="zenoPLm0n4">Demon. &#8211; Demonax.</p>
+ <p class="zenoPLm0n4">Din. &#8211; Dinarchus. IV. ed. Bekker in oratt. att.</p>
+ <p class="zenoPLm0n4">Diod. &#8211; Diodorus. 1. Dichter der Anthologie.</p>
+ <p class="zenoPLm0n4">Diog., Diogen. &#8211; Diogenianus, nach den Paroemiographi ed. Leutsch u. Schneidewin.</p>
+<p class="zenoPLm0n4">D.C. u. D. Cass. Dio Cassius. 2. ed. Tauchnitz.</p>
+<p class="zenoPLm0n4">D.H. u. D. Hal. Dionysius Halicarnassensis. 1. (A.R., oder wenn nichts dabei steht, Antiquitates Romanae, ed. Reiske; C.V. de Compositione verborum, ed. Schäfer).</p>
+ <p class="zenoPLm0n4">D. Per. od. Dion. Per. &#8211; Dionysius Periegetes, ed. Meineke.</p>
+ <p class="zenoPLm0n4">D.L. &#8211; Diogenes Laertius, ed. Hübner.</p>
+ <p class="zenoPLm0n4">D. Sic. &#8211; Diodorus Siculus. I. ed. Dindorf.</p>
+ <p class="zenoPLm0n4">Diosc. &#8211; Dioscorides.</p>
+ <p class="zenoPLm0n4">Drac. &#8211; Draco aus Stratonike. 1. ed. Hermann.</p>
+ <p class="zenoPLm0n4">Ep. &#8211; Epigramm, Ep. ad. = Epigramma adespoton, aus der Anthologie.</p>
+ <p class="zenoPLm0n4">ep. &#8211; episch.</p>
+ <p class="zenoPLm0n4">Epic. &#8211; Epicurus.</p>
+ <p class="zenoPLm0n4">Epich. &#8211; Epicharmus.</p>
+ <p class="zenoPLm0n4">Eratosth. &#8211; Eratosthenes.</p>
+ <p class="zenoPLm0n4">Erin. &#8211; Erinna in der Anthologie.</p>
+ <p class="zenoPLm0n4">E.G. &#8211; Etymologicum Gudianum.</p>
+ <p class="zenoPLm0n4">E.M. &#8211; Etymologicum Magnum.</p>
+ <p class="zenoPLm0n4">Eucl. &#8211; Euclides. IV.</p>
+ <p class="zenoPLm0n4">Euod. &#8211; Euodus. 1. Dichter der Anthologie.</p>
+ <p class="zenoPLm0n4">Eur. &#8211; Euripides. V. Die Verse in der Regel nach Musgrave, doch auch nach den einzelnen Ausgaben von Hermann u. Seidler (die Stücke sind leicht zu erkennen, I.A. = Iphigenia in Aulide, I.T. = Iphigenia in Tauride, H.F. od. H.f. = Hercules furens).</p>
+ <p class="zenoPLm0n4">Eus., Euseb. &#8211; Eusebius. 4.</p>
+ <p class="zenoPLm0n4">Eust. &#8211; Eustathius. 12.</p>
+ <p class="zenoPLm0n4">frg. &#8211; fragmentum, frg. inc. = fragmentum incertum. Die fragmente der Tragiker nach Dindorf.</p>
+ <p class="zenoPLm0n4">Gaetul. &#8211; Gaetulicus. Dichter der Anthologie.</p>
+ <p class="zenoPLm0n4">Gal., Galen. &#8211; Galenus.</p>
+ <p class="zenoPLm0n4">Geop. &#8211; Geoponica.</p>
+ <p class="zenoPLm0n4">Harp., Harpocr. &#8211; Harpocration. 4. ed. Bekker.</p>
+ <page nr="16"></page> <p class="zenoPLm0n4">H., Hom. &#8211; Homerus, ed. Wolf. u. Bekker, H.h. = Homeri hymni.</p>
+ <p class="zenoPLm0n4">Hdn. &#8211; Herodian. 3. ed. Bekker. Hdn. <i>&#960;. &#956;&#959;&#957;.</i></p>
+<p class="zenoPLm0n4"><i>&#955;&#949;&#958;. = &#960;&#949;&#961;&#8054; &#956;&#959;&#957;&#8053;&#961;&#959;&#965;&#962; &#955;&#8051;&#958;&#949;&#969;&#962;, &#956;&#959;&#957;.</i>, ed. Dindorf.</p>
+ <p class="zenoPLm0n4">Hedyl. &#8211; Hedylus. III. Dichter der Anthologie.</p>
+ <p class="zenoPLm0n4">Hel., Heliod. &#8211; Heliodorus. 4. ed. Schmid.</p>
+ <p class="zenoPLm0n4">Hellan. &#8211; Hellanicus. V. ed. Sturz.</p>
+ <p class="zenoPLm0n4">Heph. &#8211; Hephaestion, ed. Gaisford.</p>
+ <p class="zenoPLm0n4">Her. &#8211; Herodotus. V. ed. Reiz.</p>
+ <p class="zenoPLm0n4">Her. Attic. &#8211; Herodes Atticus.</p>
+ <p class="zenoPLm0n4">Hermog. &#8211; Hermogenes.</p>
+ <p class="zenoPLm0n4">Hes. ohne Zusatz &#8211; Hesychius.</p>
+ <p class="zenoPLm0n4">Hes. &#8211; Hesiodus, ed. Göttling (Th. = Theogonia, O. = Opera et dies, Sc. = scutum Herculis).</p>
+ <p class="zenoPLm0n4">Hierocl. &#8211; Hierocles.</p>
+ <p class="zenoPLm0n4">Hipp. &#8211; Hippocrates. V.</p>
+ <p class="zenoPLm0n4">Hippon. &#8211; Hipponax.</p>
+ <p class="zenoPLm0n4">Hyperid. &#8211; Hyperides. IV. ed. Bekker.</p>
+ <p class="zenoPLm0n4">Iambl. &#8211; Iamblichus. 4. V.P. = de vita Pythagorae, ed. Kießling.</p>
+ <p class="zenoPLm0n4">Il. &#8211; Ilias Homeri.</p>
+ <p class="zenoPLm0n4">Inscr. &#8211; Inscriptiones. Die babei stehenden Zahlen nach den Nummern der Inschriften in Bockh's Corpus In-</p>
+<p class="zenoPLm0n4">scriptionum.</p>
+ <p class="zenoPLm0n4">Ios. &#8211; Iosephus. 1.</p>
+ <p class="zenoPLm0n4">Is., Isae. &#8211; Isaeus. IV. ed. Bekker in oratt. att.</p>
+ <p class="zenoPLm0n4">Isocr. &#8211; Isocrates. IV. ed. Bekker in oratt. att.</p>
+ <p class="zenoPLm0n4">Iul. Aeg. &#8211; Iulianus Aegyptius. 6. Dichter der Anthologie.</p>
+ <p class="zenoPLm0n4">Iust. Mart. &#8211; Iustinus Martyr.</p>
+ <p class="zenoPLm0n4">K.S. &#8211; Kirchenschriftsteller.</p>
+ <p class="zenoPLm0n4">Leon. Al. &#8211; Leonidas Alexandrinus. 1. in der Anthologie.</p>
+ <p class="zenoPLm0n4">Leon. Tar. &#8211; Leonidas Tarentinus. III. in der Anthologie.</p>
+ <p class="zenoPLm0n4">Leont. &#8211; Leontius scholasticus, Dichter der Anthologie.</p>
+ <p class="zenoPLm0n4">Lib. &#8211; Libanius. 4.</p>
+ <p class="zenoPLm0n4">Lob. &#8211; Lobeck (zum Phrynichus).</p>
+ <p class="zenoPLm0n4">Loll. Bass. &#8211; Lollius Bassius. 1. in der Anthologie.</p>
+ <p class="zenoPLm0n4">Long. &#8211; Longus. 5.</p>
+ <p class="zenoPLm0n4">Longin. &#8211; Longinus. 3.</p>
+ <p class="zenoPLm0n4">Luc. &#8211; Lucianus. 2. ed. Jakobitz (die Epigramme nach der Anthologie. D.D. = Dialogi Deorum u.s.w.).</p>
+ <p class="zenoPLm0n4">Lucill. &#8211; Lucillius. 1. in der Anthologie.</p>
+ <p class="zenoPLm0n4">Lyc., Lycophr. &#8211; Lycophron. III. ed. Bachmann.</p>
+ <p class="zenoPLm0n4">Lycurg. &#8211; Lycurgus orator. IV. ed. Bekker.</p>
+ <p class="zenoPLm0n4">Lys. &#8211; Lysias. IV. ed. Bekker in oratt. att.</p>
+ <p class="zenoPLm0n4">LXX. &#8211; Septuaginta.</p>
+ <p class="zenoPLm0n4">Mac., Maced. &#8211; Macedonius. 6. in der Anthologie.</p>
+ <p class="zenoPLm0n4">Man., Maneth. &#8211; Manetho, ed. Axt.</p>
+ <p class="zenoPLm0n4">M. Ant. u. M. Arg. &#8211; s. unter A.</p>
+ <p class="zenoPLm0n4">Max. Tyr. &#8211; Maximus Tyrius.</p>
+ <p class="zenoPLm0n4">Mein. &#8211; Meineke fragmenta comicorum graecorum.</p>
+ <p class="zenoPLm0n4">Mel. &#8211; Meleager. I. in der Anthologie.</p>
+ <p class="zenoPLm0n4">Men., Menand. &#8211; Menander. IV.</p>
+ <p class="zenoPLm0n4">Mion. &#8211; Mionnet description de medailles antiques, nach den im IX. Supplementband enthaltenen Indices.</p>
+ <p class="zenoPLm0n4">Moer. &#8211; Moeris Atticista. 2. ed. Bekker.</p>
+ <p class="zenoPLm0n4">Mosch. &#8211; Moschus. III.</p>
+ <p class="zenoPLm0n4">Mus. &#8211; Musaeus. 6.</p>
+ <p class="zenoPLm0n4">Nic. &#8211; Nicander. II. Al. = Alexipharmaca, u. Th. = Theriaca. ed. Schneider.</p>
+<p class="zenoPLm0n4">Nic. ar. Nicomachi institutiones arithmeticae.</p>
+ <p class="zenoPLm0n4">Nonn. &#8211; Nonnus. 5. D. = Dionysiaca, ohne Zusatz Periphras. Ioanni.</p>
+ <p class="zenoPLm0n4">Noss. &#8211; Nossis. IV. Dichterin der Anthologie.</p>
+ <p class="zenoPLm0n4">N.T. &#8211; Neues Testament.</p>
+ <p class="zenoPLm0n4">Od. &#8211; Od. Homeri.</p>
+ <p class="zenoPLm0n4">Opp. &#8211; Oppianus. II. (H., Hal. = Halieutica, C. = Cynegetica, Ix. = Ixeutica), ed. Schneider.</p>
+ <p class="zenoPLm0n4">Orph. &#8211; Orpheus, H. = Hymni, Arg. = Argonautica.</p>
+ <p class="zenoPLm0n4">Or. Sib. &#8211; Oracula Sibyllina.</p>
+ <p class="zenoPLm0n4">Palaeph. &#8211; Palaephatus.</p>
+ <p class="zenoPLm0n4">Pall. &#8211; Palladas. 5. in der Anthologie.</p>
+ <p class="zenoPLm0n4">Paroem. &#8211; Paroemiographi, ed. Leutsch u. Schneidewin.</p>
+ <p class="zenoPLm0n4">Parth. &#8211; Parthenius.</p>
+ <p class="zenoPLm0n4">P. Sil. u. Paul. Sil. &#8211; Paulus Silentarius. 6. in der Anthologie.</p>
+ <p class="zenoPLm0n4">Paus. &#8211; Pausanias. 2. ed. Bekker.</p>
+ <p class="zenoPLm0n4">Phan. &#8211; Phanias. II. in der Anthologie.</p>
+ <p class="zenoPLm0n4">Phil. &#8211; Philippus Thessalonicensis. 1. in der Anthologie.</p>
+ <p class="zenoPLm0n4">Philod. &#8211; Philodemus. I. in der Anthologie.</p>
+ <p class="zenoPLm0n4">Philostr. &#8211; Philostratus. 3.</p>
+ <p class="zenoPLm0n4">Philox. &#8211; Philoxenus.</p>
+ <p class="zenoPLm0n4">Phoc. &#8211; Phocylides. VI.</p>
+ <p class="zenoPLm0n4">Phot. &#8211; Photius. 9 (ohne Zusatz Photius lexicon; Zahlen dabei weisen auf die bibliotheca, ed. Bekker).</p>
+ <p class="zenoPLm0n4">Phryn. &#8211; Phrynichus. 2. ed. Lobeck.</p>
+ <p class="zenoPLm0n4">Pind. &#8211; Pindarus. V. ed. Böckh (Ol. = Olympiae, N. = Nemeae, P. = Pythiae, I. = Isthmiae).</p>
+ <p class="zenoPLm0n4">(Plan.) &#8211; Planudes' Anthologie.</p>
+ <p class="zenoPLm0n4">Plat. &#8211; Plato. IV. ed. Bekker; pag. nach H. Stephanus; benutzt ist Ast. lexicon Platonicum <page nr="17"></page> (die Abkürzungen der Dialogtitel sind einfach), Polit. = Politicus, Rep. = de Republica).</p>
+ <p class="zenoPLm0n4">Plotin. &#8211; Plotinus. 3.</p>
+ <p class="zenoPLm0n4">Plut. &#8211; Plutarchus. 2. ed. Hutten (gew. nach den Capiteln, seltener nach den Seitenzahlen dieser Ausgabe. Die Abkürzungen für die Titel der einzelnen Schriften sind einfach, Lyc. et Num. bedeutet Comparatio Lycurgi cum Numa).</p>
+ <p class="zenoPLm0n4">Pol. &#8211; Polybius. II. ed. Tauchnitz mit Benutzung von Schweighäufer's Index.</p>
+ <p class="zenoPLm0n4">Polem. &#8211; Polemon, sophistae laudationes funebres, ed. Orelli.</p>
+ <p class="zenoPLm0n4">Poll. &#8211; Pollux. 2. ed. Bekker.</p>
+ <p class="zenoPLm0n4">Polyaen. &#8211; Polyaenus.</p>
+ <p class="zenoPLm0n4">Porph. &#8211; Porphyrius. 3.</p>
+ <p class="zenoPLm0n4">Posidp. &#8211; Posidippus, Dichter der Anthologie.</p>
+ <p class="zenoPLm0n4">Procl. &#8211; Proclus. 5.</p>
+ <p class="zenoPLm0n4">Pt., Ptol. &#8211; Ptolemaeus. 2.</p>
+ <p class="zenoPLm0n4">Qu. Sm. &#8211; Quintus Smyrnaeus. 5. ed. Tauchnitz.</p>
+ <p class="zenoPLm0n4">Rhian. &#8211; Rhianus. III.</p>
+ <p class="zenoPLm0n4">Ruf. &#8211; Rufus.</p>
+ <p class="zenoPLm0n4">Rufin. &#8211; Rufinus, in der Anthologie.</p>
+ <p class="zenoPLm0n4">Sapph. &#8211; Sappho. VII. ed. Neue.</p>
+ <p class="zenoPLm0n4">Scaev. &#8211; Scaevola, in der Anthologie.</p>
+ <p class="zenoPLm0n4">Schol. &#8211; Scholiastae (Schol. Il. zu Homeri Ilias, ed. Bekker, Schol. Od. zu Homeri Odyssea, ed. Buttmann).</p>
+ <p class="zenoPLm0n4">Scymn. &#8211; Scymnus Chius, ed. Meineke.</p>
+ <p class="zenoPLm0n4">Sext. Emp. &#8211; Sextus Empiricus. 2. ed. Bekker.</p>
+ <p class="zenoPLm0n4">Simm. &#8211; Simmias, in der Anthologie.</p>
+ <p class="zenoPLm0n4">Sim., Simon. &#8211; Simonides. VI. in der Anthologie.</p>
+ <p class="zenoPLm0n4">Sol. &#8211; Solon.</p>
+ <p class="zenoPLm0n4">Soph. &#8211; Sophocles. V. ed. Hermann mit Benutzung von Ellendt's lexicon Sophocleum (O.R. = Oedipus Tyrannus, O.C. = Oedipus Coloneus).</p>
+ <p class="zenoPLm0n4">Sp., sp. &#8211; Spätete, Sp. D. = Spätere Dichter. Die Zeitbestimmung ergiebt entweder der Zusammenhang, oder es sind die Alexandriner und die folgenden Schriftsteller gemeint.</p>
+ <p class="zenoPLm0n4">St. B. &#8211; Stephanus Byzantius. 5. ed. Bcrkel.</p>
+ <p class="zenoPLm0n4">Stesich. &#8211; Stesichorus. VI.</p>
+ <p class="zenoPLm0n4">Stob. &#8211; Stobaeus, ed. Tauchnitz.</p>
+ <p class="zenoPLm0n4">Strab. &#8211; Strabo. 1. ed. Tauchnitz, pag. nach Casaubonus, Kapitell u. §. Nach Kramer.</p>
+ <p class="zenoPLm0n4">Strat. &#8211; Strato. 2. in bet Anthologie.</p>
+ <p class="zenoPLm0n4">S., Suid. &#8211; Suidas, ed. Bernhardy.</p>
+ <p class="zenoPLm0n4">Synes. &#8211; Synesius.</p>
+ <p class="zenoPLm0n4">Th. M. &#8211; Thomas Magister, ed. Ritschl.</p>
+ <p class="zenoPLm0n4">Theaet. Sch. &#8211; Theaetetus Scholasticus, in der Anthologie.</p>
+ <p class="zenoPLm0n4">Them. &#8211; Themistius. 4. ed. Dindorf.</p>
+ <p class="zenoPLm0n4">Theocr. &#8211; Theocritus. III. (ohne Zusatz sind die Idyllen gemeint).</p>
+ <p class="zenoPLm0n4">Theod., Theodor. &#8211; Theodoridas, in der Anthologie.</p>
+ <p class="zenoPLm0n4">Theogn. &#8211; Theognis, ed. Welcker.</p>
+ <p class="zenoPLm0n4">Theophr. &#8211; Theophrastus. III.</p>
+ <p class="zenoPLm0n4">Thuc. &#8211; Thucydides. V. ed. Krüger.</p>
+ <p class="zenoPLm0n4">Tim. &#8211; Timaeus, ed. Ruhnken.</p>
+ <p class="zenoPLm0n4">Tragg. &#8211; Tragiker.</p>
+ <p class="zenoPLm0n4">Tryph. &#8211; Tryphiodorus. 6. ed. Tauchnitz.</p>
+ <p class="zenoPLm0n4">Tyrt. &#8211; Tyrtaeus.</p>
+ <p class="zenoPLm0n4">Tzetz. &#8211; Tzetzes. 12. (A.H. Antehomerica, P.H. Posthomerica, ed. Bekker).</p>
+ <p class="zenoPLm0n4">VLL. &#8211; Vetera Lexica, d.i. Suidas, Hesychius, Etymologica, Photius.</p>
+ <p class="zenoPLm0n4">Xen. &#8211; Xenophon. IV. (An. = Anabasis, ed. Krüger, Cyr. = Cyropaedia, ed. Bornemann, Hell. = Hellenica, ed. Schneider, O. = Oeconomicus).</p>
+ <p class="zenoPLm0n4">Xenocr. &#8211; Xenocrates, 1.</p>
+ <p class="zenoPLm0n4">Zen., Zenob. &#8211; Zenobius, in den Paroemiographi.</p>
+ <p class="zenoPLm0n4">Zenod. &#8211; Zenodotus.</p>
+ <p class="zenoPLm0n4">Zon. &#8211; Zonaras.</p>
+</text>
+</article>
+</article>
+</catdiv>
+ </articlegroup>
+ 
+</catdiv>
+</doc>
