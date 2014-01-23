@@ -107,3 +107,13 @@ task railsCmd(type: RubyExec, dependsOn: [backend.classes, generateClasspathScri
   }
 }
 
+task railsServer(type: RubyExec, dependsOn: [backend.classes, generateClasspathScript]) {
+    description "Run the default server for the rails app (WEBRick)"
+
+    workingDir = appBase
+
+    doFirst {
+        args('-S', 'rails', 'server')
+        logger.warn(commandLine.join(' '))
+    }
+}
