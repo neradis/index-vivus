@@ -193,11 +193,8 @@ public abstract class Importer {
                 AbbreviationOccurrenceImportTransaction abbrvOccImp = new AbbreviationOccurrenceImportTransaction(prevEntry.get(), abbrv);
                 DbHelper.transaction(abbrvOccImp);
             }
-
         }
-
     }
-
 
     public void importFromDefaultLocation() throws IOException, SAXException {
         importDir(LocationProvider.getInstance().getDictionaryDir());
