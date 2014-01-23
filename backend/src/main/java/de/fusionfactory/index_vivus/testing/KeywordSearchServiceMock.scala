@@ -27,6 +27,9 @@ class KeywordSearchServiceMock extends IKeywordSearchService{
   def getCompletions(kw: String, lang: Language) = wordsByLanguage(lang).filter(_.startsWith(kw))
 
   private def dictEntryStub(kw: String, lang: Language) = new IDictionaryEntry {
+
+    def getLanguage: Language = Language.LATIN
+
     def setDescription(description: String): Unit = ???
 
     def setKeyword(keyword: String): Unit = ???

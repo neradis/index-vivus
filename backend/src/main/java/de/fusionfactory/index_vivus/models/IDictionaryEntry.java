@@ -1,6 +1,7 @@
 package de.fusionfactory.index_vivus.models;
 
 import com.google.common.base.Optional;
+import de.fusionfactory.index_vivus.services.Language;
 
 /**
  * Created by Markus Ackermann.
@@ -9,6 +10,8 @@ import com.google.common.base.Optional;
 public interface IDictionaryEntry {
 
     public int getId();
+
+    public Language getLanguage();
 
     public String getKeyword();
 
