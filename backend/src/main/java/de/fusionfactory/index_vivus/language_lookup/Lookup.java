@@ -38,8 +38,9 @@ public class Lookup extends LookupMethod {
 		_lookupMethods.addAll(Arrays.asList(
 				new WordlistLookup(_language),
 				new WiktionaryLookup(_language),
-				new StemmedWordListLookup(_language),
-				new UniLeStemmedWordListLookup(_language)));
+				new StemmedWordListLookup(_language)
+				, new UniLeStemmedWordListLookup(_language)
+		));
 
 		germanTokenMemory = GermanTokenMemory.getInstance();
 	}
@@ -57,9 +58,7 @@ public class Lookup extends LookupMethod {
 		ArrayList<LanguageLookupResult> _isExpectedLanguage = new ArrayList<LanguageLookupResult>();
 
 		for (String word : listWords) {
-			if (word.length() > 0) {
-				executorService.execute(new BatchThreadHandler(word, countDownLatch, this, _isExpectedLanguage));
-			}
+			executorService.execute(new BatchThreadHandler(word, countDownLatch, this, _isExpectedLanguage));
 		}
 		countDownLatch.await();
 		return _isExpectedLanguage;
@@ -157,8 +156,10 @@ public class Lookup extends LookupMethod {
 
 		@Override
 		public void run() {
-			boolean res = lookup.IsExpectedLanguage(word);
-			languageLookupResults.add(new LanguageLookupResult(word, Lookup.parseClassPathToName(Lookup.class.getCanonicalName()), res, lookup._language));
+			if (word.length() > 0) {
+				boolean res = lookup.IsExpectedLanguage(word);
+				languageLookupResults.add(new LanguageLookupResult(word, Lookup.parseClassPathToName(Lookup.class.getCanonicalName()), res, lookup._language));
+			}
 			latch.countDown();
 		}
 	}
