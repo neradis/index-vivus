@@ -1,3 +1,4 @@
+import org.apache.tools.ant.filters.ReplaceTokens
 apply plugin: 'java'
 apply plugin: 'scala'
 apply plugin: 'eclipse'
@@ -73,6 +74,11 @@ task filterPropertyResoures(type: Copy) {
 
   include('*.properties')
   expand(project.properties)
+  filter { String line ->
+        def result = line.replace('\\', '\\\\')
+        println "Processing $line => $result"
+        result
+  }
 }
 
 processResources {

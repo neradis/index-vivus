@@ -94,9 +94,8 @@ public abstract class Importer {
     private void parseEntryData(NodeList entries) throws IOException, SAXException {
         //foreach entry
         Optional<DictionaryEntry> prevEntry = Optional.absent();
-        long currentEntryCounter = 0;
+        long processed = 0, added = 0;
         for (int i = 0; i < entries.getLength(); i++) {
-            currentEntryCounter++;
             //TODO: comment in for testing, commented out only for the commit!
             //if(currentEntryCounter > 3)
             //    break;
@@ -179,21 +178,18 @@ public abstract class Importer {
             //save entry to the database within a transaction and return the new previous
             //entry for referencing in the next iteration
 
-            EntryImportTransaction entryImp = new EntryImportTransaction(prevEntry, currentEntry);
+            EntryImportTransaction entryImp = new EntryImportTransaction(prevEntry, currentEntry, abbrvMatches);
             DbHelper.transaction(entryImp);
 
+            processed++;
+            if (entryImp.isAdded())
+                added++;
             //prevEntry is the processed currentEntry !
             prevEntry = entryImp.getPrevE();
             // save all the abbreviation occurrences in the current entry
-
-
-            //logger.info(abbrvMatches.size());
-
-            for (Abbreviation abbrv : abbrvMatches) {
-                AbbreviationOccurrenceImportTransaction abbrvOccImp = new AbbreviationOccurrenceImportTransaction(prevEntry.get(), abbrv);
-                DbHelper.transaction(abbrvOccImp);
-            }
         }
+        logger.info("Processed dictionary entries: " + processed);
+        logger.info("Added dictionary entries: " + added);
     }
 
     public void importFromDefaultLocation() throws IOException, SAXException {
@@ -211,7 +207,7 @@ public abstract class Importer {
         if (files != null) {
             for (File fileHandle : files) {
                 if (fileHandle.isFile() && fileHandle.getName().startsWith(sourceFilePrefix())
-                        &&fileHandle.getName().contains(".xml")) {
+                        && fileHandle.getName().contains(".xml")) {
 
                     logger.info("Processing '" + fileHandle.getAbsoluteFile() + "'...");
                     noFiles = false;
@@ -239,7 +235,7 @@ public abstract class Importer {
 
             }
         }
-        if(noFiles) {
+        if (noFiles) {
             throw new FileNotFoundException("Keine passenden Wörterbuchdateien gefunden");
         }
     }
@@ -279,22 +275,27 @@ public abstract class Importer {
 
         @Override
         public Object perform(Session tx) {
-
-            for(int a = 0; a < abbreviations.size(); a++) {
+            long added = 0;
+            for (int a = 0; a < abbreviations.size(); a++) {
                 Abbreviation abbrv = abbreviations.get(a);
                 List<Abbreviation> duplicates = abbrv.crud(tx).duplicateList();
                 Abbreviation abbrvWithId;
-                if(duplicates.isEmpty()) {
+                if (duplicates.isEmpty()) {
                     abbrvWithId = abbrv.crud(tx).insertAsNew();
-                    abbreviations.set(a,abbrvWithId);
+                    added++;
                 } else {
                     String dupList = Joiner.on(" \n").join(duplicates);
                     logger.warn(format("Already found abbreviations in database with same content as %s:%n%s%n - SKIPPED",
                             abbrv, dupList));
+                    //take entry from database for id instead of insert a new one
+                    //because of the warning it's safe to use get() without check
+                    abbrvWithId = Abbreviation.fetchByShortForm(abbrv.getShortForm()).get();
                 }
+                abbreviations.set(a, abbrvWithId);
 
             }
-            logger.info("Added Abbreviations: " + abbreviations.size());
+            logger.info("Processed abbreviations: " + abbreviations.size());
+            logger.info("Added abbreviations: " + added);
             return null;
         }
 
@@ -306,10 +307,14 @@ public abstract class Importer {
     public class EntryImportTransaction extends DbHelper.Operations<Object> {
         private Optional<DictionaryEntry> prevE;
         private DictionaryEntry currentE;
+        private ArrayList<Abbreviation> abbrvMatches;
+        private boolean added;
 
-        public EntryImportTransaction(Optional<DictionaryEntry> prevEntry, DictionaryEntry currentEntry) {
-            prevE = prevEntry;
-            currentE = currentEntry;
+        public EntryImportTransaction(Optional<DictionaryEntry> prevE, DictionaryEntry currentE, ArrayList<Abbreviation> abbrvMatches) {
+            this.prevE = prevE;
+            this.currentE = currentE;
+            this.abbrvMatches = abbrvMatches;
+            this.added = false;
         }
 
         @Override
@@ -322,24 +327,41 @@ public abstract class Importer {
                 }
                 currentE = currentE.crud(tx).insertAsNew();
                 if (prevE.isPresent()) {
-
                     prevE.get().setNextEntryId(currentE.getIdOptional());
                     prevE.get().crud(tx).update();
                 }
-                //set current Entry as previous Entry
-                logger.info("prev: " + prevE);
-                logger.info("current: " + currentE);
-                prevE = Optional.of(currentE);
+                added = true;
             } else {
                 String dupList = Joiner.on(" \n").join(duplicates);
                 logger.warn(format("Already found entries in database with same content as %s:%n%s%n - SKIPPED",
                         currentE, dupList));
+                //take entry from database for id instead of inserting it as a new one
+                //because of the warning it's safe to use get() without check
+                currentE = DictionaryEntry.fetchByKeywordAndGroupId(currentE.getKeyword(), currentE.getKeywordGroupIndex()).get();
+                added = false;
             }
+            logger.debug("prev: " + prevE);
+            logger.debug("current: " + currentE);
+            //add abbreviation occurrences for current entry
+            for (Abbreviation abbrv : abbrvMatches) {
+                if (!AbbreviationOccurrence.exists(currentE.getId(), abbrv.getId(), tx)) // no duplicate entry
+                    AbbreviationOccurrence.create(currentE.getId(), abbrv.getId(), tx);
+                else {
+                    logger.warn(format("Skipping already added abbreviation occurrence relation: %s#%d - %s",
+                            currentE.getKeyword(), currentE.getKeywordGroupIndex(), abbrv.getShortForm()));
+                }
+            }
+            //set current Entry as previous Entry
+            prevE = Optional.of(currentE);
             return null;
         }
 
         public Optional<DictionaryEntry> getPrevE() {
             return prevE;
+        }
+
+        public boolean isAdded() {
+            return added;
         }
     }
 }

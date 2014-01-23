@@ -3,6 +3,7 @@ package de.fusionfactory.index_vivus.testing;
 import de.fusionfactory.index_vivus.configuration.SettingsProvider;
 import de.fusionfactory.index_vivus.xmlimport.GeorgesImporter;
 import de.fusionfactory.index_vivus.xmlimport.Importer;
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.xml.sax.SAXException;
 
@@ -17,12 +18,15 @@ public class ImporterTest {
     private static Logger logger = Logger.getLogger(ImporterTest.class);
     public static void main(String []args) {
         Importer imp = new GeorgesImporter();
-        logger.info("Starte Importer-Klasse...");
+        logger.setLevel(Level.DEBUG);
+        logger.info("Starting Importer...");
         //IDictionaryEntry a = ModelFactory.createDictionaryEntry("abc", "Ein Test", 1);
         //logger.info(a.toString());
         try {
-            logger.info(SettingsProvider.getInstance().getDatabaseUrl());
-            imp.importDir("D:\\Temp\\xmlData\\Georges-1913_edit");
+            logger.debug(SettingsProvider.getInstance().getDatabaseUrl());
+            //TODO: execute when DefaultLocation detection runs properly
+            imp.importFromDefaultLocation();
+            //imp.importDir("D:\\Eigene Daten\\Projekte\\java\\index-vivus\\backend\\inputs\\test\\dictionaries");
         } catch (IOException e) {
             e.printStackTrace();
         } catch (SAXException e) {
