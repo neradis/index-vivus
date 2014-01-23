@@ -24,6 +24,7 @@ public class Lookup extends LookupMethod {
 
 	/**
 	 * Sets the Max Threads to process the batch request.
+	 *
 	 * @param i
 	 */
 	public static void SetMaxBatchThreads(int i) {
@@ -45,6 +46,7 @@ public class Lookup extends LookupMethod {
 
 	/**
 	 * Calls an Batch Language Check of given Wordlist.
+	 *
 	 * @param listWords
 	 * @return
 	 * @throws InterruptedException
@@ -55,7 +57,9 @@ public class Lookup extends LookupMethod {
 		ArrayList<LanguageLookupResult> _isExpectedLanguage = new ArrayList<LanguageLookupResult>();
 
 		for (String word : listWords) {
-			executorService.execute(new BatchThreadHandler(word, countDownLatch, this, _isExpectedLanguage));
+			if (word.length() > 0) {
+				executorService.execute(new BatchThreadHandler(word, countDownLatch, this, _isExpectedLanguage));
+			}
 		}
 		countDownLatch.await();
 		return _isExpectedLanguage;
@@ -63,6 +67,7 @@ public class Lookup extends LookupMethod {
 
 	/**
 	 * Returns an List which contains only Words in given Language.
+	 *
 	 * @param listWords
 	 * @return
 	 * @throws InterruptedException
