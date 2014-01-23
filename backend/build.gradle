@@ -66,8 +66,18 @@ tasks.withType(ScalaCompile) {
   scalaCompileOptions.additionalParameters = ["-target:jvm-$targetCompatibility".toString()]
 }
 
-processResources {
+task filterPropertyResoures(type: Copy) {
+  from(processResources.source)
+  into(processResources.destinationDir)
+
+  include('*.properties')
   expand(project.properties)
+}
+
+processResources {
+  dependsOn filterPropertyResoures
+
+  exclude('*.properties')
 }
 
 task processAllResources(dependsOn: [processResources, processTestResources])

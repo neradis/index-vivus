@@ -35,13 +35,13 @@ public class LoadFixtures {
                     if (duplicates.isEmpty()) {
 
                         if (prevEntry.isPresent()) {
-                            de.setPrevId(Optional.of(prevEntry.get().getId()));
+                            de.setPreviousEntryId(Optional.of(prevEntry.get().getId()));
                         }
 
                         DictionaryEntry savedEntry = de.crud(tx).insertAsNew();
 
                         if (prevEntry.isPresent()) {
-                            prevEntry.get().setNextId(savedEntry.getIdOptional());
+                            prevEntry.get().setNextEntryId(savedEntry.getIdOptional());
                             prevEntry.get().crud(tx).update();
                         }
 
@@ -105,10 +105,14 @@ public class LoadFixtures {
                 fixtureDesc, insertCandidate, dupListing));
     }
 
-    public static void main(String[] args) {
+    public static void createFixtures() {
         createMissingTables();
         createDictionaryEntryFixtures();
         createAbbreviationFixtures();
         addAbbreviationOccurrenceRelations();
+    }
+
+    public static void main(String[] args) {
+        createFixtures();
     }
 }

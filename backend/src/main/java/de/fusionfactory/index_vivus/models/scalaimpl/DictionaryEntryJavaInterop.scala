@@ -1,6 +1,6 @@
 package de.fusionfactory.index_vivus.models.scalaimpl
 
-import de.fusionfactory.index_vivus.models.{ICrudOpsProvider, ICrudOps, WordType}
+import de.fusionfactory.index_vivus.models.{IDictionaryEntry, ICrudOpsProvider, ICrudOps, WordType}
 import de.fusionfactory.index_vivus.tools.scala.Utils.OptionConversions._
 import scala.slick.driver.H2Driver.simple.{Session => H2Session, _}
 import scala.slick.session.Session
@@ -10,6 +10,7 @@ import de.fusionfactory.index_vivus.persistence.SlickTools.{database => db}
 import java.util.{List => JList}
 import scala.collection.convert.wrapAll._
 import com.google.common.base.Optional
+import DictionaryEntryBean._
 import de.fusionfactory.index_vivus.persistence.ORMError
 
 /**
@@ -34,19 +35,24 @@ object DictionaryEntryBean {
 }
 
 
-trait DictionaryEntryBean extends ICrudOpsProvider[DictionaryEntry,DictionaryEntryCrudOps] { this: DictionaryEntry =>
+trait DictionaryEntryBean extends ICrudOpsProvider[DictionaryEntry,DictionaryEntryCrudOps] with IDictionaryEntry { this: DictionaryEntry =>
 
   def getId: Int = id.get
 
   def getIdOptional: Optional[Integer] = id
 
-  def getPrevId: Optional[Integer] = prevId
 
-  def setPrevId(pid: Optional[Integer]): Unit = prevId = pid
+  def getWordType: WordType = byte2Pos(posIdx)
 
-  def getNextId: Optional[Integer] = nextId
+  def setWordType(wordType: WordType): Unit = posIdx = pos2Byte(wordType)
 
-  def setNextId(nid: Optional[Integer]): Unit = nextId = nid
+  def getPreviousEntryId: Optional[Integer] = prevId
+
+  def setPreviousEntryId(pid: Optional[Integer]): Unit = prevId = pid
+
+  def getNextEntryId: Optional[Integer] = nextId
+
+  def setNextEntryId(nid: Optional[Integer]): Unit = nextId = nid
 
   def getHtmlDescription: Optional[String] = htmlDescription
 
