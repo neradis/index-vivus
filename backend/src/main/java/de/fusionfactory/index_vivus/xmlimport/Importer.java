@@ -50,6 +50,7 @@ public abstract class Importer {
     protected static Logger logger = Logger.getLogger(Importer.class);
     protected final Optional<Integer> integerAbsent = Optional.absent();
     protected final Optional<String> stringAbsent = Optional.absent();
+    protected final long logEntryBatchSize = 100;
     protected ArrayList<Abbreviation> abbreviations = null;
 
     public Importer() {
@@ -94,11 +95,8 @@ public abstract class Importer {
     private void parseEntryData(NodeList entries) throws IOException, SAXException {
         //foreach entry
         Optional<DictionaryEntry> prevEntry = Optional.absent();
-        long processed = 0, added = 0;
+        long processed = 0, added = 0, logCounter = 0, count = entries.getLength();
         for (int i = 0; i < entries.getLength(); i++) {
-            //TODO: comment in for testing, commented out only for the commit!
-            //if(currentEntryCounter > 3)
-            //    break;
             String keyword = "", description = "", descriptionHtml = null;
             WordType wordType = WordType.UNKNOWN;
             byte keyGroupIndex = 1;
@@ -163,15 +161,15 @@ public abstract class Importer {
                                 lastAbbrv = aBuf;
                             }
                             //WTF java: adding NULL as a word ?
-
                             if (descriptionHtml == null)
                                 descriptionHtml = html;
                             else
-                                descriptionHtml += html;
+                                descriptionHtml += html + "\n";
                         }
                     }
+                    descriptionHtml = descriptionHtml.trim();
                     //strips all the html tags and unescape resulting string from cleaner
-                    description = StringEscapeUtils.unescapeHtml4(Jsoup.clean(descriptionHtml, Whitelist.none()));
+                    description = StringEscapeUtils.unescapeHtml4(Jsoup.clean(descriptionHtml, "", Whitelist.none(),new org.jsoup.nodes.Document.OutputSettings().prettyPrint(false)));
                 }
             }
             DictionaryEntry currentEntry = DictionaryEntry.create(sourceLanguage(), integerAbsent, integerAbsent, keyGroupIndex, keyword, description, Optional.of(descriptionHtml), wordType);
@@ -184,6 +182,10 @@ public abstract class Importer {
             processed++;
             if (entryImp.isAdded())
                 added++;
+            logCounter++;
+            if(logCounter >= logEntryBatchSize) {
+                logCounter = 0;
+            }
             //prevEntry is the processed currentEntry !
             prevEntry = entryImp.getPrevE();
             // save all the abbreviation occurrences in the current entry
@@ -223,7 +225,6 @@ public abstract class Importer {
                             this.parseAbbrvData((NodeList) XPathFactory.newInstance().newXPath().evaluate("//article[contains(lem,'Verzeichnis')]",
                                     content.getDocumentElement(),
                                     XPathConstants.NODESET));
-
                         } else {
                             // all entries in the file
                             this.parseEntryData(content.getElementsByTagName("article"));

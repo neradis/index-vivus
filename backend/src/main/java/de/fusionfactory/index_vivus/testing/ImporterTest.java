@@ -1,6 +1,7 @@
 package de.fusionfactory.index_vivus.testing;
 
 import de.fusionfactory.index_vivus.configuration.SettingsProvider;
+import de.fusionfactory.index_vivus.models.scalaimpl.DictionaryEntry;
 import de.fusionfactory.index_vivus.xmlimport.GeorgesImporter;
 import de.fusionfactory.index_vivus.xmlimport.Importer;
 import org.apache.log4j.Level;
@@ -20,6 +21,7 @@ public class ImporterTest {
         Importer imp = new GeorgesImporter();
         //logger.setLevel(Level.DEBUG);
         logger.info("Starting Importer...");
+
         try {
             logger.debug(SettingsProvider.getInstance().getDatabaseUrl());
             imp.importFromDefaultLocation();
