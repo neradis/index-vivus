@@ -2,7 +2,6 @@ package de.fusionfactory.index_vivus.testing
 
 import de.fusionfactory.index_vivus.services.{Language, IKeywordSearchService}
 import de.fusionfactory.index_vivus.services.Language.{LATIN, GREEK}
-import java.util
 import scala.collection.convert.wrapAsJava._
 import de.fusionfactory.index_vivus.models.{WordType, ICrudOps, IDictionaryEntry}
 import com.google.common.base.Optional
@@ -36,10 +35,6 @@ class KeywordSearchServiceMock extends IKeywordSearchService{
 
     def setNextEntryId(id: Optional[Integer]): Unit = ???
 
-    def getNextEntry: Optional[_ <: IDictionaryEntry] = ???
-
-    def getPreviousEntry: Optional[_ <: IDictionaryEntry] = ???
-
     def getWordType: WordType = WordType.UNKNOWN
 
     def getHtmlDescription: Optional[String] = Optional.absent()
@@ -50,23 +45,17 @@ class KeywordSearchServiceMock extends IKeywordSearchService{
 
     def setWordType(wordType: WordType): Unit = ???
 
-    def setNextEntry(entry: Optional[_ <: IDictionaryEntry]): Unit = ???
-
-    def getRelated: util.List[_ <: IDictionaryEntry] = ???
-
     def getNextEntryId: Optional[Integer] = ???
 
     def crud(): ICrudOps[_ <: IDictionaryEntry] = ???
 
     def setPreviousEntryId(id: Optional[Integer]): Unit = ???
 
-    def setPreviousEntry(entry: Optional[_ <: IDictionaryEntry]): Unit = ???
-
     def getKeyword: String = kw
 
-    def getKeywordGroupIndex: Int = 1
+    def getKeywordGroupIndex: Byte = 1
 
-    def setKeywordGroupIndex(keywordGroupIndex: Int): Unit = ???
+    def setKeywordGroupIndex(keywordGroupIndex: Byte): Unit = ???
 
     def setHtmlDescription(description: Optional[String]): Unit = ???
 

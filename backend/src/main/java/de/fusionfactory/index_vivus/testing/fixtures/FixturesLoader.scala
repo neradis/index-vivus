@@ -1,4 +1,4 @@
-package de.fusionfactory.index_vivus.testing
+package de.fusionfactory.index_vivus.testing.fixtures
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.core.JsonFactory

@@ -10,8 +10,11 @@ import java.util.{List => JList}
 object ScalaImpl {
 
     def getActiveEnvironment(envVars : JList[String]) = {
-      val envs = List("RAILS_ENV", "ENV").map(sys.env.get).filter(_.isDefined).map(x => Environment.byString(x.get))
-      envs.toSet.toList match {
+      val envs = List("RAILS_ENV", "ENV").map(sys.env.get).filter(_.isDefined).map(_.get)
+      val prop = sys.props.get("env").toList
+      val combEnvs = (envs ++ prop.toList).map(x => Environment.byString(x))
+
+      combEnvs.toSet.toList match {
         case Nil => Environment.DEFAULT_ENVIRONMENT
         case List(env) => env
         case List(names @ _*) => throw new Environment.AmbiguousEnvironmentException(names.map(_.name) : _*)

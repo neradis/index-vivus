@@ -68,7 +68,7 @@ module DictionaryHelper
         end
     end
 
-    class KeywordSearchService
+    class KeywordSearchServiceRubyMock
         DictEntries = [
             DictionaryEntry.new("verbum", 1, "Noun", "das Wort, der Ausdruck, im Plur. die Worte, Ausdrücke, die Rede, im allg."),
             DictionaryEntry.new("verbum", 2, "Noun", "A) die bloße Rede, das leere Wort, der Schein, Cic.: alci dare verba, leere Worte bieten = etwas aufbinden, anführen, hintergehen, überlisten, betrügen, hinters Licht führen, täuschen, ein Schnippchen schlagen

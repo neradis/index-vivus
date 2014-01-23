@@ -1,6 +1,8 @@
 package de.fusionfactory.index_vivus.tools.scala
 
 import com.google.common.base.Optional
+import java.lang.{Boolean => JBoolean}
+
 
 /**
  * Created by Markus Ackermann.
@@ -9,6 +11,7 @@ import com.google.common.base.Optional
 object Utils {
   private val OPTIONAL_ABSENT = Optional.absent()
   private val OPTIONAL_ABSENT_INT : Optional[_ <: Integer] = Optional.absent()
+  private val OPTIONAL_ABSENT_BOOLEAN : Optional[_ <: JBoolean] = Optional.absent()
 
   def matchingNone[T]: Option[T] = Option.empty[T]
 
@@ -35,5 +38,14 @@ object Utils {
       case opt => Some(opt.get())
     }
 
+    implicit def booleanOption2BooleanOptional(opt: Option[Boolean]): Optional[JBoolean] = opt match {
+      case Some(b: Boolean) => Optional.of(b)
+      case None => Optional.absent()
+    }
+
+    implicit def booleanOptional2BooleanOption(opt: Optional[JBoolean]): Option[Boolean] = opt match {
+      case OPTIONAL_ABSENT_BOOLEAN => None
+      case opt => Some(opt.get())
+    }
   }
 }

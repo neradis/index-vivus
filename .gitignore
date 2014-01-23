@@ -8,3 +8,6 @@
 .idea/
 
 /out
+/backend/src/main/resources/word_language/word_baseform_minimized.txt
+
+/${project.projectDir}

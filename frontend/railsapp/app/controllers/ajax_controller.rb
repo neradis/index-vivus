@@ -1,4 +1,4 @@
-java_import 'de.fusionfactory.index_vivus.testing.KeywordSearchServiceMock'
+java_import 'de.fusionfactory.index_vivus.services.scalaimpl.KeywordSearchService'
 java_import 'de.fusionfactory.index_vivus.services.Language'
 
 class AjaxController < ApplicationController
@@ -8,7 +8,7 @@ class AjaxController < ApplicationController
         super
         @@language_by_string = {'latin' => Language::LATIN, 
                                 'greek' => Language::GREEK}
-        @keyword_search_service = KeywordSearchServiceMock.new
+        @keyword_search_service = KeywordSearchService::get_instance
     end
 
     def get_keyword_matches

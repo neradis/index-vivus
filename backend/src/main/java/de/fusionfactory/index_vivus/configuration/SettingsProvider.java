@@ -63,8 +63,8 @@ public abstract class SettingsProvider {
         }
     }
 
-    private static String buildFileDbUrl(String urlSuffix) {
-        File dbFile = new File(LocationProvider.INSTANCE.getBackendRoot(), urlSuffix);
+    private static String buildFileDbUrl(String pathSuffix) {
+        File dbFile = new File(LocationProvider.getInstance().getDataDir(), pathSuffix);
         try {
             return String.format("jdbc:h2:file:%s;%s", dbFile.getCanonicalPath(), H2_FILE_DB_OPTIONS);
         } catch (IOException ioe) {

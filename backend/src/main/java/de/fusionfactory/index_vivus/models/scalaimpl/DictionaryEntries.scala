@@ -9,7 +9,7 @@ import de.fusionfactory.index_vivus.models.scalaimpl.{DictionaryEntries => DEs}
  * No rights reserved. 
  */
 
-object DictionaryEntries extends Table[DictionaryEntry]("DICTIONARY_ENTRY") {
+object DictionaryEntries extends Table[DictionaryEntry]("DICTIONARY_ENTRIES") {
   def id = column[Int]("ID", O.PrimaryKey, O.AutoInc)
 
   def prevId = column[Option[Int]]("PREV_ID")
@@ -43,6 +43,12 @@ object DictionaryEntries extends Table[DictionaryEntry]("DICTIONARY_ENTRY") {
   def byIdQuery(id: Int) = Query(DEs).filter(_.id === id)
 
   def byKeywordQuery(kw: String) = Query(DEs).filter(_.keyword === kw)
+
+  def joinOccuringAbbreviationsQuery =
+    for{
+      (de, abbrOcc) <- DictionaryEntries innerJoin AbbreviationOccurrences on (_.id === _.entryId)
+      (abbrOcc, abbr) <- AbbreviationOccurrences innerJoin Abbreviations on (_.entryId === _.id)
+    } yield abbr
 
   def byKeywordAndKWGIndexQuery(kw: String, kwgi: Byte) =
     Query(DEs) filter (de => (de.keyword === kw) && (de.keywordGroupIndex === kwgi))

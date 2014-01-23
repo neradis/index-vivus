@@ -7,7 +7,12 @@
 #temporary build artifacts
 build/
 
-#h2 db test instances
-*_test.h2.db
-#h2 db trace files
+data/development/
+data/test/
+
+inputs/production
+
+
+#h2 log files and lock files
 *trace.db
+*lock.db

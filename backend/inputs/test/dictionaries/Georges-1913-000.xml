@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- Die vorliegenden Daten sind Teil des von www.editura.de erstellten Datenbestandes und werden von TextGrid unter der Lizenz Creative Commons 
+Namensnennung 3.0 Deutschland Lizenz (by-Nennung TextGrid, www.editura.de)  zur Verfügung gestellt. 
+ (http://creativecommons.org/licenses/by/3.0/de/legalcode).
+ -->
+<doc>
+
+ <META>
+
+ <DEFMENU>
+ <MENUITEM>
+ <ITEMCAPTION>Stichwörter</ITEMCAPTION>
+ <ITEMURL>/Kategorien/T/Georges-1913</ITEMURL>
+ </MENUITEM>
+ <MENUITEM>
+ <ITEMCAPTION>Faksimiles</ITEMCAPTION>
+ <ITEMURL>/Georges-1913/L/Faksimiles</ITEMURL>
+ </MENUITEM>
+ </DEFMENU>
+ 
+ <DEFSERVER>
+ <LASTMOD>2008-01-01</LASTMOD>
+ <CHANGEFREQ>yearly</CHANGEFREQ>
+ <TITLE>Georges: Ausführliches lateinisch-deutsches Handwörterbuch</TITLE>
+ <YEARS>1913-1918</YEARS>
+ <DESCRIPTIONS>
+         <DESCRRULE match="[AB]/.*">Wörterbucheintrag Latein-Deutsch zu &#x00BB;{articlename}&#x00AB;. {citation}</DESCRRULE>
+        <DESCRRULE match=".">Karl Ernst Georges: Ausführliches lateinisch-deutsches Handwörterbuch. {articlename}</DESCRRULE>
+ </DESCRIPTIONS>
+ </DEFSERVER>
+
+ <DEFBOOK>
+ <BOOKNAME>Georges-LDHW Bd. 1</BOOKNAME>
+ <BOOKDESCR>Karl Ernst Georges: Ausführliches lateinisch-deutsches Handwörterbuch, aus den Quellen zusammengetragen und mit besonderer Bezugnahme auf Synonymik und Antiquitäten unter Berücksichtigung der besten Hilfsmittel ausgearbeitet. Unveränderter Nachdruck der achten verbesserten und vermehrten Auflage, von Heinrich Georges, 1. Band, Darmstadt: Wissenschaftliche Buchgesellschaft, 1998 (Reprint der Ausgabe Hannover: Hahnsche Buchhandlung, 1913).</BOOKDESCR>
+ <BOOKCITE>Karl Ernst Georges: Ausführliches lateinisch-deutsches Handwörterbuch. Hannover {8}1913 (Nachdruck Darmstadt 1998), Band 1</BOOKCITE>
+ <BOOKTITLEFACS></BOOKTITLEFACS>
+ <BOOKYEAR>1913</BOOKYEAR>
+ <DEFDIVISION default="yes" columns="2">
+ <DIVISIONNAME>Lexikalischer Teil</DIVISIONNAME>
+ <DIVISIONDESCR></DIVISIONDESCR>
+ <DIVISIONFACS>Georges-1913-01</DIVISIONFACS>
+ </DEFDIVISION>
+ <DEFDIVISION pagenumberformat="roman">
+ <DIVISIONNAME>Vorwort</DIVISIONNAME>
+ <DIVISIONDESCR></DIVISIONDESCR>
+ <DIVISIONFACS>Georges-1913-00</DIVISIONFACS>
+ </DEFDIVISION>
+ </DEFBOOK>
+ <DEFBOOK>
+ <BOOKNAME>Georges-LDHW Bd. 2</BOOKNAME>
+ <BOOKDESCR>Karl Ernst Georges: Ausführliches lateinisch-deutsches Handwörterbuch, aus den Quellen zusammengetragen und mit besonderer Bezugnahme auf Synonymik und Antiquitäten unter Berücksichtigung der besten Hilfsmittel ausgearbeitet. Unveränderter Nachdruck der achten verbesserten und vermehrten Auflage, von Heinrich Georges, 2. Band, Darmstadt: Wissenschaftliche Buchgesellschaft, 1998 (Reprint der Ausgabe Hannover: Hahnsche Buchhandlung, 1918).</BOOKDESCR>
+ <BOOKCITE>Karl Ernst Georges: Ausführliches lateinisch-deutsches Handwörterbuch. Hannover {8}1918 (Nachdruck Darmstadt 1998), Band 2</BOOKCITE>
+ <BOOKTITLEFACS></BOOKTITLEFACS>
+ <BOOKYEAR>1918</BOOKYEAR>
+ <DEFDIVISION default="yes" columns="2">
+ <DIVISIONNAME>Lexikalischer Teil</DIVISIONNAME>
+ <DIVISIONDESCR></DIVISIONDESCR>
+ <DIVISIONFACS>Georges-1913-02</DIVISIONFACS>
+ </DEFDIVISION>
+ </DEFBOOK>
+ 
+ </META>
+ 
+ <autotoc maxlevels="9" />
+ <catdiv name="Lizenz: Gemeinfrei">
+ <catdiv name="Wörterbuch">
+ 
+ <articlegroup name="-" sort="yes"> 
+ 
+ <article>
+ <lem>Hauptseite</lem>
+ <cat name="Hauptseite" />
+ <text>
+ <div class="zenoCOTitles">
+ 
+ <h3>Karl Ernst Georges (1806&#8211;1895)</h3>
+ 
+ <h2>Ausführliches lateinisch-deutsches Handwörterbuch</h2>
+ 
+ 
+ <h4>Aus den Quellen zusammengetragen und mit besonderer Bezugnahme auf Synonymik und Antiquitäten unter Berücksichtigung der besten Hilfsmittel ausgearbeitet. Unveränderter Nachdruck der achten verbesserten und vermehrten Auflage, von Heinrich Georges, 2 Bände, Darmstadt: Wissenschaftliche Buchgesellschaft, 1998 (Reprint der Ausgabe Hannover: Hahnsche Buchhandlung, 1913/1918).</h4>
+ 
+ </div>
+ <br/>
+ <p>Das »Ausführliche lateinisch-deutsche Handwörterbuch« des Gothaer Gymnasialprofessors und angesehenen Lexikographen Karl Ernst Georges (1806&#8211;1895) erschließt den großen Reichtum des klassischen Lateins. Mit mehr als 62.000 Hauptstichwörtern, 200.000 Bedeutungsvarianten und rund 300.000 Belegstellen ist es seit Generationen ein unverzichtbares Arbeitsinstrument für alle, die ein berufliches oder privates Interesse an der Kulturgeschichte des römischen Altertums haben &#8211; für Schüler und Studenten ebenso wie für Historiker, Literaturwissenschaftler und Archäologen.</p>
+ <p class="zenoPLm4n0">Das Wörterbuch bietet neben den Übersetzungen umfangreiche Angaben zur Etymologie, zum Bedeutungswandel und zur Phraseologie. Sein besonderer Vorzug liegt im detaillierten und übersichtlichen Nachweis der Bedeutungsschattierungen einzelner Stichwörter und grammatischer Konstruktionen. Zahlreiche Zitate aus den Schriften der klassischen Autoren dienen als Belege und unterstützen zugleich das Verständnis der Bedeutungsvarianten.</p>
+ <br/>
+ 
+ <ul>
+ <li><b><link namespace="M" lem="Vorrede zur achten Auflage (Heinrich Georges)">Vorrede zur achten Auflage (Heinrich Georges)</link></b></li>
+ <li><b><link namespace="M" lem="Verzeichnis der Abkürzungen">Verzeichnis der Abkürzungen</link></b></li>
+ <li><b><link namespace="M" lem="Benutzte Ausgaben">Benutzte Ausgaben</link></b></li>
+ <li><b><plink href="/Kategorien/T/Georges-1913">Alle Artikel</plink></b></li>
+ </ul> 
+ </text>
+ 
+ </article>
+ </articlegroup> 
+ 
+<articlegroup name="M">
+ 
+ <article><lem>Vorrede zur achten Auflage (Heinrich Georges)</lem><text>
+ <h3>Vorrede zur achten Auflage</h3>
+ <p>Seit dem Erscheinen der 7. Auflage des Ausführlichen Lateinisch-Deutschen Handwörterbuches, die mein Vater gerade nach fünfzigjähriger lexikographischer Tätigkeit besorgen konnte, hat die lateinische Lexikographie unter der Ägide von <spa>Wölfflin</spa> gewaltige Fortschritte gemacht. Nicht ohne Bedenken bin ich daher dem Wunsche der Verlagshandlung nachgekommen, die für einen einzelnen schwer zu bewältigende Aufgabe einer zeitgemäßen Neubearbeitung zu übernehmen. Die epochemachendste Erscheinung auf dem Gebiete der lateinischen Lexikographie, der neue Thesaurus linguae Latinae, konnte leider nicht so, wie ich es gewünscht hätte, ausgenutzt werden, da erst die Buchstaben A&#8211;D erschienen sind und eine Ungleichmäßigkeit in der Bearbeitung des Wörterbuches vermieden werden mußte. Erst, wenn der Thesaurus fertig vorliegt, wird es einer künftigen Auflage obliegen, bis auf den Grund gehende Änderungen vorzunehmen. Bei dieser 8. Auflage des Ausführlichen Lateinisch-Deutschen Handwörterbuches mußte es daher meine hauptsächliche Aufgabe sein, das Archiv für latein. Lexikographie und Grammatik von Wölfflin, worin die neuesten Ergebnisse der lexikographischen Forschungen niedergelegt sind, zu benutzen und das dort Dargebotene zu verwerten. Außerdem ist das Wörterbuch auf das sorgfältigste durchgesehen und unter Benutzung der Sammlungen meines Vaters und der meinigen fast jeder Artikel mit Zusätzen und Verbesserungen versehen worden.</p>
+ <p class="zenoPLm4n0">Unterstützt wurde ich bei meiner Arbeit durch schriftliche Mitteilungen der Herren Prof. Dr. Hauler in Wien, Prof. Dr. Landgraf in Bayreuth und Prof. Dr. Hosius in Greifswald. Außerdem haben mir meine Kollegen Herr Geh. Hofrat Prof. Dr. Ehwald und Herr Prof. Dr. Pick und die mir befreundeten Herren Prof. Dr. Ludwig und Prof. Dr. Liebenam in Gotha wertvolle Beiträge geliefert und in Zweifelsfällen stets gern Auskunft erteilt. Allen diesen Herren fühle ich mich zu herzlichem Danke verpflichtet.</p>
+ <p class="zenoPLm4n0">Meinen ganz besonderen Dank aber spreche ich Herrn Prof. Dr. Bonnet in Montpellier aus, der mir sämtliche in sein Handexemplar der 7. Auflage eingetragenen Notizen zur Verfügung stellte, die ich zu wesentlicher Verbesserung und Vermehrung vieler Artikel benutzen konnte.</p>
+ <p class="zenoPLm4n0">Durch die Freundlichkeit des Herrn Dr. Schwering in München, eines der Mitarbeiter am Thesaurus, ist mir ermöglicht worden, die sämtlichen Inschriftenstellen nach dem Corpus inscriptionum Latinarum zu zitieren. Auch diesem Herrn danke ich für seine mühevolle Arbeit.</p>
+ <p class="zenoPLm4n0">Das in dieser achten Auflage Geleistete besteht im wesentlichen aus folgendem:</p>
+ <p class="zenoPLm4n0">1. Eine große Zahl Artikel ist neu aufgenommen worden und zwar a) Wörter, die schon in größeren Wörterbüchern stehen, aber in den früheren Auflagen übergegangen waren &#8211; b) Wörter, die als neuere und bessere Lesarten jetzt in den neuesten Ausgaben der lateinischen Schriftsteller stehen &#8211; c) Wörter aus den Glossen, die ich natürlich schon des beschränkten Raumes wegen nicht alle heranziehen konnte.</p>
+ <p class="zenoPLm4n0">2. Eine Anzahl Artikel, die die neueste Textkritik als entschieden unrichtig verworfen hat, ist entfernt worden.</p>
+ <p class="zenoPLm4n0">3. Mehrere Wörter und Wortbedeutungen, die bisher als in der lateinischen Sprache nicht vorkommend verworfen wurden, sind aufgeführt und sogar teilweise mit zahlreichen Stellen belegt.</p>
+ <p class="zenoPLm4n0">4. Verschiedene Artikel sind entweder teilweise oder ganz umgearbeitet worden.</p>
+ <p class="zenoPLm4n0">5. Viele der in den einzelnen Artikeln vorkommenden Beispiele sind nach den besten Textrezensionen berichtigt, auch sind oft passendere an die Stelle von weniger passenden gesetzt worden.</p>
+ <p class="zenoPLm4n0">6. Eine große Anzahl von Zitaten &#8211; so sämtliche Stellen aus Plautus, den Inschriften und den Glossen &#8211; habe ich auf ihre Richtigkeit geprüft, wo nötig, berichtigt und durch Einsetzung veränderter Lesarten der neuesten Ausgaben verbessert.</p>
+ <p class="zenoPLm4n0">7. Was die Quantität betrifft, so sind nur die von Natur langen Vokale bezeichnet, unbezeichnet sind kurze und ihrer Quantität nach zweifelhafte Vokale; nur in seltenen Fällen ist des Unterschiedes wegen eine besondere Hervorhebung eines kurzen Vokales eingetreten.</p>
+ <p class="zenoPLm4n0">8. Die Etymologie ist, soweit sie überhaupt feststeht, überall unter Zugrundelegung des epochemachenden latein. etymol. Wörterbuches von Walde (2. Aufl. 1910) angegeben.</p>
+ <p class="zenoPLm4n0">9. Auf das Vorkommen gewisser Wortformen, namentlich auch der Komparative und Superlative, ist immer bei den einzelnen Wörtern hingewiesen. Dabei haben mir die Formenlehre von Neue-Wagener in ihrer 3. Aufl. und das Lexikon der lat. Wortformen meines Vaters gute Dienste geleistet.</p>
+ <p class="zenoPLm4n0">10. Auf die Bedeutung der Wörter und ihren Wandel ist durchweg Rücksicht genommen. Auch habe ich mich bemüht, die Bedeutungen im einzelnen in passenderem Deutsch als bisher wiederzugeben.</p>
+ <p class="zenoPLm4n0">11. Die Phraseologie sowie die Angabe der Gegensätze ist bedeutend vervollständigt worden.</p>
+ <p class="zenoPLm4n0">12. Die Verweisungen auf gelehrte Kommentare und andere Werke zur weiteren Belehrung sind unter möglichster Benutzung der neuesten Literatur sehr vermehrt worden.</p>
+ <p class="zenoPLm4n0">Die Erwägung aller dieser Punkte sowie die schon jetzt erschienene wohlwollende Besprechung des ersten Halbbandes in der Zeitschrift Sokrates (1913. S. 50 f.) durch Herrn Professor Dr. O. Wackermann in Hanau, der hierfür meinen herzlichen Dank entgegennehmen möge, läßt mich hoffen, daß man auch dieser 8. Auflage das Recht zugestehen werde, sich als eine verbesserte und vermehrte zu bezeichnen.</p>
+ <p class="zenoPLm4n0">Satz und Druck hat die Buchdruckerei von <spa>Bär</spa> &#x0026;<spa> Hermann</spa> in <spa>Leipzig</spa> auch diesmal in so ausgezeichneter Weise geliefert, daß das Buch in typographischer Hinsicht den gesteigerten Ansprüchen der Jetztzeit vollkommen entspricht.</p>
+ <p class="zenoPLm4n0">Möge auch diese neue Auflage nicht bloß den Schülern höherer Gymnasialklassen, sondern auch den Studierenden und selbst den Gelehrten vom Fache als brauchbares Handbuch gute Dienste leisten.</p>
+ <p>Gotha, im Oktober 1913.</p>
+ <p class="zenoPR">Prof. Dr. H. Georges.</p>
+ </text>
+ </article>
+ 
+ 
+ <article><lem>Verzeichnis der Abkürzungen</lem><text>
+ <h3>Verzeichnis der Abkürzungen</h3>
+ <p class="zenoPLm0n4"><b>A.</b> &#8211; Anfang.</p>
+ <p class="zenoPLm0n4"><b>a.</b> &#8211; andere.</p>
+ <p class="zenoPLm0n4"><b>a. a. O.</b> &#8211; am angeführten Orte.</p>
+ <p class="zenoPLm0n4"><b>abgek.</b> &#8211; abgekürzt.</p>
+ <p class="zenoPLm0n4"><b>absol.</b> &#8211; absolute, -us.</p>
+ <p class="zenoPLm0n4"><b>abs.</b> od. <b>absol.</b> &#8211; absolut.</p>
+ <p class="zenoPLm0n4"><b>abstr.</b> &#8211; abstrakt.</p>
+ <p class="zenoPLm0n4"><b>Acc.</b> &#8211; Accusativus.</p>
+ <p class="zenoPLm0n4"><b>act.</b> &#8211; activum od. active.</p>
+ <p class="zenoPLm0n4"><b>adi.</b> &#8211; adiectivum.</p>
+ <p class="zenoPLm0n4"><b>adj.</b> od. <b>adjekt.</b> &#8211; adjektivisch.</p>
+ <p class="zenoPLm0n4"><b>Adverb.</b> &#8211; Adverbium.</p>
+ <p class="zenoPLm0n4"><b>a. E.</b> &#8211; am Ende.</p>
+ <p class="zenoPLm0n4"><b>ahd.</b> &#8211; althochdeutsch.</p>
+ <p class="zenoPLm0n4"><b>Akk.</b> &#8211; Akkusativ.</p>
+ <p class="zenoPLm0n4"><b>al.</b> &#8211; alii codices od. aliae editiones.</p>
+ <p class="zenoPLm0n4"><b>alci</b> &#8211; alicui.</p>
+ <p class="zenoPLm0n4"><b>alcis</b> &#8211; alicuius.</p>
+ <p class="zenoPLm0n4"><b>allg.</b> &#8211; allgemein.</p>
+ <p class="zenoPLm0n4"><b>alqd</b> &#8211; aliquid.</p>
+ <p class="zenoPLm0n4"><b>alqm</b>, <b>alqam</b>, <b>alqos</b>, <b>alqas</b> &#8211; aliquem etc.</p>
+ <p class="zenoPLm0n4"><b>alqo</b>, <b>alqa</b> &#8211; aliquo, aliqua.</p>
+ <p class="zenoPLm0n4"><b>altd.</b> &#8211; altdeutsch.</p>
+ <p class="zenoPLm0n4"><b>altert.</b> &#8211; altertümlich.</p>
+ <p class="zenoPLm0n4"><b>Ang.</b> &#8211; Angabe.</p>
+ <p class="zenoPLm0n4"><b>angef.</b> &#8211; angeführt.</p>
+ <p class="zenoPLm0n4"><b>arch.</b> od. <b>archaist.</b> &#8211; archaistisch.</p>
+ <p class="zenoPLm0n4"><b>Archit.</b> &#8211; Architektur.</p>
+ <p class="zenoPLm0n4"><b>Ausg.</b> &#8211; Ausgabe (der Schriftsteller).</p>
+ <p class="zenoPLm0n4"><b>b.</b> &#8211; bei.</p>
+ <p class="zenoPLm0n4"><b>Bauk.</b> &#8211; Baukunst.</p>
+ <p class="zenoPLm0n4"><b>Bed.</b> &#8211; Bedeutung.</p>
+ <p class="zenoPLm0n4"><b>Beiw.</b> &#8211; Beiwort.</p>
+ <p class="zenoPLm0n4"><b>bes.</b> &#8211; besonders.</p>
+ <p class="zenoPLm0n4"><b>best.</b> &#8211; bestimmt.</p>
+ <p class="zenoPLm0n4"><b>Best.</b> &#8211; Bestimmung.</p>
+ <p class="zenoPLm0n4"><b>bl.</b> &#8211; bloß.</p>
+ <p class="zenoPLm0n4"><b>c.</b> &#8211; generis communis od. cum.</p>
+ <p class="zenoPLm0n4"><b>cf.</b> &#8211; confer.</p>
+ <p class="zenoPLm0n4"><b>cod.</b> &#8211; codex.</p>
+ <p class="zenoPLm0n4"><b>Comic.</b> &#8211; Comicus poëta.</p>
+ <p class="zenoPLm0n4"><b>Compar.</b> &#8211; Comparativus.</p>
+ <p class="zenoPLm0n4"><b>Coni.</b> &#8211; Coniunction.</p>
+ <p class="zenoPLm0n4"><b>dh.</b> &#8211; daher.</p>
+ <p class="zenoPLm0n4"><b>d.i.</b> &#8211; das ist.</p>
+ <p class="zenoPLm0n4"><b>dass.</b> &#8211; dasselbe.</p>
+ <p class="zenoPLm0n4"><b>dav.</b> &#8211; davon.</p>
+ <p class="zenoPLm0n4"><b>Dat.</b> od. <b>Dat.</b> &#8211; Dativus od. Dativ.</p>
+ <p class="zenoPLm0n4"><b>Decl.</b> od. <b>Dekl.</b> &#8211; Declination.</p>
+ <p class="zenoPLm0n4"><b>Def.</b> od. <b>Defect.</b> &#8211; Defectivum.</p>
+ <p class="zenoPLm0n4"><b>Demin.</b> &#8211; Deminutivum.</p>
+ <p class="zenoPLm0n4"><b>Desider.</b> &#8211; Desiderativum.</p>
+ <p class="zenoPLm0n4"><b>determ.</b> &#8211; determinationis (accusativus).</p>
+ <p class="zenoPLm0n4"><b>dig.</b> &#8211; digamma .</p>
+ <p class="zenoPLm0n4"><b>dgl.</b> od. <b>dergl.</b> &#8211; dergleichen.</p>
+ <p class="zenoPLm0n4"><b>eig.</b> &#8211; eigentlich.</p>
+ <p class="zenoPLm0n4"><b>entst.</b> &#8211; entstanden.</p>
+ <p class="zenoPLm0n4"><b>etymol.</b> &#8211; etymologisch.</p>
+ <p class="zenoPLm0n4"><b>Ew.</b> od. <b>Einw.</b> &#8211; Einwohner.</p>
+ <p class="zenoPLm0n4"><b>f.</b> &#8211; generis feminini.</p>
+ <p class="zenoPLm0n4"><b>fr.</b> od. <b>frgm.</b> &#8211; fragmentum od. fragmenta.</p>
+ <p class="zenoPLm0n4"><b>gebr.</b> &#8211; gebräuchlich.</p>
+ <p class="zenoPLm0n4"><b>gen.</b> &#8211; genannt.</p>
+ <p class="zenoPLm0n4"><b>geschr.</b> &#8211; geschrieben.</p>
+ <p class="zenoPLm0n4"><b>gew.</b> &#8211; gewöhnlich.</p>
+ <p class="zenoPLm0n4"><b>Ggst.</b> &#8211; Gegenstand.</p>
+ <p class="zenoPLm0n4"><b>Ggstz.</b> &#8211; Gegensatz.</p>
+ <p class="zenoPLm0n4"><b>gl. N.</b> &#8211; gleiches Namens.</p>
+ <p class="zenoPLm0n4"><b>got.</b> &#8211; gotisch.</p>
+ <p class="zenoPLm0n4"><b>Hdschr.</b> &#8211; Handschrift.</p>
+ <p class="zenoPLm0n4"><b>Histor.</b> &#8211; Historiker.</p>
+ <p class="zenoPLm0n4"><b>ibid.</b> &#8211; ibidem.</p>
+ <p class="zenoPLm0n4"><b>id.</b> &#8211; idem.</p>
+ <p class="zenoPLm0n4"><b>Inch.</b> &#8211; Inchoativum.</p>
+ <p class="zenoPLm0n4"><b>in ders. Bed.</b> &#8211; in derselben Bedeutung.</p>
+ <p class="zenoPLm0n4"><b>insbes.</b> &#8211; insbesondere.</p>
+ <p class="zenoPLm0n4"><b>Intens.</b> &#8211; Intensivum.</p>
+ <p class="zenoPLm0n4"><b>Interj.</b> &#8211; Interjektion.</p>
+ <p class="zenoPLm0n4"><b>intr.</b> &#8211; intransitivum od. intransitive.</p>
+ <p class="zenoPLm0n4"><b>irg.</b> &#8211; irgend.</p>
+ <p class="zenoPLm0n4"><b>j.</b> &#8211; jetzt.</p>
+ <p class="zenoPLm0n4"><b>ICt.</b> &#8211; iurisconsulti (die römischen Rechtsgelehrten).</p>
+ <p class="zenoPLm0n4"><b>jmd.</b> &#8211; jemand.</p>
+ <p class="zenoPLm0n4"><b>jmdm.</b> &#8211; jemandem.</p>
+ <p class="zenoPLm0n4"><b>jmds.</b> &#8211; jemandes.</p>
+ <p class="zenoPLm0n4"><b>jur.</b> od. <b>jurist.</b> &#8211; juristisch.</p>
+ <p class="zenoPLm0n4"><b>Kaiszt.</b> &#8211; Kaiserzeit.</p>
+ <p class="zenoPLm0n4"><b>Konj.</b> &#8211; Konjunktiv.</p>
+ <p class="zenoPLm0n4"><b>konkr.</b> &#8211; konkret.</p>
+ <p class="zenoPLm0n4"><b>L.</b> &#8211; Lesart.</p>
+ <p class="zenoPLm0n4"><b>latin.</b> &#8211; latinisiert.</p>
+ <p class="zenoPLm0n4"><b>leb.</b> &#8211; lebender, e, es.</p>
+ <p class="zenoPLm0n4"><b>lebl.</b> &#8211; lebloser, e, es.</p>
+ <p class="zenoPLm0n4"><b>Lebl.</b> &#8211; Lebloses.</p>
+ <p class="zenoPLm0n4"><b>locat.</b> &#8211; casus locativus.</p>
+ <p class="zenoPLm0n4"><b>m.</b> &#8211; generis masculini.</p>
+ <p class="zenoPLm0n4"><b>m.</b> &#8211; mit.</p>
+ <p class="zenoPLm0n4"><b>mhd.</b> &#8211; mittelhochdeutsch.</p>
+ <p class="zenoPLm0n4"><b>meton.</b> &#8211; metonymisch.</p>
+ <p class="zenoPLm0n4"><b>n.</b> &#8211; nach.</p>
+ <p class="zenoPLm0n4"><b>n.</b> &#8211; generis neutrius.</p>
+ <p class="zenoPLm0n4"><b>nachaug.</b> &#8211; nachaugusteisch.</p>
+ <p class="zenoPLm0n4"><b>nachkl.</b> &#8211; nachklassisch.</p>
+ <p class="zenoPLm0n4"><b>Nbbgr.</b> &#8211; Nebenbegriff.</p>
+ <p class="zenoPLm0n4"><b>Nbf.</b> &#8211; Nebenform.</p>
+ <p class="zenoPLm0n4"><b>nhd.</b> &#8211; neuhochdeutsch.</p>
+ <p class="zenoPLm0n4"><b>neutr.</b> &#8211; neutrum.</p>
+ <p class="zenoPLm0n4"><b>obj.</b>, <b>Obj.</b> &#8211; objektiv, Objekt.</p>
+ <p class="zenoPLm0n4"><b>onomatop.</b> &#8211; onomatopöisch (= nach dem Klange gebildet).</p>
+ <p class="zenoPLm0n4"><b>Örtl.</b> &#8211; Örtlichkeit.</p>
+ <p class="zenoPLm0n4"><b>parenth.</b> &#8211; parenthetisch (= als Parenthese).</p>
+ <p class="zenoPLm0n4"><b>PAdi.</b> &#8211; Partizipialadjektivum (d.i. zum Adjektivum gewordenes Partizipium).</p>
+ <p class="zenoPLm0n4"><b>pers.</b> &#8211; persönlich.</p>
+ <p class="zenoPLm0n4"><b>Plur.</b> <b>od. Plur.</b> &#8211; Pluralis.</p>
+ <p class="zenoPLm0n4"><b>poet.</b> &#8211; poetisch.</p>
+ <p class="zenoPLm0n4"><b>prädik.</b> &#8211; prädikativ.</p>
+ <p class="zenoPLm0n4"><b>prägn.</b> &#8211; prägnant.</p>
+ <p class="zenoPLm0n4"><b>Praep.</b> &#8211; Praeposition.</p>
+ <p class="zenoPLm0n4"><b>refl.</b> &#8211; reflexive.</p>
+ <p class="zenoPLm0n4"><b>rhet.</b> &#8211; rhetorisch.</p>
+ <p class="zenoPLm0n4"><b>sc.</b> &#8211; scilicet.</p>
+ <p class="zenoPLm0n4"><b>Sing.</b> od. <b>Sing.</b> &#8211; Singular.</p>
+ <p class="zenoPLm0n4"><b>spez.</b> &#8211; speziell.</p>
+ <p class="zenoPLm0n4"><b>St.</b>, <b>Stt.</b> &#8211; Stelle, Stellen.</p>
+ <p class="zenoPLm0n4"><b>st.</b> &#8211; statt.</p>
+ <p class="zenoPLm0n4"><b>subj.</b>, <b>Subj.</b> &#8211; subjektiv, Subjekt.</p>
+ <p class="zenoPLm0n4"><b>subst.</b> &#8211; substantivisch,</p>
+ <p class="zenoPLm0n4"><b>Subst.</b>, <b>Substst.</b> &#8211; Substantivum, Substantiva.</p>
+ <p class="zenoPLm0n4"><b>Superl.</b> &#8211; Superlativus.</p>
+ <p class="zenoPLm0n4"><b>s. v. a.</b> &#8211; so viel als.</p>
+ <p class="zenoPLm0n4"><b>synk.</b> &#8211; synkopiert.</p>
+ <p class="zenoPLm0n4"><b>tr.</b> &#8211; transitivum od. transitive.</p>
+ <p class="zenoPLm0n4"><b>t. t.</b> &#8211; terminus technicus (Kunstausdruck).</p>
+ <p class="zenoPLm0n4"><b>übertr.</b> od. <b>übtr.</b> &#8211; übertragen.</p>
+ <p class="zenoPLm0n4"><b>umschr.</b>, <b>Umschr.</b> &#8211; umschrieben, Umschreibung.</p>
+ <p class="zenoPLm0n4"><b>ungebr.</b> &#8211; ungebräuchlich.</p>
+ <p class="zenoPLm0n4"><b>ungew.</b> &#8211; ungewöhnlich.</p>
+ <p class="zenoPLm0n4"><b>unkl.</b> &#8211; unklassisch.</p>
+ <p class="zenoPLm0n4"><b>unpers.</b> &#8211; unpersönlich.</p>
+ <p class="zenoPLm0n4"><b>urspr.</b> &#8211; ursprünglich.</p>
+ <p class="zenoPLm0n4"><b>v.</b> &#8211; von od. vom.</p>
+ <p class="zenoPLm0n4"><b>v. h.</b> &#8211; vox hibrida.</p>
+ <p class="zenoPLm0n4"><b>v. pr.</b> &#8211; verbum proprium.</p>
+ <p class="zenoPLm0n4"><b>Verb.</b> &#8211; Verbum od. Verbindung.</p>
+ <p class="zenoPLm0n4"><b>Verbb.</b> &#8211; Verba od. Verbindungen.</p>
+ <p class="zenoPLm0n4"><b>vollst.</b> &#8211; vollständig.</p>
+ <p class="zenoPLm0n4"><b>voraug.</b> &#8211; voraugusteisch.</p>
+ <p class="zenoPLm0n4"><b>vorh.</b> &#8211; vorhanden.</p>
+ <p class="zenoPLm0n4"><b>vorherg.</b> &#8211; vorhergehender, e, es usw.</p>
+ <p class="zenoPLm0n4"><b>vorkl.</b> &#8211; vorklassisch.</p>
+ <p class="zenoPLm0n4"><b>vorz.</b> &#8211; vorzüglich.</p>
+ <p class="zenoPLm0n4"><b>W.</b> &#8211; Wort.</p>
+ <p class="zenoPLm0n4"><b>WW.</b> &#8211; Wörter.</p>
+ <p class="zenoPLm0n4"><b>zB.</b> &#8211; zum Beispiel.</p>
+ <p class="zenoPLm0n4"><b>Zeitbest.</b> &#8211; Zeitbestimmung.</p>
+ <p class="zenoPLm0n4"><b>Zielp.</b> &#8211; Zielpunkt.</p>
+ <p class="zenoPLm0n4"><b>Zshg.</b> &#8211; Zusammenhang.</p>
+ <p class="zenoPLm0n4"><b>Zustz.</b> &#8211; Zusatz.</p>
+ <p class="zenoPLm0n4"><b>zsgz.</b> od. <b>zsgzg.</b> &#8211; zusammengezogen.</p>
+ <p class="zenoPLm0n4"><b>Zsstz.</b> od. <b>Zusstzg.</b> &#8211; Zusammensetzung.</p>
+ <p class="zenoPLm0n4"><b>zugl.</b> &#8211; zugleich.</p>
+ <p class="zenoPLm0n4"><b>zuw.</b> &#8211; zuweilen.</p>
+ <p class="zenoPLm0n4"><b>zw.</b> &#8211; zweifelhaft.</p>
+ <p><b>*</b> bezeichnet a) bei lateinischen Verben solche, die entweder überhaupt nicht, oder solche, die im Präsens nicht gebräuchlich sind, bei griechischen Wörtern solche, die bei den Griechen nicht nachgewiesen werden können. &#8211; b) bei Zitaten, daß das Wort an dieser Stelle durch Konjektur steht.</p>
+ </text>
+ </article>
+ 
+ 
+ <article><lem>Benutzte Ausgaben</lem><text>
+ <h3>Benutzte Ausgaben</h3>
+ <p><i>Bei den Substantiven der 4. Deklination auf</i> us, <i>die nur im Ablativ des Singulars vorkommen, ist statt des Genetivs immer nur der Ablativ angegeben worden.</i></p>
+ <p class="zenoPLm4n0"><i>In ( ) eingeschlossene Perfekta oder Supina können bis jetzt nicht nachgewiesen werden.</i></p>
+ <p class="zenoPLm4n0"><i>Die Zitate</i> Pacuv. tr., Acc. tr. <i>usw. gehen auf die einzelnen Tragiker in</i> Tragicorum Latinorum Reliquiae. Rec. O. Ribbeck. ed. II. Lips. 1871; <i>die Zitate</i> Naev. com., Caecil. com. <i>usw. auf die einzelnen Komiker in</i> Comicorum Latinorum Reliquiae. Rec. O. Ribbeck. ed. II. Lips. 1873; <i>die Zitate</i> Enn. ann. <i>und</i> Enn. tr. <i>auf</i> Ennianae poesis Reliquiae. Iteratis curis rec. J. Vahlen. Lips. 1903.</p>
+ <p class="zenoPLm4n0">Plautus <i>mit durchgehenden Verszahlen ist zitiert nach der Ausgabe von Ritschl und ihren Neubearbeitungen von Löwe, Götz und Schöll</i> (T. Macci Plauti Comoediae. Rec. et auxit Fr. Ritschelius, sociis operae adsumptis G. Loewe G. Goetz Fr. Schoell. Lips. 1881/1890); <i>verwiesen ist bisweilen auf die Ausgaben von Leo, Fleckeisen, Lorenz und Brix.</i></p>
+ <p class="zenoPLm4n0">Lucilius <i>ist zitiert nach</i> C. Lucilii carminum reliquiae rec. Frider. Marx. Lipsiae 1904, Varronis satirae Menippeae <i>sind zitiert nach Büchelers Ausgabe an der 5. Aufl. des</i> Petronius (Berol. 1912), <i>zuweilen daneben nach Rieses Ausgabe (Lips. 1868); Catonis fragmenta nach Jordans Ausgabe (Lips. 1860).</i></p>
+ <p class="zenoPLm4n0"><i>Bei</i> Lucretius <i>sind die Ausgaben von Bernays</i> (Lips. 1852) <i>und von Brieger</i> (Lips. 1894) <i>gemeint, die Verszahl in Parenthese bezieht sich auf die Ausgabe von Lachmann</i> (Berol. 1850).</p>
+ <p class="zenoPLm4n0"><i>Bei</i> Cicero, <i>sowie überhaupt bei allen Schriftstellern, sind die neuesten Ausgaben überall gemeint, bei</i> Cicero <i>die von C. F. W. Müller</i> (Lips. 1878/1898). &#8211; <i>Die größeren philosophischen und rhetorischen Schriften Ciceros werden nach Buch und Paragraph, die kleineren bloß nach Paragraph, die größeren Reden</i> (Verr., Catil. <i>u.</i> Phil.) <i>nach Rede und Paragraph, die kleineren bloß nach Paragraph zitiert.</i></p>
+ <p class="zenoPLm4n0">Seneca rhetor <i>wird nach der Ausgabe von Bursian</i> (Lips. 1857) <i>u. bes. nach der von Kreyßig</i> (Lips. 1872), Seneca philos. <i>nach der Ausgabe von Haase</i> (Lips. 1852) <i>zitiert.</i></p>
+ <p class="zenoPLm4n0"><i>Bei</i> Celsus <i>ist der Text der Ausgabe von Daremberg</i> (Lips. 1859) <i>zugrunde gelegt.</i></p>
+ <p class="zenoPLm4n0"><i>Bei</i> Plinius nat. hist. <i>sind die Ausgaben von Detlefsen</i> (Berol. 1866-1873) <i>und von Jan-Mayhoff</i> (Lips. 1870-1875 lib. I-XV) <i>benutzt und die Zitate nach Buch und Paragraph gegeben.</i></p>
+ <p class="zenoPLm4n0"><i>Bei</i> Vitruvius <i>ist die Ausgabe von Rose</i> (Lips. 1867) <i>zugrunde gelegt.</i></p>
+ <p class="zenoPLm4n0">Gargilius Martialis de arb. pomif. <i>u.</i> medic. de pomis <i>sind nach der Ausgabe von Mai</i> (Romae 1848) <i>zitiert,</i> de cura boum <i>nach der Ausgabe von Schuch (Rastatt 1856).</i></p>
+ <p class="zenoPLm4n0"><i>Die</i> Anthologia Latina <i>ist nach der Ausgabe von Riese</i> (Lips. 1868-1870), <i>in Parenthese nach der Ausgabe von Meyer</i> (Lips. 1835), <i>nach Nummer des Gedichts und Verszahl angeführt.</i></p>
+ <p class="zenoPLm4n0"><i>Das</i> Itinerarium Alexandri M. <i>u.</i> Julii Valerii Res gestae Alex. M. <i>sind zitiert nach der Ausgabe von Mai in</i> Classic. auctores tom. 7 (Romae 1835), <i>in Parenthese nach der besten Ausgabe von C. Müller</i> (Paris. 1846 <i>am</i> Arrianus), <i>das</i> Itinerarium <i>zuweilen auch nach der Ausgabe von Volkmann.</i></p>
+ <p class="zenoPLm4n0"><i>Die Inschriften sind nach dem</i> Corpus inscriptionum Latin. antiqu. (Berol. 1863 sqq.) <i>nach Band und Nummer angeführt.</i></p>
+ <p class="zenoPLm4n0"><i>Was die Kirchenschriftsteller betrifft, so wird</i> Augustinus <i>meist nach der Originalausgabe,</i> Antverp. 1700 <i>(die Schrift</i> de civitate dei <i>nach der zweiten Ausgabe von B. Dombart),</i> Ambrosius <i>nach dem Abdruck von</i> J. P. Migne (Paris. 1866), Hieronymus<i> nach der Ausgabe von</i> Vallarsi, <i>Abdruck von</i> J. P. Migne (Paris. 1844), Cyprianus <i>nach der Ausgabe von Hartel</i> (Vindob. 1868-1871) <i>zitiert. &#8211; Bei</i> Arnobius <i>ist für die Schrift</i> adversus nationes <i>bes. die Ausgabe von Reifferscheid</i> (Vindob. 1875), <i>daneben aber auch die Ausgabe von G. Hildebrand</i> (Hal. Sax. 1844) <i>benutzt; für die Schrift</i> Commentarii in psalmos <i>die Ausgabe von J. P. Migne</i> (Patrol. vol. 53).</p>
+ <p class="zenoPLm4n0"><i>Boëthius wird im allg. nach der Ausgabe</i> Basil. 1570. fol. <i>zitiert, die Schriften</i> de inst. arithm. <i>und</i> de instit. music. <i>nach der Ausgabe von G. Friedlein, Leipzig 1867, die Schrift</i> de consolatione philosophie <i>nach der Ausgabe von Th. Obbarius, Jena 1843.</i></p>
+ <p class="zenoPLm4n0">Firmici math. <i>wird nach der Ausgabe</i> Basil. 1551, <i>meist aber nach der Ausgabe von Kroll, Skutsch und Ziegler</i> (Lips. 1907/13) <i>zitiert.</i></p>
+ <p class="zenoPLm4n0"><i>Die</i> Glossae <i>sind nach Band, Seitenzahl und Zeile der Ausgabe von Löwe und Götz</i> (Corpus glossariorum latinorum a Gustavo Loewe inchoatum ed. Georgius Goetz. Lips. 1888 sgg.) <i>zitiert.</i></p>
+ <p class="zenoPLm4n0"><i>Die Seitenzahlen bei</i> Fronto <i>gehen auf die Ausgabe von Naber</i> (Lips. 1867), <i>die des</i> Paulus Diaconus<i> und</i> Festus <i>auf die Ausgabe von K. Otfr. Müller, Leipzig 1839, die der Grammatiker auf die Ausgabe von Keil</i> (Lips. 1855 sqq.), <i>die der</i> Gromatici vet.<i> auf die Ausgabe von Lachmann</i> (Berlin 1848); <i>dagegen werden</i> Prisciani inst. <i>nach Buch und Paragraph der Ausgabe von Hertz angeführt.</i></p>
+ <p class="zenoPLm4n0"><i>Mit dem Zitat</i> Cornif. rhet. <i>ist der seither sogenannte</i> Auctor ad Herennium <i>gemeint, und zwar in der Textausgabe von Wilh. Friedrich</i> (Ciceronis opera rec. C. F. W. Mueller I. opera rhet. Lips. 1864).</p>
+ </text>
+ </article>
+</articlegroup>
+ 
+ </catdiv>
+ </catdiv>
+
+</doc>
