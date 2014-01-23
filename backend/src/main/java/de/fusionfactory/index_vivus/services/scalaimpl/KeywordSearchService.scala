@@ -5,7 +5,7 @@ import java.util.{List => JList}
 import de.fusionfactory.index_vivus.spellchecker.SpellChecker
 import scala.collection.convert.wrapAll._
 import de.fusionfactory.index_vivus.persistence.SlickTools.{database => db}
-import de.fusionfactory.index_vivus.models.scalaimpl.DictionaryEntry
+import de.fusionfactory.index_vivus.models.scalaimpl.{DictionaryEntry => DE }
 import org.apache.log4j.Logger
 
 
@@ -27,7 +27,7 @@ class KeywordSearchService private() extends IKeywordSearchService {
   lazy val completers: Map[Language, SpellChecker] = Map.empty.withDefault(l => new SpellChecker(l))
 
 
-  def getMatches(keyword: String, language: Language) = DictionaryEntry.fetchByKeyword(keyword)
+  def getMatches(keyword: String, language: Language) = DE.fetchByKeywordAndSourceLanguage(keyword, language)
 
   def getCompletions(keyword: String, language: Language): JList[String] = {
     completers(language).getAutocompleteSuggestions(keyword).toList

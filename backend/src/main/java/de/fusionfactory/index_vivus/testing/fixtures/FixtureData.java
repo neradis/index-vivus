@@ -35,7 +35,7 @@ public class FixtureData {
                     "beatus", "schön", stringAbsent, WordType.ADJECTIVE),
             DictionaryEntry.create(LATIN, integerAbsent, integerAbsent, (byte) 1,
                     "SPQR", "abgek. für: Senātus Populusque Rōmānus Eigentum - " +
-                    "des römischen Sentats und des römischen Volkes",
+                    "des römischen Senats und des römischen Volkes",
                     stringAbsent, WordType.OTHER)
     );
 

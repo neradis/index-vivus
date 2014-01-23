@@ -221,7 +221,7 @@ public class SpellChecker {
         List<DictionaryEntry> entries = DbHelper.transaction(new DbHelper.Operations<List<DictionaryEntry>>() {
             @Override
             public List<DictionaryEntry> perform(Session tx) {
-                List<DictionaryEntry> ds = DictionaryEntry.fetchAll(tx);
+                List<DictionaryEntry> ds = DictionaryEntry.fetchBySourceLanguage(language, tx);
                 logger.debug(format("%d entries retrieved as list for models", ds.size()));
                 return ds;
             }

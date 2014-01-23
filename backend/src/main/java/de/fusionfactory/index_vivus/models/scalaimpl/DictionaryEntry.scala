@@ -43,17 +43,23 @@ object DictionaryEntry {
   def fetchByKeyword(keyword: String, s: Session): JList[DictionaryEntry] =
     transactionForSession(s)( implicit s => DEs.byKeywordQuery(keyword).list )
 
+  def fetchBySourceLanguage(language: Language): JList[DictionaryEntry] = db.withSession(implicit s =>
+    DEs.bySourceLanguageQuery(language).list)
+
+  def fetchBySourceLanguage(language: Language, s: Session): JList[DictionaryEntry] =
+    transactionForSession(s)( implicit s => DEs.bySourceLanguageQuery(language).list )
+  
   def fetchByKeywordAndGroupId(keyword: String, groupId: Byte): Optional[DictionaryEntry] =
     db.withSession(implicit s => DEs.byKeywordAndKWGIndexQuery(keyword, groupId).firstOption)
 
   def fetchByKeywordAndGroupId(keyword: String, groupId: Byte, s: Session): Optional[DictionaryEntry] =
     transactionForSession(s)(implicit s => DEs.byKeywordAndKWGIndexQuery(keyword, groupId).firstOption)
 
-  def fetchByKeywordAndSourceLanguage(keyword: String, lang: Language): Optional[DictionaryEntry] =
-    db.withSession(implicit s => DEs.byKeywordAndSourceLanguageQuery(keyword, lang).firstOption)
+  def fetchByKeywordAndSourceLanguage(keyword: String, lang: Language): JList[DictionaryEntry] =
+    db.withSession(implicit s => DEs.byKeywordAndSourceLanguageQuery(keyword, lang).list)
 
-  def fetchByKeywordAndSourceLanguage(keyword: String, lang: Language, s: Session): Optional[DictionaryEntry] =
-    transactionForSession(s)(implicit s => DEs.byKeywordAndSourceLanguageQuery(keyword, lang).firstOption)
+  def fetchByKeywordAndSourceLanguage(keyword: String, lang: Language, s: Session): JList[DictionaryEntry] =
+    transactionForSession(s)(implicit s => DEs.byKeywordAndSourceLanguageQuery(keyword, lang).list)
 
   def fetchAll(): JList[DictionaryEntry] = db.withSession ( implicit s => Query(DEs).list )
 
