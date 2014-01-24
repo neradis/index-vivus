@@ -25,7 +25,7 @@ public class main {
 			indexer.ensureIndexCreated();
 			try {
 				List<DictionaryEntry> entries = (List<DictionaryEntry>)
-                        indexer.getSearchResults("buchstabe", Language.LATIN, 10, 0).list();
+                        indexer.getSearchResults("buchstabe", Language.ALL, 10, 0).list();
 				for (DictionaryEntry e : entries) {
 					logger.info("Found:" + e.getKeyword());
 				}
