@@ -31,7 +31,12 @@ class AjaxController < ApplicationController
     def get_fulltext_matches
       resultpage = @fulltext_search_service.get_matches(params[:query].to_java, params[:page].to_i, params[:limit].to_i )  
       
-      render :text => resultpage.to_s
+      render :json => {
+        :page_no    => resultpage.page,
+        :hits       => serialize_matches(resultpage.hits),
+        :hasPrev    => resultpage.has_previous_page,
+        :hasNext    => resultpage.has_next_page
+      }
     end
 
     private

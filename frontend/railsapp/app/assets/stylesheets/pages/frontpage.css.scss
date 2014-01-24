@@ -45,7 +45,7 @@
     background-color: #F9F9F9;
     margin: 0 auto;
 
-    @include box-shadow(2px 2px 1px 2px #ccc);
+    @include box-shadow(1px 1px 5px 1px #ccc);
     @include opacity(0);
     @include transition(opacity 0.5s ease);
 
@@ -143,3 +143,22 @@
     }
 }
 
+
+#result {
+    > .pagination {
+        margin-top: 10px;
+        padding: 4px;
+        background: #D9DBDD;
+        @include opacity(0);
+        @include transition(opacity 0.5s ease);
+
+        &.active {
+            @include opacity(1);
+        }
+
+        a {
+            display: block;
+            cursor: pointer;
+        }
+    }
+}
