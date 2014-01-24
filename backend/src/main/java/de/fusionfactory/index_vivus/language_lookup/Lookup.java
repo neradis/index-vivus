@@ -21,7 +21,7 @@ public class Lookup extends LookupMethod {
 	private static Logger logger = Logger.getLogger(Lookup.class);
 	private GermanTokenMemory germanTokenMemory;
 	private static int MAX_BATCH_THREADS = 10;
-
+	private ExecutorService executorService;
 	/**
 	 * Sets the Max Threads to process the batch request.
 	 *
@@ -35,6 +35,7 @@ public class Lookup extends LookupMethod {
 
 	public Lookup(Language expectedLanguage) {
 		super(expectedLanguage);
+		executorService = Executors.newFixedThreadPool(MAX_BATCH_THREADS);
 		_lookupMethods.addAll(Arrays.asList(
 				new WordlistLookup(_language),
 //				new WiktionaryLookup(_language),
@@ -54,7 +55,7 @@ public class Lookup extends LookupMethod {
 	 */
 	public List<LanguageLookupResult> IsExpectedLanguageBatch(List<String> listWords) throws InterruptedException {
 		CountDownLatch countDownLatch = new CountDownLatch(listWords.size());
-		ExecutorService executorService = Executors.newFixedThreadPool(MAX_BATCH_THREADS);
+
 		List<LanguageLookupResult> _isExpectedLanguage = Collections.synchronizedList(new ArrayList<LanguageLookupResult>());
 
 		for (String word : listWords) {

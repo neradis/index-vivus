@@ -39,7 +39,7 @@ public class Indexer {
 	private Directory directoryIndex;
 	private Logger logger;
 
-    public Indexer() {
+	public Indexer() {
 		tokenizer = new Tokenizer();
 		logger = Logger.getLogger(this.getClass());
 		logger.info(fsDirectoryFile.getAbsolutePath());
@@ -67,10 +67,14 @@ public class Indexer {
 
 		List<DictionaryEntry> dictionaryEntryList = DictionaryEntry.fetchAll();
 		int i = 0;
+		int listSize = dictionaryEntryList.size();
 		for (DictionaryEntry e : dictionaryEntryList) {
-			logger.info("progress... " + i);
 			insertDocument(indexWriter, e);
-			logger.info("progress... " + i + " .. done");
+			if (i % 500 == 0) {
+				logger.info("progress... " + i + "/" + listSize + ".. done");
+				indexWriter.commit();
+				logger.info("commited..");
+			}
 			i++;
 		}
 
@@ -97,7 +101,7 @@ public class Indexer {
 
 	public DictionaryEntryListWithTotalCount getSearchResults(String query, Language language, int hitsPerPage, int offset) throws ParseException, IOException {
 		logger.warn(String.format("query=%s,lang=%s,hitspp=%d,offset=%d", query, language, hitsPerPage, offset));
-        List<DictionaryEntry> response = new ArrayList<DictionaryEntry>();
+		List<DictionaryEntry> response = new ArrayList<DictionaryEntry>();
 		if (query.length() < 1) {
 			return DictionaryEntryListWithTotalCount$.MODULE$.apply(response, response.size());
 		}
@@ -114,12 +118,12 @@ public class Indexer {
 		IndexReader reader = DirectoryReader.open(directoryIndex);
 		IndexSearcher searcher = new IndexSearcher(reader);
 		TopScoreDocCollector collector = TopScoreDocCollector.create(hitsPerPage, true);
-        TotalHitCountCollector counter = new TotalHitCountCollector();
+		TotalHitCountCollector counter = new TotalHitCountCollector();
 
 		searcher.search(q, collector);
-        searcher.search(q, counter);
+		searcher.search(q, counter);
 
-        ScoreDoc[] hits = collector.topDocs(offset, hitsPerPage).scoreDocs;
+		ScoreDoc[] hits = collector.topDocs(offset, hitsPerPage).scoreDocs;
 		logger.info("Hits: " + hits.length);
 		for (ScoreDoc hit : hits) {
 			Document d = searcher.doc(hit.doc);
