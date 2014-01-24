@@ -3,6 +3,8 @@ package de.fusionfactory.index_vivus.models;
 import com.google.common.base.Optional;
 import de.fusionfactory.index_vivus.services.Language;
 
+import java.util.List;
+
 /**
  * Created by Markus Ackermann.
  * No rights reserved.
@@ -31,15 +33,21 @@ public interface IDictionaryEntry {
 
     public Optional<Integer> getPreviousEntryId();
 
+    public Optional<? extends IDictionaryEntry> getPreviousEntry();
+
     public void setPreviousEntryId(Optional<Integer> id);
 
     public Optional<Integer> getNextEntryId();
+
+    public Optional<? extends IDictionaryEntry> getNextEntry();
 
     public void setNextEntryId(Optional<Integer> id);
 
     public byte getKeywordGroupIndex();
 
     public void setKeywordGroupIndex(byte keywordGroupIndex);
+
+    public List<? extends IDictionaryEntry> getRelated();
 
     public ICrudOps<? extends IDictionaryEntry> crud();
 }

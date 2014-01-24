@@ -4,9 +4,9 @@
 
 <div id="neighbor-links" class="box details">
 	<%
-		if dict_entry.get_prev_entry.is_present
-			prev_entry = dict_entry.get_prev_entry.get
-			concat link_to prev_entry.get_keyword, details_url(prev_entry.get_id), class: "prev"
+		if dict_entry.get_previous_entry.is_present
+			previous_entry = dict_entry.get_previous_entry.get
+			concat link_to previous_entry.get_keyword, details_url(previous_entry.get_id), class: "prev"
 		end
 	%>
 	<%
@@ -18,17 +18,22 @@
 </div>
 
 <div id="translation" class="box details">
-	<h3>Übersetzung</h3>
-	<p>
-		Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur
-	</p>
+	<h3><%= dict_entry.get_keyword %></h3>
+	<%= dict_entry.get_html_description.is_present ? dict_entry.get_html_description.get.html_safe : dict_entry.get_description %>
 </div>
+
+<%
+    related = dict_entry.get_related
+    if !related.empty?
+%>
 
 <h5 class="left-besides">siehe auch:</h5>
 <ul id="see-also" class="box details">
-	<% dict_entry.get_related.each do |related_entry| %>
+	<% related.each do |related_entry| %>
 		<li class="similar">
-            <%= link_to related_entry.get_keyword, details_url(related_entry.get_id) %>
+        <%= link_to related_entry.get_keyword, details_url(related_entry.get_id) %>
         </li>
 	<% end %>
 </ul>
+
+<% end %>

@@ -2,7 +2,6 @@ java_import 'de.fusionfactory.index_vivus.services.scalaimpl.KeywordSearchServic
 java_import 'de.fusionfactory.index_vivus.services.Language'
 
 class AjaxController < ApplicationController
-    include DictionaryHelper
 
     def initialize
         super

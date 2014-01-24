@@ -5,6 +5,8 @@ import de.fusionfactory.index_vivus.services.Language.{LATIN, GREEK}
 import scala.collection.convert.wrapAsJava._
 import de.fusionfactory.index_vivus.models.{WordType, ICrudOps, IDictionaryEntry}
 import com.google.common.base.Optional
+import java.util
+import com.google.common.collect.ImmutableList
 
 /**
  * Created by Markus Ackermann.
@@ -38,6 +40,10 @@ class KeywordSearchServiceMock extends IKeywordSearchService{
 
     def setNextEntryId(id: Optional[Integer]): Unit = ???
 
+    def getPreviousEntry: Optional[_ <: IDictionaryEntry] = ???
+
+    def getNextEntry: Optional[_ <: IDictionaryEntry] = ???
+
     def getWordType: WordType = WordType.UNKNOWN
 
     def getHtmlDescription: Optional[String] = Optional.absent()
@@ -64,5 +70,7 @@ class KeywordSearchServiceMock extends IKeywordSearchService{
 
     override def toString: String =
       s"id: $getId, keyword: $getKeyword, description: $getDescription, html: $getHtmlDescription"
+
+    def getRelated: util.List[_ <: IDictionaryEntry] = ImmutableList.of()
   }
 }

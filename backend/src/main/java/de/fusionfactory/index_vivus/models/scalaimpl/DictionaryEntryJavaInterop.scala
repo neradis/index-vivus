@@ -1,11 +1,11 @@
 package de.fusionfactory.index_vivus.models.scalaimpl
 
-import de.fusionfactory.index_vivus.models.{IDictionaryEntry, ICrudOpsProvider, ICrudOps, WordType}
+import de.fusionfactory.index_vivus.models._
 import de.fusionfactory.index_vivus.tools.scala.Utils.OptionConversions._
 import scala.slick.driver.H2Driver.simple.{Session => H2Session, _}
 import scala.slick.session.Session
 import de.fusionfactory.index_vivus.persistence.SlickTools.{database => db}
-
+import DictionaryEntry._
 
 import java.util.{List => JList}
 import scala.collection.convert.wrapAll._
@@ -13,6 +13,8 @@ import com.google.common.base.Optional
 import DictionaryEntryBean._
 import de.fusionfactory.index_vivus.persistence.ORMError
 import de.fusionfactory.index_vivus.services.Language
+import scala.Some
+import com.google.common.collect.ImmutableList
 
 /**
  * Created by Markus Ackermann.
@@ -55,9 +57,13 @@ trait DictionaryEntryBean extends ICrudOpsProvider[DictionaryEntry,DictionaryEnt
 
   def getPreviousEntryId: Optional[Integer] = prevId
 
+  def getPreviousEntry: Optional[_ <: IDictionaryEntry] = prevId.map( fetchById(_).get() )
+
   def setPreviousEntryId(pid: Optional[Integer]): Unit = prevId = pid
 
   def getNextEntryId: Optional[Integer] = nextId
+
+  def getNextEntry: Optional[_ <: IDictionaryEntry] = nextId.map( fetchById(_).get() )
 
   def setNextEntryId(nid: Optional[Integer]): Unit = nextId = nid
 
@@ -68,6 +74,8 @@ trait DictionaryEntryBean extends ICrudOpsProvider[DictionaryEntry,DictionaryEnt
   def getOccurringAbbreviations: JList[Abbreviation] = fetchAbbreviations()
 
   def getOccurringAbbreviations(s: Session): JList[Abbreviation] = fetchAbbreviations(Some(s))
+
+  def getRelated: JList[_ <: IDictionaryEntry] = ImmutableList.of() //TODO: implement
 
   def crud = new DictionaryEntryCrudOps(this)
 
