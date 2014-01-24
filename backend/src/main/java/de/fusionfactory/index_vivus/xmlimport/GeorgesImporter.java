@@ -33,6 +33,7 @@ public class GeorgesImporter extends Importer {
     @Override
     protected void parseAbbrvData(NodeList entries) {
         NodeList abbrvContent = null;
+        long processed = 0;
         for (int i = 0; i < entries.item(0).getChildNodes().getLength(); i++) {
             if (entries.item(0).getChildNodes().item(i).getNodeName().equals("text"))
                 abbrvContent = entries.item(0).getChildNodes().item(i).getChildNodes();
@@ -44,6 +45,7 @@ public class GeorgesImporter extends Importer {
                     return o1.toLowerCase().compareTo(o2.toLowerCase());
                 }
             });
+
             for (int c = 0; c < abbrvContent.getLength(); c++) {
                 Node abbrvNode = abbrvContent.item(c);
                 if (abbrvNode.getNodeName().equals("p")) {
@@ -53,6 +55,7 @@ public class GeorgesImporter extends Importer {
                     String abbrvRaw = abbrvLine.substring(abbrvLine.indexOf("<b>"), abbrvLine.lastIndexOf("</b>") + 4);
                     //skip the '*' entry
                     if (abbrvRaw.substring(abbrvRaw.indexOf("<b>") + 3, abbrvRaw.indexOf("</b>")).equals("*")) {
+                        processed++;
                         continue;
                     }
                     String abbrvLabel, abbrv;
@@ -79,11 +82,13 @@ public class GeorgesImporter extends Importer {
                         else
                             inpAbbrvs.put(abbrv, abbrvLabel);
                     }
+                    processed++;
                 }
             }
             ArrayList<Abbreviation> aBuf = new ArrayList<>();
             for (Map.Entry<String, String> entry : inpAbbrvs.entrySet())
                 aBuf.add(Abbreviation.create(entry.getKey(), entry.getValue()));
+            logger.info("Processed abbreviations: " + processed);
             AbbreviationsImportTransaction abbrvImport = new AbbreviationsImportTransaction(aBuf);
             DbHelper.transaction(abbrvImport);
 

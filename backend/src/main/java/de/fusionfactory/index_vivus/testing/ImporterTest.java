@@ -1,10 +1,8 @@
 package de.fusionfactory.index_vivus.testing;
 
 import de.fusionfactory.index_vivus.configuration.SettingsProvider;
-import de.fusionfactory.index_vivus.models.scalaimpl.DictionaryEntry;
 import de.fusionfactory.index_vivus.xmlimport.GeorgesImporter;
 import de.fusionfactory.index_vivus.xmlimport.Importer;
-import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.xml.sax.SAXException;
 
@@ -32,4 +30,18 @@ public class ImporterTest {
             e.printStackTrace();
         }
     }
+/*        for(DictionaryEntry entry : DictionaryEntry.fetchAll())
+            logger.info(entry);
+    }
+    public class Helper extends DbHelper.Operations<Object>() {
+        private List<DictionaryEntry> entries;
+        @Override
+        public Object perform(Session transaction) {
+            entries = DictionaryEntry.fetchAll(transaction);
+            return null;
+        }
+        public List<DictionaryEntry> getEntries() {
+            return entries;
+        }
+    }*/
 }
