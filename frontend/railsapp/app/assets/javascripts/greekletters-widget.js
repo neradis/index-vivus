@@ -43,6 +43,7 @@
         var letter = value.substr(value.length-1);
         if(alphabet[letter] == undefined) {
             hideWidget();
+            return;
         } else {
             showWidget();
         }
