@@ -1,4 +1,5 @@
 java_import 'de.fusionfactory.index_vivus.services.scalaimpl.KeywordSearchService'
+java_import 'de.fusionfactory.index_vivus.services.scalaimpl.FullTextSearchService'
 java_import 'de.fusionfactory.index_vivus.services.Language'
 
 class AjaxController < ApplicationController
@@ -8,6 +9,7 @@ class AjaxController < ApplicationController
         @@language_by_string = {'latin' => Language::LATIN, 
                                 'greek' => Language::GREEK}
         @keyword_search_service = KeywordSearchService::get_instance
+        @fulltext_search_service=FullTextSearchService.new
     end
 
     def get_keyword_matches
@@ -27,7 +29,9 @@ class AjaxController < ApplicationController
     end
 
     def get_fulltext_matches
-        render :json => []
+      resultpage = @fulltext_search_service.get_matches(params[:query].to_java, params[:page].to_i, params[:limit].to_i )  
+      
+      render :text => resultpage.to_s
     end
 
     private

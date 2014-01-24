@@ -52,7 +52,7 @@ IndexVivus::Application.routes.draw do
   # Note: This route will make all actions in every controller accessible via GET requests.
   # match ':controller(/:action(/:id))(.:format)'
 
-  get 'ajax/fulltext/matches/:query' => 'ajax#get_fulltext_matches'
+  get 'ajax/fulltext/matches/:query(/:limit(/:page))' => 'ajax#get_fulltext_matches'
   get 'ajax/keyword/matches/:lang/:keyword' => 'ajax#get_keyword_matches'
   get 'ajax/keyword/completions/:lang/:prefix' => 'ajax#get_keyword_completions'
 

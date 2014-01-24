@@ -1,11 +1,9 @@
 package de.fusionfactory.index_vivus.indexer;
 
 import de.fusionfactory.index_vivus.models.scalaimpl.DictionaryEntry;
-import de.fusionfactory.index_vivus.xmlimport.GeorgesImporter;
-import de.fusionfactory.index_vivus.xmlimport.Importer;
+import de.fusionfactory.index_vivus.services.Language;
 import org.apache.log4j.Logger;
 import org.apache.lucene.queryparser.classic.ParseException;
-import org.xml.sax.SAXException;
 
 import java.io.IOException;
 import java.util.List;
@@ -24,9 +22,10 @@ public class main {
 //			Importer xmlImporter = new GeorgesImporter();
 //			xmlImporter.importFromDefaultLocation();
 
-			indexer.mapIndexToRam();
+			indexer.ensureIndexCreated();
 			try {
-				List<DictionaryEntry> entries = indexer.getSearchResults("buchstabe");
+				List<DictionaryEntry> entries = (List<DictionaryEntry>)
+                        indexer.getSearchResults("buchstabe", Language.LATIN, 10, 0).list();
 				for (DictionaryEntry e : entries) {
 					logger.info("Found:" + e.getKeyword());
 				}

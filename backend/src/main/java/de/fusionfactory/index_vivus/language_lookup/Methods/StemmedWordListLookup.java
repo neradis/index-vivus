@@ -6,7 +6,9 @@ import de.fusionfactory.index_vivus.language_lookup.WordNotFoundException;
 import de.fusionfactory.index_vivus.services.Language;
 import org.apache.log4j.Logger;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.util.HashSet;
 import java.util.Scanner;
 
@@ -46,7 +48,7 @@ public class StemmedWordListLookup extends LookupMethod {
 	 * generates a stemmed wordlist from our german top10.000 wordlist
 	 */
 	private void generateStemmedWordlist() {
-		logger.info("Write stemmed words to HashSet.");
+		logger.info("Collect stemmed words to HashSet.");
 		try {
 			Scanner scanner = new Scanner(new BufferedReader(new FileReader(wordListFile)));
 			GermanStemmer stemmer = new GermanStemmer();
@@ -59,6 +61,6 @@ public class StemmedWordListLookup extends LookupMethod {
 			e.printStackTrace();
 		}
 
-		logger.info("Write stemmed wordlist HashSet done..");
+		logger.info("Collect stemmed wordlist HashSet done..");
 	}
 }

@@ -4,6 +4,8 @@ import com.google.common.base.Optional;
 import de.fusionfactory.index_vivus.configuration.LocationProvider;
 import de.fusionfactory.index_vivus.models.scalaimpl.DictionaryEntry;
 import de.fusionfactory.index_vivus.services.Language;
+import de.fusionfactory.index_vivus.services.scalaimpl.DictionaryEntryListWithTotalCount;
+import de.fusionfactory.index_vivus.services.scalaimpl.DictionaryEntryListWithTotalCount$;
 import de.fusionfactory.index_vivus.tokenizer.Tokenizer;
 import de.fusionfactory.index_vivus.tools.scala.Utils$;
 import org.apache.log4j.Logger;
@@ -13,10 +15,7 @@ import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.IntField;
 import org.apache.lucene.document.TextField;
-import org.apache.lucene.index.IndexReader;
-import org.apache.lucene.index.IndexWriter;
-import org.apache.lucene.index.IndexWriterConfig;
-import org.apache.lucene.index.Term;
+import org.apache.lucene.index.*;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.search.*;
 import org.apache.lucene.store.Directory;
@@ -36,12 +35,11 @@ import java.util.List;
  */
 public class Indexer {
 	private Tokenizer tokenizer;
-	private File fsDirectoryFile = new File(LocationProvider.getInstance().getDataDir().getPath(), "index.lucene.bin");
+	private File fsDirectoryFile = new File(LocationProvider.getInstance().getDataDir(), "lucene_index");
 	private Directory directoryIndex;
 	private Logger logger;
-	static int hitsPerPage = 10;
 
-	public Indexer() {
+    public Indexer() {
 		tokenizer = new Tokenizer();
 		logger = Logger.getLogger(this.getClass());
 		logger.info(fsDirectoryFile.getAbsolutePath());
@@ -53,8 +51,8 @@ public class Indexer {
 		}
 	}
 
-	public void mapIndexToRam() throws IOException {
-		if (fsDirectoryFile.exists()) {
+	public void ensureIndexCreated() throws IOException {
+		if (fsDirectoryFile.isDirectory()) {
 			logger.info("FSDirectory exists, use it O_o.");
 		} else {
 			createIndex();
@@ -93,16 +91,16 @@ public class Indexer {
 		w.addDocument(document);
 	}
 
-	public List<DictionaryEntry> getSearchResults(String query) throws IOException, ParseException {
+	/*public List<DictionaryEntry> getSearchResults(String query) throws IOException, ParseException {
 		return getSearchResults(query, Language.ALL);
-	}
+	}*/
 
-	public List<DictionaryEntry> getSearchResults(String query, Language language) throws ParseException, IOException {
-		List<DictionaryEntry> response = new ArrayList<DictionaryEntry>();
+	public DictionaryEntryListWithTotalCount getSearchResults(String query, Language language, int hitsPerPage, int offset) throws ParseException, IOException {
+		logger.warn(String.format("query=%s,lang=%s,hitspp=%d,offset=%d", query, language, hitsPerPage, offset));
+        List<DictionaryEntry> response = new ArrayList<DictionaryEntry>();
 		if (query.length() < 1) {
-			return response;
+			return DictionaryEntryListWithTotalCount$.MODULE$.apply(response, response.size());
 		}
-		Analyzer analyzer = new StandardAnalyzer(Version.LUCENE_46);
 		Query q = new BooleanQuery();
 
 		Query query1 = new TermQuery(new Term("Content", query));
@@ -113,12 +111,15 @@ public class Indexer {
 		}
 
 
-		IndexReader reader = IndexReader.open(directoryIndex);
+		IndexReader reader = DirectoryReader.open(directoryIndex);
 		IndexSearcher searcher = new IndexSearcher(reader);
 		TopScoreDocCollector collector = TopScoreDocCollector.create(hitsPerPage, true);
+        TotalHitCountCollector counter = new TotalHitCountCollector();
 
 		searcher.search(q, collector);
-		ScoreDoc[] hits = collector.topDocs().scoreDocs;
+        searcher.search(q, counter);
+
+        ScoreDoc[] hits = collector.topDocs(offset, hitsPerPage).scoreDocs;
 		logger.info("Hits: " + hits.length);
 		for (ScoreDoc hit : hits) {
 			Document d = searcher.doc(hit.doc);
@@ -129,6 +130,6 @@ public class Indexer {
 			}
 		}
 
-		return response;
+		return DictionaryEntryListWithTotalCount$.MODULE$.apply(response, counter.getTotalHits());
 	}
 }

@@ -46,7 +46,11 @@ public class LocationProvider {
     public File getDictionaryDir() {
         return impl.getDictionaryDir();
     }
-    
+
+    public File getIndexDir() {
+        return impl.getIndexDir();
+    }
+
     public static void main(String[] args) {
         System.out.println(
             ImmutableList.of(INSTANCE.getProjectRoot(), INSTANCE.getProjectBuild(),

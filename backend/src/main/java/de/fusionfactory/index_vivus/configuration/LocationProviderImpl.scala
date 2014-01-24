@@ -21,6 +21,8 @@ class LocationProviderImpl extends LocationProvider {
 
   override def getDictionaryDir = ensureDir(getInputDir, "dictionaries")
 
+  override def getIndexDir: File = ensureDir(getDataDir, "lucene_index")
+
   protected def ensureDir(root: File, relPath: String) = {
     val dir = new File(root, relPath)
     if( !dir.isDirectory) assert(dir.mkdirs())

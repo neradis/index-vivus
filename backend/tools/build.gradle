@@ -15,3 +15,12 @@ task cleanDb(dependsOn: backend.compileScala) << {
 
     fileTree(dataDir).include("*.db").each { it.delete() }
 }
+
+task createFulltextIndex(dependsOn: backend.compileScala) << {
+    try{
+        new de.fusionfactory.index_vivus.indexer.Indexer().ensureIndexCreated()
+
+    } catch (Exception e) {
+        println "exception: $e"
+    }
+}
