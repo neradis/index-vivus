@@ -12,6 +12,13 @@
     background-image: linear-gradient($from, $to);
 }
 
+@mixin linear-gradient-three-stops($from, $s1, $s2) {
+    background-image: -webkit-linear-gradient($from, $s1, $s2);
+    background-image: -moz-linear-gradient($from, $s1, $s2);
+    background-image: -o-linear-gradient($from, $s1, $s2);
+    background-image: linear-gradient($from, $s1, $s2);
+}
+
 @mixin opacity($opacity) {
     // see https://coderwall.com/p/mca5xw
     $IEValue: $opacity*100;

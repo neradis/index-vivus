@@ -4,8 +4,13 @@
 
 @import "_mixins";
 
+html {
+    @include linear-gradient-three-stops(white 0%, #9FBFD2 450px, #9FBFD2 100%);
+	background-size: 100% 100%;
+        background-repeat: no-repeat;
+}
+
 body {
-	@include linear-gradient(white 0%, #9FBFD2 50%);
 	font-family: sans-serif;
 	text-align: center;
 	text-shadow: 0 0 0.05em #eee;
@@ -53,7 +58,7 @@ h3, h5 {
 
 #wrapper {
 	width: 850px;
-	height: 900px;
+	min-height: 900px;
 	margin: auto;
 }
 
