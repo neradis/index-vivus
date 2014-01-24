@@ -117,7 +117,7 @@ public class Indexer {
 
 		IndexReader reader = DirectoryReader.open(directoryIndex);
 		IndexSearcher searcher = new IndexSearcher(reader);
-		TopScoreDocCollector collector = TopScoreDocCollector.create(hitsPerPage, true);
+		TopScoreDocCollector collector = TopScoreDocCollector.create(1000, true);
 		TotalHitCountCollector counter = new TotalHitCountCollector();
 
 		searcher.search(q, collector);
