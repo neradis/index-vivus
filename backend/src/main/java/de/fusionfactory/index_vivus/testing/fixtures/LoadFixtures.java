@@ -109,8 +109,8 @@ public class LoadFixtures {
     public static void createFixtures() {
         createMissingTables();
         createDictionaryEntryFixtures();
-        createAbbreviationFixtures();
-        addAbbreviationOccurrenceRelations();
+        /*createAbbreviationFixtures();
+        addAbbreviationOccurrenceRelations();*/
     }
 
     public static void createFixturesIfDevelopment() {

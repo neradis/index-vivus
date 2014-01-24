@@ -37,11 +37,9 @@ public class FixtureData {
             DictionaryEntry.create(LATIN, integerAbsent, integerAbsent, (byte) 1,
                     "dominare", "beherrschen, kontrollieren", stringAbsent, WordType.VERB),
             DictionaryEntry.create(LATIN, integerAbsent, integerAbsent, (byte) 1,
-                    "beatus", "schön", stringAbsent, WordType.ADJECTIVE),
-            DictionaryEntry.create(LATIN, integerAbsent, integerAbsent, (byte) 1,
-                    "SPQR", "abgek. für: Senātus Populusque Rōmānus Eigentum - " +
-                    "des römischen Senats und des römischen Volkes",
-                    stringAbsent, WordType.OTHER)
+                    "beatus", "schön", stringAbsent, WordType.ADJECTIVE)
+
+
     );
 
     static protected Set<DictionaryEntry> makeFakeEntries() {
@@ -49,11 +47,11 @@ public class FixtureData {
 
         for(int i=0; i < 22; i++) {
             fakes.add(DictionaryEntry.create(LATIN, integerAbsent, integerAbsent, (byte) 1,
-                    "SPQR" + (65+ i), "abgek. für: Senātus Populusque Rōmānus Eigentum - " +
+                    String.format("SPQR%d", 65+ i), "abgek. für: Senātus Populusque Rōmānus Eigentum - " +
                     "des römischen Senats und des römischen Volkes Haus Maus Laus Katze Mensch",
                     stringAbsent, WordType.OTHER));
         }
-        fakes.addAll(DICTIONARY_ENTRIES_REAL);
+       /* fakes.addAll(DICTIONARY_ENTRIES_REAL);*/
         return fakes;
     }
 
@@ -90,5 +88,15 @@ public class FixtureData {
         public byte getKeywordGroupIndex() {
             return keywordGroupIndex;
         }
+
     }
+
+    public static void main(String[] args) {
+        makeFakeEntries();
+    }
+
+
 }
+
+
+
