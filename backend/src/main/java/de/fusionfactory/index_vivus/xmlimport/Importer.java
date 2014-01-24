@@ -391,4 +391,15 @@ public abstract class Importer {
             return warningE;
         }
     }
+
+    public static void main(String[] args) {
+        List<Importer> importers = ImmutableList.of(new GeorgesImporter(), new PapeImporter());
+        for(Importer importer : importers) {
+            try {
+                importer.importFromDefaultLocation();
+            } catch (IOException | SAXException  ex) {
+                logger.warn(format("Import for dictionary failed due to:%n%s", ex.getMessage()));
+            }
+        }
+    }
 }

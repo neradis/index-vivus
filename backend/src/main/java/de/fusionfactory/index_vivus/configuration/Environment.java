@@ -25,8 +25,8 @@ public enum Environment {
         this.shortName = shortName;
     }
 
-    String name;
-    String shortName;
+    public final String name;
+    public final String shortName;
 
 
     public static final Environment DEFAULT_ENVIRONMENT = DEVELOPMENT;
