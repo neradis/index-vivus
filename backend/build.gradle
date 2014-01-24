@@ -61,8 +61,9 @@ sourceSets {
   }
 }
 
-compileJava.enabled = false //we compile also all Java source code with the Zinc Scala Compiler
-compileTestJava.enabled = false //we compile also all Java source code with the Zinc Scala Compiler
+tasks.withType(JavaCompile) { //we compile also all Java source code with the Zinc Scala Compiler
+  enabled = false
+}
 
 tasks.withType(ScalaCompile) {
   scalaCompileOptions.useCompileDaemon = false
@@ -89,6 +90,13 @@ task processAllResources(dependsOn: [processResources, processTestResources])
 
 task loadFixtures(type: JavaExec, dependsOn: classes) {
     main = 'de.fusionfactory.index_vivus.testing.fixtures.LoadFixtures'
+    args = []
+
+    classpath = sourceSets.main.runtimeClasspath
+}
+
+task importDictionaries(type: JavaExec, dependsOn: classes) {
+    main = 'de.fusionfactory.index_vivus.xmlimport.Importer'
     args = []
 
     classpath = sourceSets.main.runtimeClasspath
@@ -123,11 +131,6 @@ idea {
     downloadSources = true
     downloadJavadoc = true
   }
-}
-
-task cleanTestDb << {
-  ext.testDataDir = new File(projectDir, 'data/test')
-  fileTree(testDataDir).include("*.db").each { it.delete() }
 }
 
 //helper task for build investigations/debugging

@@ -1,7 +1,6 @@
 allprojects {
     group = 'index_vivus'
     version = '0.1'
-    sourceEncoding = "UTF-8"
 
     tasks.withType(Compile) {
         options.encoding = 'UTF-8'

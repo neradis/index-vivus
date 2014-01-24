@@ -1,0 +1,17 @@
+evaluationDependsOn(':backend')
+
+ext.backend = project(':backend')
+
+buildscript {
+    dependencies {
+	classpath files( project(':backend').configurations.compile +  project(':backend').sourceSets.main.output   )
+    }
+}
+
+task cleanDb(dependsOn: backend.compileScala) << {
+    ext.envName = de.fusionfactory.index_vivus.configuration.Environment.getActive().name
+
+    ext.dataDir = new File(backend.projectDir, "data/$envName")
+
+    fileTree(dataDir).include("*.db").each { it.delete() }
+}
