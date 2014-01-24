@@ -1,6 +1,7 @@
 package de.fusionfactory.index_vivus.testing;
 
 import de.fusionfactory.index_vivus.configuration.SettingsProvider;
+import de.fusionfactory.index_vivus.models.scalaimpl.DictionaryEntry;
 import de.fusionfactory.index_vivus.xmlimport.GeorgesImporter;
 import de.fusionfactory.index_vivus.xmlimport.Importer;
 import org.apache.log4j.Level;
@@ -18,13 +19,11 @@ public class ImporterTest {
     private static Logger logger = Logger.getLogger(ImporterTest.class);
     public static void main(String []args) {
         Importer imp = new GeorgesImporter();
-        logger.setLevel(Level.DEBUG);
+        //logger.setLevel(Level.DEBUG);
         logger.info("Starting Importer...");
-        //IDictionaryEntry a = ModelFactory.createDictionaryEntry("abc", "Ein Test", 1);
-        //logger.info(a.toString());
+
         try {
             logger.debug(SettingsProvider.getInstance().getDatabaseUrl());
-            //TODO: execute when DefaultLocation detection runs properly
             imp.importFromDefaultLocation();
             //imp.importDir("D:\\Eigene Daten\\Projekte\\java\\index-vivus\\backend\\inputs\\test\\dictionaries");
         } catch (IOException e) {

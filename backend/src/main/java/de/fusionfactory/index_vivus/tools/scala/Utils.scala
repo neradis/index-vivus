@@ -2,6 +2,8 @@ package de.fusionfactory.index_vivus.tools.scala
 
 import com.google.common.base.Optional
 import java.lang.{Boolean => JBoolean}
+import de.fusionfactory.index_vivus.services.Language
+import de.fusionfactory.index_vivus.models.scalaimpl.DictionaryEntryBean
 
 
 /**
@@ -14,6 +16,8 @@ object Utils {
   private val OPTIONAL_ABSENT_BOOLEAN : Optional[_ <: JBoolean] = Optional.absent()
 
   def matchingNone[T]: Option[T] = Option.empty[T]
+
+  def lang2Byte(l: Language) = Language.values().indexOf(l).toByte
 
 
   object OptionConversions {

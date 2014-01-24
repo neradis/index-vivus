@@ -6,6 +6,7 @@ import de.fusionfactory.index_vivus.services.Language;
 import org.apache.log4j.Logger;
 
 import java.io.*;
+import java.util.HashSet;
 import java.util.Scanner;
 
 /**
@@ -17,32 +18,30 @@ import java.util.Scanner;
 public class WordlistLookup extends LookupMethod {
 	private static String wordListFile = Resources.getResource("word_language/top10000de.txt").getPath();
 	private Logger logger = Logger.getLogger(WordlistLookup.class);
+	private HashSet<String> hashSet;
 
 	public WordlistLookup(Language l) {
 		super(l);
 		if (!l.equals(Language.GERMAN)) {
 			throw new RuntimeException("This Lookup method only supports german language.");
 		}
-	}
 
-	@Override
-	public boolean IsExpectedLanguage(String word) {
+		hashSet = new HashSet<>();
 		try {
 			Scanner scanner = new Scanner(new BufferedReader(new FileReader(wordListFile)));
-			word = word.toLowerCase();
-
 			while (scanner.hasNextLine()) {
 				final String line = scanner.nextLine().toLowerCase();
-				if (line.trim().equals(word)) {
-					scanner.close();
-					return true;
-				}
+				hashSet.add(line.toLowerCase());
 			}
 			scanner.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
-		return false;
+	}
+
+	@Override
+	public boolean IsExpectedLanguage(String word) {
+		return hashSet.contains(word.toLowerCase().trim());
 	}
 
 	@Override

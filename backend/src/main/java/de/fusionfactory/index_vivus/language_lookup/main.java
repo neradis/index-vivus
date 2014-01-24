@@ -43,7 +43,7 @@ public class main {
 
 		try {
 			startTime = System.currentTimeMillis();
-			ArrayList<LanguageLookupResult> resultArrayList = lookup.IsExpectedLanguageBatch(_wordList);
+			List<LanguageLookupResult> resultArrayList = lookup.IsExpectedLanguageBatch(_wordList);
 			endTime = System.currentTimeMillis();
 			logger.info("Check WordList with " + _wordList.size() + " Elements in " + ((endTime - startTime) / 1000) + " seconds.");
 
