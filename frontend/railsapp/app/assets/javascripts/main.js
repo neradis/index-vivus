@@ -42,7 +42,7 @@
             console.log("0 matches");
             $('#tbResult > tbody').append(
                 $('<tr></tr>').append(
-                    $('<td colspan="3"></td>').text("Keine Ergebnisse")
+                    $('<td colspan="2"></td>').text("Keine Ergebnisse")
                 )
             );
             return;
@@ -58,7 +58,6 @@
                     $('<td></td>').append(
                         $('<a></a>').text(match.keyword).attr('href', detailsUrl)
                     ),
-                    $('<td></td>').text( wordTypeLabels[match.type] ),
                     $('<td></td>').text(match.description)
                 )
             );
