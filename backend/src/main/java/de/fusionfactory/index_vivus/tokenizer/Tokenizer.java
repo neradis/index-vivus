@@ -1,13 +1,16 @@
 package de.fusionfactory.index_vivus.tokenizer;
 
-import de.fusionfactory.index_vivus.language_lookup.Lookup;
+import com.google.common.base.Optional;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import de.fusionfactory.index_vivus.models.scalaimpl.Abbreviation;
-import de.fusionfactory.index_vivus.services.Language;
 import org.apache.log4j.Logger;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.regex.Pattern;
 
 /**
  * Created with IntelliJ IDEA.
@@ -16,86 +19,80 @@ import java.util.List;
  * Time: 13:50
  */
 public class Tokenizer {
-	private List<Abbreviation> abbr;
-	private Lookup lookup;
-	private Logger logger;
 
-	public Tokenizer() {
-		abbr = Abbreviation.fetchAll();
-		lookup = new Lookup(Language.GERMAN);
-		logger = Logger.getLogger(this.getClass());
+    //compiling Patterns is costly, but they have small memory footprint, so do it only once in init an keep them
+    //TODO: we probably have to generalise the pattern for splitting into tokens a bit allowing for dashes, semicolon etc.
+    private static final Pattern WHITESPACE_PATTERN = Pattern.compile("\\s+");
+    private static final Pattern SECTION_MARKER_PATTERN = Pattern.compile("(?:(?:[IVX]+)|(?:[A-Z]))\\)");
+    private static final Pattern GERMAN_WORD_PATTERN = Pattern.compile("[a-zA-ZäöüÄÖÜß]{2,}");
+
+
+    private ImmutableMap<String, Abbreviation> abbrMap = buildAbbrMap();
+    ;
+    private Logger logger = Logger.getLogger(Tokenizer.class);
+    ;
+
+    public Tokenizer() {
 	}
 
-	public List<String> getTokenizedString(String entry) {
-		ArrayList<String> result = new ArrayList<String>();
+    private static ImmutableMap<String, Abbreviation> buildAbbrMap() {
+        List<Abbreviation> abbrList = Abbreviation.fetchAll();
+        Map<String, Abbreviation> result = Maps.newHashMapWithExpectedSize(abbrList.size());
+        for (Abbreviation abbr : abbrList) {
+            result.put(abbr.getShortForm(), abbr);
+        }
+        return ImmutableMap.copyOf(result);
+    }
 
-		String[] lines = entry.split("\n");
+    public List<String> getTokenizedString(String entryText) {
+        List<String> result = Lists.newLinkedList();
 
-		for (int i = 0; i < lines.length; i++) {
-			result.addAll(getTokenizedLine(lines[i]));
-		}
+        String[] tokens = WHITESPACE_PATTERN.split(entryText);
 
+        for (String token : tokens) {
+            Optional<String> expansion = expandOrFilterToken(token);
+            if (expansion.isPresent()) {
+                result.add(expansion.get());
+            }
+        }
 
-		return result;
-	}
+        return ImmutableList.copyOf(result);
+    }
 
-	private String getAbbreviation(String word) {
-		for (Abbreviation a : abbr) {
-			if (a.shortForm().equals(word)) {
-				return a.longForm();
-			}
-		}
+    private Optional<String> expandAbbreviation(String word) {
+        return abbrMap.containsKey(word) ? Optional.of(abbrMap.get(word).getLongForm()) : Optional.<String>absent();
+    }
 
-		return null;
-	}
+    /**
+     * If word does not appear to be an short form of an abbreviation nor a section marker, return word as is wrapped
+     * in an Optional, if it uses German characters.
+     * If word is a short form of an abbreviation, expand it to its long form.
+     * If word is a section marker, mark is to be filtered by returning Optional.absent();
+     *
+     * @param word
+     * @return an Optional of the unchanged word, or the expanded form or an empty Optional if the word should be filtered
+     */
 
-	private List<String> getTokenizedLine(String line) {
-		ArrayList<String> result = new ArrayList<>();
+    private Optional<String> expandOrFilterToken(String word) {
 
-		if (line.length() < 1) {
-			return result;
-		}
+        String wordTrimmed = word.trim();
 
-		String[] words = line.split(" ");
+        if (wordTrimmed.endsWith(".")) {
+            Optional<String> abbExp = expandAbbreviation(wordTrimmed.substring(0, wordTrimmed.length() - 1));
 
-		for (int i = 0; i < words.length; i++) {
+            if (abbExp.isPresent() && abbExp.get().length() > 0) {
+                //TODO: long forms of abbreviations are phrases themselves that possibly should be tokenized...
+                return abbExp;
+            }
+        } else if (SECTION_MARKER_PATTERN.matcher(wordTrimmed).matches()) {
+            return Optional.absent();
+        }
 
-			// could be an abbreviation.
-			int dotIndex = words[i].indexOf('.');
-			if (dotIndex >= 0) {
-				String longForm = getAbbreviation(words[i].substring(0, dotIndex + 1));
-				if (longForm != null && longForm.length() > 0) {
-					words[i] = longForm;
-				}
-			}
-			// String contains 'römische zahl)' and should be removed from our list.
-			else if (words[i].matches("[IVX]{1,}\\)[\\W]{0,}")) {
-				words[i] = "";
-			}
-			// matches A) or B) or C) and remove it.
-			else if (words[i].matches("[ABC]{1}\\)[\\W]{0,}")) {
-				words[i] = "";
-			}
-		}
-		line = implodeArray(words, " ");
-		line = line.replaceAll("[^0-9a-zA-ZäöüÄÖÜ]", " ");
-		words = line.split(" ");
+        return GERMAN_WORD_PATTERN.matcher(wordTrimmed).matches() ? Optional.of(wordTrimmed) : Optional.<String>absent();
+    }
 
-		try {
-			List<String> list = lookup.GetListOfLanguageWords(Arrays.asList(words));
-			for (String l : list) {
-				if (l.length() > 1)
-					result.add(l);
-			}
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-
-		return result;
-	}
-
-	public static String implodeArray(String[] inputArray, String glueString) {
-		String output = "";
+    public static String implodeArray(String[] inputArray, String glueString) {
+        String output = "";
 
 		if (inputArray.length > 0) {
 			StringBuilder sb = new StringBuilder();
