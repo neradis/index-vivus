@@ -50,11 +50,10 @@ object SlickTools {
       }
     }
 
-
     val work: Session => Unit = implicit t => {
       val missingTables = slickTables.filterNot(tableExists(_))
-      if( !missingTables.isEmpty) {
-        val ddlStmts = missingTables.map(_.ddl).reduce( _ ++ _ )
+      if (!missingTables.isEmpty) {
+        val ddlStmts = missingTables.map(_.ddl).reduce(_ ++ _)
         logger debug s"Executing DDL statements:\n ${ddlStmts.createStatements.mkString("\n")}\n"
         ddlStmts.create
       }
