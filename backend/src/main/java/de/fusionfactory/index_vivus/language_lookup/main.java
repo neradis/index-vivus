@@ -43,14 +43,14 @@ public class main {
 
 		try {
 			startTime = System.currentTimeMillis();
-			List<LanguageLookupResult> resultArrayList = lookup.IsExpectedLanguageBatch(_wordList);
-			endTime = System.currentTimeMillis();
+            List<LanguageLookupResult> resultArrayList = lookup.isExpectedLanguageBatch(_wordList);
+            endTime = System.currentTimeMillis();
 			logger.info("Check WordList with " + _wordList.size() + " Elements in " + ((endTime - startTime) / 1000) + " seconds.");
 
 			int notMatched = 0;
 			for (LanguageLookupResult result : resultArrayList) {
-				if (!result.MatchedLanguage) {
-					notMatched++;
+                if (!result.matchedLanguage) {
+                    notMatched++;
 				}
 			}
 
@@ -71,8 +71,8 @@ public class main {
 			System.out.flush();
 			try {
 				String keyword = bufferedReader.readLine();
-				System.out.println(keyword + ": " + lookup.IsExpectedLanguage(keyword));
-			} catch (IOException e) {
+                System.out.println(keyword + ": " + lookup.isExpectedLanguage(keyword));
+            } catch (IOException e) {
 				break;
 			}
 		}
@@ -85,8 +85,8 @@ public class main {
 		));
 		Lookup lookup = new Lookup(Language.GERMAN);
 		try {
-			ArrayList<String> result = lookup.GetListOfLanguageWords(requestedWordList);
-			for (String s : result) {
+            ArrayList<String> result = lookup.getListOfLanguageWords(requestedWordList);
+            for (String s : result) {
 				logger.info(s);
 			}
 		} catch (InterruptedException e) {

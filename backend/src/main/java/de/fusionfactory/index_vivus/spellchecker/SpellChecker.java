@@ -33,6 +33,8 @@ import static java.lang.String.format;
  * Time: 18:02
  */
 public class SpellChecker {
+    private static Logger logger = Logger.getLogger(SpellChecker.class);
+
     public static final double MIN_SCORE = -25.0;
     private static final double MATCH_WEIGHT = -0.0;
     private static final double DELETE_WEIGHT = -4.0;
@@ -41,7 +43,7 @@ public class SpellChecker {
     private static final double TRANSPOSE_WEIGHT = -2.0;
     private static final int NGRAM_LENGTH = 5;
     private static final EnumSet<Language> ILLEGAL_LANGUAGES = EnumSet.of(Language.ALL, Language.NONE);
-    public static final String INIT_PENDING_DEFAULT_ALTERNATIVE = "domus";
+
     private final ExecutorService executor = Executors.newCachedThreadPool();
     private final Future<Set<String>> keywordsFuture = executor.submit(
             new Callable<Set<String>>() {
@@ -64,7 +66,7 @@ public class SpellChecker {
                     return createAutoCompleter(keywordsFuture);
                 }
             });
-    Logger logger = Logger.getLogger(SpellChecker.class);
+
     private Language language;
 
     public SpellChecker(Language language) {
@@ -144,7 +146,7 @@ public class SpellChecker {
 
     protected AutoCompleter createAutoCompleter(Future<Set<String>> keywordsFuture) {
 
-        AutoCompleter autoCompleter = null;
+        AutoCompleter autoCompleter;
         try {
             Set<String> keywords = keywordsFuture.get();
             Map<String, Float> tokenMap = Maps.newHashMapWithExpectedSize(keywords.size());
@@ -152,9 +154,20 @@ public class SpellChecker {
             for (String kw : keywords) {
                 tokenMap.put(kw, 1f);
             }
-            autoCompleter = new AutoCompleter(tokenMap, fixedWeightEditDistance(), 5, 10000, MIN_SCORE);
-        } catch (ExecutionException | InterruptedException ex) {
-            throw new IllegalStateException("Error creating autocompleter", ex);
+
+            if (tokenMap.isEmpty()) {
+                throw new IllegalStateException("no known keywords?");
+            }
+
+            autoCompleter = new AutoCompleter(tokenMap, fixedWeightEditDistance(), 8, 10000, MIN_SCORE);
+        } catch (ExecutionException ee) {
+            if (ee.getCause() instanceof IllegalStateException) {
+                throw (IllegalStateException) ee.getCause();
+            } else {
+                throw new IllegalStateException("error creating autocompleter", ee);
+            }
+        } catch (InterruptedException e) {
+            throw new IllegalStateException("autocompleter creation was interrupted");
         }
         logger.debug("auto completer created");
         return autoCompleter;
@@ -179,17 +192,17 @@ public class SpellChecker {
 
             return alternative != null ? alternative : keyword;
         }
-        logger.warn(format("spellchecker not ready - returning '%s' as default value",
-                INIT_PENDING_DEFAULT_ALTERNATIVE));
-        return INIT_PENDING_DEFAULT_ALTERNATIVE;
+        logger.warn(format("spellchecker not ready - returning '%s' uncorrected", keyword));
+        return keyword;
     }
 
     protected Optional<AutoCompleter> getAutoCompleter() {
         try {
             return Optional.of(autoCompleterFuture.get(250, TimeUnit.MILLISECONDS));
         } catch (InterruptedException | ExecutionException ex) {
-            throw new IllegalArgumentException("error waiting for autocompleter", ex);
+            throw new IllegalStateException("error waiting for autocompleter", ex);
         } catch (TimeoutException e) {
+            logger.warn("timout triggered for waiting on the autocompleter");
             return Optional.absent();
         }
     }
@@ -218,9 +231,11 @@ public class SpellChecker {
     }
 
     protected Set<String> fetchKeywords() {
+        logger.debug("Acquiring lock to fetch all keywords");
         List<DictionaryEntry> entries = DbHelper.transaction(new DbHelper.Operations<List<DictionaryEntry>>() {
             @Override
             public List<DictionaryEntry> perform(Session tx) {
+                logger.debug("Lock to fetch all keywords acquired");
                 List<DictionaryEntry> ds = DictionaryEntry.fetchBySourceLanguage(language, tx);
                 logger.debug(format("%d entries retrieved as list for models", ds.size()));
                 return ds;

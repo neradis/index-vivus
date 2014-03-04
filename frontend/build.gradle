@@ -4,115 +4,133 @@ import org.gradle.process.ExecSpec
 evaluationDependsOn(':backend')
 
 ext {
-  jrubyHome = file('ruby/jruby-1.7.8').canonicalFile
-  gemsHome = file('ruby/gems').canonicalFile
-  appBase = file('railsapp').canonicalFile
+    jrubyHome = file('ruby/jruby-1.7.8').canonicalFile
+    gemsHome = file('ruby/gems').canonicalFile
+    appBase = file('railsapp').canonicalFile
 
-  backend = project(':backend')
+    backend = project(':backend')
+    backendTools = project(':backend/tools')
 }
 
 [file("${gemsHome}/bin"), appBase].each {
-  GFileUtils.mkdirs(it)
+    GFileUtils.mkdirs(it)
 }
 
 
 class ExecUtils {
-  public static final String CMD_ARGS = "cmdArgs"
+    public static final String CMD_ARGS = "cmdArgs"
 
-  static addCmdLineArgs(Exec exec) {
-    try {
-      def argTokens = exec.project.property(CMD_ARGS).tokenize()
-      if (argTokens.size() < 1) {
-        throw new IllegalArgumentException("$CMD_ARGS needs to contain at least one token")
-      }
-      exec.args(argTokens)
-    } catch (MissingPropertyException mpe) {
-      exec.logger.warn("""|[WARNING] You started a configurate execution task without giving additional commands to the process
+    static addCmdLineArgs(Exec exec) {
+        try {
+            def argTokens = exec.project.property(CMD_ARGS).tokenize()
+            if (argTokens.size() < 1) {
+                throw new IllegalArgumentException("$CMD_ARGS needs to contain at least one token")
+            }
+            exec.args(argTokens)
+        } catch (MissingPropertyException mpe) {
+            exec.logger.warn("""|[WARNING] You started a configurate execution task without giving additional commands to the process
                           |using -P$CMD_ARGS='<your args>'. Use this command line switch for your gradle invocation
                           |if you intent to specify command arguments.""".stripMargin('|').split().join(' '))
-    } catch (IllegalArgumentException iae) {
-      throw new TaskExecutionException(exec, iae)
+        } catch (IllegalArgumentException iae) {
+            throw new TaskExecutionException(exec, iae)
+        }
     }
-  }
 
 }
 
-ext.backendClasspath = backend.configurations.compile +  backend.sourceSets.main.output
+ext.backendClasspath = backend.configurations.compile + backend.sourceSets.main.output
 
 task showCP << {
-  println backendClasspath.getAsPath()
+    println backendClasspath.getAsPath()
 }
 
 class RubyExec extends Exec {
-  private static String rubyExecutable =
-    Os.isFamily(Os.FAMILY_WINDOWS) ? 'jruby.exe' : (Os.isFamily(Os.FAMILY_MAC) ? 'jruby.sh' : 'jruby')
+    private static String rubyExecutable =
+            Os.isFamily(Os.FAMILY_WINDOWS) ? 'jruby.exe' : (Os.isFamily(Os.FAMILY_MAC) ? 'jruby.sh' : 'jruby')
 
-  RubyExec() {
-    super()
-    setExecutable(project.file("${project.jrubyHome}/bin/$rubyExecutable", PathValidation.FILE))
-    setStandardInput(System.in)
-    args(baseSwitches)
-    environment('GEM_HOME', project.gemsHome)
-    environment('GEM_PATH', project.gemsHome)
-    def binPathsToAdd = project.with {
-      [file("${jrubyHome}/bin", PathValidation.DIRECTORY), file("${gemsHome}/bin", PathValidation.DIRECTORY),
-       file(appBase, PathValidation.DIRECTORY)].canonicalPath
-    }     
-    environment.'PATH' = (binPathsToAdd + environment.'PATH').join(File.pathSeparator)
-  }
+    RubyExec() {
+        super()
+        setExecutable(project.file("${project.jrubyHome}/bin/$rubyExecutable", PathValidation.FILE))
+        setStandardInput(System.in)
+        args(baseSwitches)
+        environment('GEM_HOME', project.gemsHome)
+        environment('GEM_PATH', project.gemsHome)
+        def binPathsToAdd = project.with {
+            [file("${jrubyHome}/bin", PathValidation.DIRECTORY), file("${gemsHome}/bin", PathValidation.DIRECTORY),
+                    file(appBase, PathValidation.DIRECTORY)].canonicalPath
+        }
+        environment.'PATH' = (binPathsToAdd + environment.'PATH').join(File.pathSeparator)
+    }
 
-  List<String> getBaseSwitches() {
-    ['--1.9']
-  }
+    List<String> getBaseSwitches() {
+        ['--1.9']
+    }
 
-  @Override
-  Exec commandLine(Object... arguments) {
-    throw new UnsupportedOperationException()
-  }
+    @Override
+    Exec commandLine(Object... arguments) {
+        throw new UnsupportedOperationException()
+    }
 
-  @Override
-  ExecSpec commandLine(Iterable<?> args) {
-    throw new UnsupportedOperationException()
-  }
+    @Override
+    ExecSpec commandLine(Iterable<?> args) {
+        throw new UnsupportedOperationException()
+    }
 
-  @Override
-  void setCommandLine(Iterable<?> args) {
-    throw new UnsupportedOperationException()
-  }
+    @Override
+    void setCommandLine(Iterable<?> args) {
+        throw new UnsupportedOperationException()
+    }
 
-  @Override
-  void setCommandLine(Object... args) {
-    throw new UnsupportedOperationException()
-  }
+    @Override
+    void setCommandLine(Object... args) {
+        throw new UnsupportedOperationException()
+    }
 
-  @Override
-  Exec setArgs(Iterable<?> arguments) {
-    return super.setArgs(baseSwitches + arguments)
-  }
+    @Override
+    Exec setArgs(Iterable<?> arguments) {
+        return super.setArgs(baseSwitches + arguments)
+    }
 }
 
 task generateClasspathScript << {
-  def script = backendClasspath.collect({ "\$CLASSPATH << \"$it\"" }).join('\n')
-  file("$appBase/add_classpath.rb").write(script)
+    def script = backendClasspath.collect({ "\$CLASSPATH << \"$it\"" }).join('\n')
+    file("$appBase/add_classpath.rb").write(script)
 }
 
 task railsCmd(type: RubyExec, dependsOn: [backend.classes, generateClasspathScript]) {
-  description "Run a Ruby script using the JRuby installation bundled in this project (PWD will be the rails app)"
-
-  workingDir = appBase
-
-  doFirst {
-    ExecUtils.addCmdLineArgs(delegate)
-    logger.warn(commandLine.join(' '))
-  }
-}
-
-task railsServer(type: RubyExec, dependsOn: [backend.classes, generateClasspathScript]) {
-    description "Run the default server for the rails app (WEBRick)"
+    description "Run a Ruby script using the JRuby installation bundled in this project (PWD will be the rails app)"
 
     workingDir = appBase
 
     doFirst {
+        ExecUtils.addCmdLineArgs(delegate)
+        logger.warn(commandLine.join(' '))
+    }
+}
+
+task railsConsole(type: RubyExec, dependsOn: [backend.classes, backendTools.queryBackendEnvironment,
+        generateClasspathScript]) {
+    description "Start an IRB session in the initialised rails context"
+
+    workingDir = appBase
+
+    doFirst {
+        environment('RAILS_ENV', environment.'RAILS_ENV' ?: backendTools.backendEnvironment.toLowerCase())
+        args('-S', 'rails', 'console')
+        logger.warn(commandLine.join(' '))
+    }
+}
+
+
+task railsServer(type: RubyExec, dependsOn: [backend.classes, backendTools.queryBackendEnvironment,
+        generateClasspathScript]) {
+    description "Run the default server for the rails app (WEBRick)"
+
+
+    workingDir = appBase
+
+    doFirst {
+        environment('RAILS_ENV', environment.'RAILS_ENV' ?: backendTools.backendEnvironment.toLowerCase())
         args('-S', 'rails', 'server')
         logger.warn(commandLine.join(' '))
     }

@@ -14,6 +14,9 @@ import de.fusionfactory.index_vivus.models.scalaimpl.GermanTokens
  * Created by Markus Ackermann.
  * No rights reserved.
  */
+//TODO: Use a in-memory data-structure to remember token decisions already queried from the database
+//TODO: Probably it's a good idea to make the API of the TokenMemory read-and-append-only? (would allow for an
+// immutable map for caching...)
 class GermanTokenMemoryImpl{
 
   def isGerman(token: String): Optional[JBoolean] =
