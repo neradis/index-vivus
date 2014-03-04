@@ -6,9 +6,11 @@
 
 #temporary build artifacts
 build/
+logs/
 
 data/development/
 data/test/
+data/production/
 
 inputs/production
 
