@@ -58,6 +58,7 @@ IndexVivus::Application.routes.draw do
 
   get 'info/classpath' => 'info#get_classpath'
   get 'info/loadpath' => 'info#get_loadpath'
+  get 'infos' => 'info#get_infos'
   
   get 'details/:id' => 'main#details', :as => 'details'
 
