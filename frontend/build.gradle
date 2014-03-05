@@ -63,7 +63,7 @@ class RubyExec extends Exec {
     }
 
     List<String> getBaseSwitches() {
-        ['--1.9']
+        ['--1.9', '--server', '-J-Xmx2g', '-J-XX:MaxPermSize=256m']
     }
 
     @Override
