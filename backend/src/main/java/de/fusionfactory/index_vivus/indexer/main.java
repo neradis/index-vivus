@@ -23,7 +23,7 @@ public class main {
 
             indexer.ensureIndexCreated();
             try {
-                List<DictionaryEntry> entries = indexer.getSearchResults("buchstabe");
+                List<DictionaryEntry> entries = indexer.getTopSearchResults("buchstabe");
                 for (DictionaryEntry e : entries) {
                     logger.info("Found:" + e.getKeyword());
                 }
