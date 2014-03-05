@@ -1,6 +1,10 @@
 // Place all the behaviors and hooks related to the matching controller here.
 // All this logic will automatically be available in application.js.
 (function($) {
+    var $pagination;
+
+    var FULLTEXT_RESULTS_PER_PAGE = 20;
+
     var wordTypeLabels = {
         "ADJECTIVE"     : "Adjektiv",
         "ADVERB"        : "Adverb",
@@ -18,17 +22,31 @@
         var $fulltextSearchInput = $("#inputFulltextSearch");
         var $fulltextSearchForm = $("#fulltextSearch > form");
 
+        $pagination = $('#result > .pagination');
+
         $fulltextSearchForm.submit(function(event) {
             event.preventDefault();
 
-            searchFulltext( $fulltextSearchInput.val() );
+            searchFulltext( $fulltextSearchInput.val(), 1 );
         });
     });
 
 
-    function searchFulltext(value) {
-        $.getJSON("ajax/fulltext/matches/"+encodeURIComponent(value), function(result) {
-            printSearchResults(result);
+    function searchFulltext(value, pageNo) {
+        var requestUri = "ajax/fulltext/matches/" + 
+                         encodeURIComponent(value) + '/' +
+                         encodeURIComponent(FULLTEXT_RESULTS_PER_PAGE) + '/' + 
+                         encodeURIComponent(pageNo);
+
+        $.getJSON(requestUri, function(result) {
+            var matches = result.hits;
+
+            printSearchResults(matches);
+            $pagination.empty();
+
+            doPagination(pageNo, result.hasPrev, result.hasNext, function (switchToPage) {
+                searchFulltext(value, switchToPage);
+            });
         });
     }
 
@@ -66,6 +84,30 @@
                 document.location.href = detailsUrl;
             });
         });
+    }
+
+    /**
+     * @param {Integer} currentPage (page numbers are 1-based)
+     * @param {Function} switchPageCallback
+     *      function(switchToPage)
+     *      @param {Integer} switchToPage   New page no.
+     */
+    function doPagination(currentPage, hasPrev, hasNext, switchPageCallback) {
+        $pagination
+        .empty();
+
+        if (hasNext) {
+            $pagination
+            .addClass('active')
+            .append(
+                $('<a class="next-page"></a>').text("Mehr Ergebnisse")
+                .click(function() {
+                    switchPageCallback(currentPage+1);
+                })
+            );
+        } else {
+            $pagination.removeClass('active');
+        }
     }
 
 
