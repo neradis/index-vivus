@@ -26,7 +26,7 @@ public class Lookup extends LookupMethod {
      *
      * @param i
      */
-    public static void SetMaxBatchThreads(int i) {
+    public static void setMaxBatchThreads(int i) {
         if (i < 1)
             throw new IllegalArgumentException("need at least 1 thread for the lookup workers");
         maxBatchThreads = i;
@@ -61,24 +61,16 @@ public class Lookup extends LookupMethod {
         }
         countDownLatch.await();
 
-	/**
-	 * Returns an List which contains only Words in given Language.
+        return _isExpectedLanguage;
+    }
+
+    /**
+     * Returns an List which contains only Words in given Language.
 	 *
 	 * @param listWords
 	 * @return
 	 * @throws InterruptedException
 	 */
-	public ArrayList<String> GetListOfLanguageWords(List<String> listWords) throws InterruptedException {
-		List<LanguageLookupResult> list = IsExpectedLanguageBatch(listWords);
-		ArrayList<String> result = new ArrayList<String>();
-
-    /**
-     * Returns an List which contains only Words in given language.
-     *
-     * @param listWords
-     * @return
-     * @throws InterruptedException
-     */
     public ArrayList<String> getListOfLanguageWords(List<String> listWords) throws InterruptedException {
         List<LanguageLookupResult> list = isExpectedLanguageBatch(listWords);
         ArrayList<String> result = new ArrayList<String>();
@@ -142,8 +134,8 @@ public class Lookup extends LookupMethod {
 	}
 
 	@Override
-	public Language GetLanguage(String word) throws WordNotFoundException {
-		return null;
+    public Language getLanguage(String word) throws WordNotFoundException {
+        return null;
 	}
 
 	/**
