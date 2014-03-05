@@ -29,7 +29,10 @@ class AjaxController < ApplicationController
     end
 
     def get_fulltext_matches
-      resultpage = @fulltext_search_service.get_matches(params[:query].to_java, params[:page].to_i, params[:limit].to_i )  
+      page = (params[:page] || 1).to_i
+      limit = (params[:limit] || 10).to_i
+      
+      resultpage = @fulltext_search_service.get_matches(params[:query].to_java, page, limit )  
       
       render :json => {
         :page_no    => resultpage.page,
