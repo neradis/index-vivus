@@ -216,7 +216,7 @@ public class SpellChecker {
         if (acOpt.isPresent()) {
             SortedSet<ScoredObject<String>> completions = acOpt.get().complete(prefix);
 
-            logger.debug(format("autocompleter was ready and out $d completions for $s", completions.size(), prefix));
+            logger.debug(format("autocompleter was ready and gave %d completions for %s", completions.size(), prefix));
 
             List<String> completionsList = new ArrayList<>(completions.size());
             for (ScoredObject<String> so : completions) {
