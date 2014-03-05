@@ -97,12 +97,14 @@ task generateClasspathScript << {
     file("$appBase/add_classpath.rb").write(script)
 }
 
-task railsCmd(type: RubyExec, dependsOn: [backend.classes, generateClasspathScript]) {
+task railsCmd(type: RubyExec, dependsOn: [backend.classes, backendTools.queryBackendEnvironment,
+        generateClasspathScript]) {
     description "Run a Ruby script using the JRuby installation bundled in this project (PWD will be the rails app)"
 
     workingDir = appBase
 
     doFirst {
+        environment('RAILS_ENV', environment.'RAILS_ENV' ?: backendTools.backendEnvironment.toLowerCase())
         ExecUtils.addCmdLineArgs(delegate)
         logger.warn(commandLine.join(' '))
     }
