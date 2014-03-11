@@ -7,10 +7,8 @@ import com.aliasi.spell.FixedWeightEditDistance;
 import com.aliasi.spell.TrainSpellChecker;
 import com.aliasi.util.ScoredObject;
 import com.aliasi.util.Streams;
-import com.google.common.base.Function;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import de.fusionfactory.index_vivus.configuration.LocationProvider;
@@ -20,10 +18,8 @@ import de.fusionfactory.index_vivus.services.Language;
 import org.apache.log4j.Logger;
 import scala.slick.session.Session;
 
-import javax.annotation.Nullable;
 import java.io.*;
 import java.util.*;
-import java.util.concurrent.*;
 
 import static java.lang.String.format;
 
@@ -42,39 +38,22 @@ public class SpellChecker {
     private static final double SUBSTITUTE_WEIGHT = -2.0;
     private static final double TRANSPOSE_WEIGHT = -2.0;
     private static final int NGRAM_LENGTH = 5;
-    private static final EnumSet<Language> ILLEGAL_LANGUAGES = EnumSet.of(Language.ALL, Language.NONE);
+    private static final EnumSet<Language> ILLEGAL_LANGUAGE_PARAMS = EnumSet.of(Language.ALL, Language.NONE);
 
-    private final ExecutorService executor = Executors.newCachedThreadPool();
-    private final Future<Set<String>> keywordsFuture = executor.submit(
-            new Callable<Set<String>>() {
-                @Override
-                public Set<String> call() throws Exception {
-                    return fetchKeywords();
-                }
-            });
-    private final Future<CompiledSpellChecker> spellCheckerFuture = executor.submit(
-            new Callable<CompiledSpellChecker>() {
-                @Override
-                public CompiledSpellChecker call() throws Exception {
-                    return provideCompiledSpellCheckerModel(keywordsFuture);
-                }
-            });
-    private final Future<AutoCompleter> autoCompleterFuture = executor.submit(
-            new Callable<AutoCompleter>() {
-                @Override
-                public AutoCompleter call() throws Exception {
-                    return createAutoCompleter(keywordsFuture);
-                }
-            });
+    protected volatile Optional<CompiledSpellChecker> spellCheckerPromise = Optional.absent();
+    protected volatile Optional<AutoCompleter> autoCompleterPromise = Optional.absent();
 
-    private Language language;
+    public final Language language;
 
     public SpellChecker(Language language) {
 
-        if (ILLEGAL_LANGUAGES.contains(language)) {
+        if (ILLEGAL_LANGUAGE_PARAMS.contains(language)) {
             throw new IllegalArgumentException(format("invalid language %s"));
         }
         this.language = language;
+
+        logger.debug("Option state: " + spellCheckerPromise + " " + autoCompleterPromise);
+        new SpellCheckerAsyncLoading(this);
     }
 
     /**
@@ -111,10 +90,9 @@ public class SpellChecker {
      * @throws IOException
      * @throws ClassNotFoundException
      */
-    private CompiledSpellChecker provideCompiledSpellCheckerModel(Future<Set<String>> keywordsFuture) {
+    protected CompiledSpellChecker provideCompiledSpellCheckerModel(Set<String> keywords) {
 
-        ensureCompiledSpellChecker(keywordsFuture);
-
+        ensureCompiledSpellChecker(keywords);
 
         CompiledSpellChecker spellChecker;
         try {
@@ -133,22 +111,20 @@ public class SpellChecker {
         return spellChecker;
     }
 
-    private synchronized void ensureCompiledSpellChecker(Future<Set<String>> keywordsFuture) {
+    protected synchronized void ensureCompiledSpellChecker(Set<String> keywords) {
         if (!spellcheckerModelPath().isFile()) {
             try {
-                createIndex(keywordsFuture.get());
-            } catch (ExecutionException | InterruptedException | IOException | ClassNotFoundException ex) {
+                createIndex(keywords);
+            } catch (IOException | ClassNotFoundException ex) {
                 throw new IllegalStateException("Error creating spellchecker index", ex);
             }
 
         }
     }
 
-    protected AutoCompleter createAutoCompleter(Future<Set<String>> keywordsFuture) {
+    protected AutoCompleter createAutoCompleter(Set<String> keywords) {
 
         AutoCompleter autoCompleter;
-        try {
-            Set<String> keywords = keywordsFuture.get();
             Map<String, Float> tokenMap = Maps.newHashMapWithExpectedSize(keywords.size());
 
             for (String kw : keywords) {
@@ -160,17 +136,12 @@ public class SpellChecker {
             }
 
             autoCompleter = new AutoCompleter(tokenMap, fixedWeightEditDistance(), 8, 10000, MIN_SCORE);
-        } catch (ExecutionException ee) {
-            if (ee.getCause() instanceof IllegalStateException) {
-                throw (IllegalStateException) ee.getCause();
-            } else {
-                throw new IllegalStateException("error creating autocompleter", ee);
-            }
-        } catch (InterruptedException e) {
-            throw new IllegalStateException("autocompleter creation was interrupted");
-        }
         logger.debug("auto completer created");
         return autoCompleter;
+    }
+
+    public boolean alternativesReady() {
+        return spellCheckerPromise.isPresent();
     }
 
     /**
@@ -182,29 +153,16 @@ public class SpellChecker {
      */
     public String getBestAlternativeWord(String keyword) throws SpellCheckerException {
 
-        if (spellCheckerFuture.isDone() && !spellCheckerFuture.isCancelled()) {
-            String alternative;
-            try {
-                alternative = spellCheckerFuture.get().didYouMean(keyword);
-            } catch (InterruptedException | ExecutionException ex) {
-                throw new IllegalStateException("error retrieving spellchecker", ex);
-            }
-
+        if (spellCheckerPromise.isPresent()) {
+            String alternative = spellCheckerPromise.get().didYouMean(keyword);
             return alternative != null ? alternative : keyword;
         }
         logger.warn(format("spellchecker not ready - returning '%s' uncorrected", keyword));
         return keyword;
     }
 
-    protected Optional<AutoCompleter> getAutoCompleter() {
-        try {
-            return Optional.of(autoCompleterFuture.get(250, TimeUnit.MILLISECONDS));
-        } catch (InterruptedException | ExecutionException ex) {
-            throw new IllegalStateException("error waiting for autocompleter", ex);
-        } catch (TimeoutException e) {
-            logger.warn("timout triggered for waiting on the autocompleter");
-            return Optional.absent();
-        }
+    public boolean autoCompletionReady() {
+        return autoCompleterPromise.isPresent();
     }
 
     /**
@@ -212,9 +170,9 @@ public class SpellChecker {
      * @return
      */
     public List<String> getAutocompleteSuggestions(String prefix) {
-        final Optional<AutoCompleter> acOpt = getAutoCompleter();
-        if (acOpt.isPresent()) {
-            SortedSet<ScoredObject<String>> completions = acOpt.get().complete(prefix);
+
+        if (autoCompleterPromise.isPresent()) {
+            SortedSet<ScoredObject<String>> completions = autoCompleterPromise.get().complete(prefix);
 
             logger.debug(format("autocompleter was ready and gave %d completions for %s", completions.size(), prefix));
 
@@ -232,23 +190,19 @@ public class SpellChecker {
 
     protected Set<String> fetchKeywords() {
         logger.debug("Acquiring lock to fetch all keywords");
-        List<DictionaryEntry> entries = DbHelper.transaction(new DbHelper.Operations<List<DictionaryEntry>>() {
+
+        List<String> keywords = DbHelper.transaction(new DbHelper.Operations<List<String>>() {
             @Override
-            public List<DictionaryEntry> perform(Session tx) {
+            public List<String> perform(Session tx) {
                 logger.debug("Lock to fetch all keywords acquired");
-                List<DictionaryEntry> ds = DictionaryEntry.fetchBySourceLanguage(language, tx);
-                logger.debug(format("%d entries retrieved as list for models", ds.size()));
-                return ds;
+                List<String> kwList = DictionaryEntry.fetchKeywordsForLanguage(language, tx);
+                logger.debug(format("%d keywords retrieved as list for models", kwList.size()));
+                return kwList;
             }
         });
-        Set<String> entrySet = Sets.newHashSet(Lists.transform(entries, new Function<DictionaryEntry, String>() {
-            @Nullable
-            @Override
-            public String apply(@Nullable DictionaryEntry input) {
-                return input.getKeyword();
-            }
-        }));
-        logger.debug(format("%d keywords retrieved as set for models", entrySet.size()));
+        Set<String> entrySet = Sets.newHashSetWithExpectedSize(keywords.size());
+        entrySet.addAll(keywords);
+        logger.debug(format("%d keywords for models after dupcliate removal", entrySet.size()));
         return entrySet;
     }
 

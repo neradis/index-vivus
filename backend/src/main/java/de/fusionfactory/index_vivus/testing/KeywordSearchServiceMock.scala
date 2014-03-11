@@ -7,6 +7,8 @@ import de.fusionfactory.index_vivus.models.{WordType, ICrudOps, IDictionaryEntry
 import com.google.common.base.Optional
 import java.util
 import com.google.common.collect.ImmutableList
+import de.fusionfactory.index_vivus.models.scalaimpl.Abbreviation
+import scala.slick.session.Session
 
 /**
  * Created by Markus Ackermann.
@@ -72,5 +74,9 @@ class KeywordSearchServiceMock extends IKeywordSearchService{
       s"id: $getId, keyword: $getKeyword, description: $getDescription, html: $getHtmlDescription"
 
     def getRelated: util.List[_ <: IDictionaryEntry] = ImmutableList.of()
+
+    override def getOccurringAbbreviations(s: Session): util.List[_ <: Abbreviation] = ???
+
+    override def getOccurringAbbreviations: util.List[_ <: Abbreviation] = ???
   }
 }
