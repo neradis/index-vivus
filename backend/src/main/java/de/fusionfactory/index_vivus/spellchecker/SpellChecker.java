@@ -202,7 +202,7 @@ public class SpellChecker {
         });
         Set<String> entrySet = Sets.newHashSetWithExpectedSize(keywords.size());
         entrySet.addAll(keywords);
-        logger.debug(format("%d keywords for models after dupcliate removal", entrySet.size()));
+        logger.debug(format("%d keywords for models after duplicate removal", entrySet.size()));
         return entrySet;
     }
 
