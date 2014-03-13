@@ -157,7 +157,7 @@ public class Indexer {
 
             @Override
             protected int numberOfDocsToCollect() {
-                return Integer.MAX_VALUE - 1024;
+                return 10000;
             }
 
             @Override
