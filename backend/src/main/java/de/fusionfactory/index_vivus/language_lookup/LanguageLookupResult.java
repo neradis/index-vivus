@@ -12,21 +12,19 @@ import java.util.ArrayList;
  */
 public class LanguageLookupResult {
 
-	public String Word;
-	public String DataProvider;
-	public Boolean MatchedLanguage;
-	public Language Language;
-	public ArrayList<LanguageLookupResult> Children;
+    public String word;
+    public String dataProvider;
+    public Boolean matchedLanguage;
+    public Language language;
 
-	public LanguageLookupResult() {
-		this("", "", false, null);
-	}
+    public LanguageLookupResult() {
+        this("", "", false, null);
+    }
 
-	public LanguageLookupResult(String word, String dataProvider, Boolean matchedLanguage, Language language) {
-		Word = word;
-		DataProvider = dataProvider;
-		MatchedLanguage = matchedLanguage;
-		Language = language;
-		Children = new ArrayList<LanguageLookupResult>();
-	}
+    public LanguageLookupResult(String word, String dataProvider, Boolean matchedLanguage, Language language) {
+        this.word = word;
+        this.dataProvider = dataProvider;
+        this.matchedLanguage = matchedLanguage;
+        this.language = language;
+    }
 }

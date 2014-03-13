@@ -9,6 +9,7 @@ import SlickTools.{database => db}
 
 import org.apache.log4j.Logger
 import java.sql.SQLException
+import com.mchange.v2.c3p0.ComboPooledDataSource
 
 /**
  * Created by Markus Ackermann.
@@ -27,8 +28,18 @@ object SlickTools {
       transactionForSession(s.get)(work)
   }
 
+  lazy val database =  {
+    val cpds = new ComboPooledDataSource()
+    cpds.setDriverClass("org.h2.Driver")
+    cpds.setJdbcUrl(SettingsProvider.getInstance.getDatabaseUrl)
+    cpds.setMinPoolSize(4)
+    cpds.setMaxPoolSize(32)
+    cpds.setAcquireIncrement(4)
+    cpds.setMaxStatements(1024)
+    cpds.setMaxStatementsPerConnection(32)
 
-  lazy val database = Database.forURL(SettingsProvider.getInstance.getDatabaseUrl, driver = "org.h2.Driver")
+    Database.forDataSource(cpds)
+  }
 
   lazy val slickTables: Set[Table[_]] = Set(DictionaryEntries, Abbreviations, AbbreviationOccurrences, GermanTokens)
 
@@ -50,11 +61,10 @@ object SlickTools {
       }
     }
 
-
     val work: Session => Unit = implicit t => {
       val missingTables = slickTables.filterNot(tableExists(_))
-      if( !missingTables.isEmpty) {
-        val ddlStmts = missingTables.map(_.ddl).reduce( _ ++ _ )
+      if (!missingTables.isEmpty) {
+        val ddlStmts = missingTables.map(_.ddl).reduce(_ ++ _)
         logger debug s"Executing DDL statements:\n ${ddlStmts.createStatements.mkString("\n")}\n"
         ddlStmts.create
       }

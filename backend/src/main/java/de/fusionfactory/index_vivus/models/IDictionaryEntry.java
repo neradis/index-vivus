@@ -1,7 +1,9 @@
 package de.fusionfactory.index_vivus.models;
 
 import com.google.common.base.Optional;
+import de.fusionfactory.index_vivus.models.scalaimpl.Abbreviation;
 import de.fusionfactory.index_vivus.services.Language;
+import scala.slick.session.Session;
 
 import java.util.List;
 
@@ -48,6 +50,10 @@ public interface IDictionaryEntry {
     public void setKeywordGroupIndex(byte keywordGroupIndex);
 
     public List<? extends IDictionaryEntry> getRelated();
+
+    public List<? extends Abbreviation> getOccurringAbbreviations();
+
+    public List<? extends Abbreviation> getOccurringAbbreviations(Session s);
 
     public ICrudOps<? extends IDictionaryEntry> crud();
 }

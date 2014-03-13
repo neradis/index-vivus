@@ -4,16 +4,80 @@ ext.backend = project(':backend')
 
 buildscript {
     dependencies {
-	classpath files( project(':backend').configurations.compile +  project(':backend').sourceSets.main.output   )
+        //classpath files(project(':backend').configurations.compile + project(':backend').sourceSets.main.output)
+        classpath project(':backend').sourceSets.main.runtimeClasspath
     }
 }
 
-task cleanDb(dependsOn: backend.compileScala) << {
+task queryBackendEnvironment(dependsOn: backend.classes) << {
+    project.ext.backendEnvironment = de.fusionfactory.index_vivus.configuration.Environment.getActive().name
+}
+
+task cleanDb(dependsOn: backend.classes) << {
+    println("in cleanDb")
     ext.envName = de.fusionfactory.index_vivus.configuration.Environment.getActive().name
 
     ext.dataDir = new File(backend.projectDir, "data/$envName")
 
     fileTree(dataDir).include("*.db").each { it.delete() }
+}
+
+task initDb(dependsOn: backend.classes) << {
+    de.fusionfactory.index_vivus.persistence.DbHelper.createMissingTables()
+}
+
+task dbReport(dependsOn: [backend.classes, initDb]) << {
+    println("in dbReport")
+    ext.envName = de.fusionfactory.index_vivus.configuration.Environment.getActive().name
+    ext.abbr = de.fusionfactory.index_vivus.models.scalaimpl.Abbreviation
+    ext.entry = de.fusionfactory.index_vivus.models.scalaimpl.DictionaryEntry
+    ext.lang = de.fusionfactory.index_vivus.services.Language
+
+    ext.listReport = { String descFormat, List list ->
+        printf(descFormat + '%n', list.size())
+        println(list[0..<Math.min(32, list.size())].join('\n'))
+        println()
+    }
+
+    println("DB content summary for $envName")
+    listReport('%d abbreviations', abbr.fetchAll())
+
+    listReport('%d Latin entries', entry.fetchBySourceLanguage(lang.LATIN))
+
+    listReport('%d Greek entries', entry.fetchBySourceLanguage(lang.GREEK))
+}
+
+task loadFixtures(type: JavaExec, dependsOn: backend.classes) {
+    main = 'de.fusionfactory.index_vivus.testing.fixtures.LoadFixtures'
+    args = []
+
+    classpath = backend.sourceSets.main.runtimeClasspath
+
+    doFirst {
+        systemProperties.env = backendEnvironment.toLowerCase()
+    }
+}
+
+task importDictionaries(type: JavaExec, dependsOn: backend.classes) {
+    main = 'de.fusionfactory.index_vivus.xmlimport.Importer'
+    args = []
+
+    classpath = backend.sourceSets.main.runtimeClasspath
+
+    doFirst {
+        systemProperties.env = backendEnvironment.toLowerCase()
+    }
+}
+
+task makeIndex(type: JavaExec, dependsOn: [backend.classes, queryBackendEnvironment]) {
+    main = 'de.fusionfactory.index_vivus.indexer.Indexer'
+    args = []
+
+    classpath = backend.sourceSets.main.runtimeClasspath
+
+    doFirst {
+        systemProperties.env = backendEnvironment.toLowerCase()
+    }
 }
 
 task createFulltextIndex(dependsOn: backend.compileScala) << {

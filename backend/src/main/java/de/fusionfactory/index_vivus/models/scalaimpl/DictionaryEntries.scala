@@ -57,6 +57,9 @@ object DictionaryEntries extends Table[DictionaryEntry]("DICTIONARY_ENTRIES") {
       (abbrOcc, abbr) <- AbbreviationOccurrences innerJoin Abbreviations on (_.entryId === _.id)
     } yield abbr
 
+  def keywordsForLanguageQuery(lang: Language) = 
+    Query(DEs) filter (de => de.sourceLanguage === lang2Byte(lang)) map (de => de.keyword) 
+
   def byKeywordAndKWGIndexQuery(kw: String, kwgi: Byte) =
     Query(DEs) filter (de => (de.keyword === kw) && (de.keywordGroupIndex === kwgi))
 

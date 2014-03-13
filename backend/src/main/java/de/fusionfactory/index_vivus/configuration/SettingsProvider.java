@@ -38,7 +38,6 @@ public abstract class SettingsProvider {
     public final static String H2_FILE_DB_OPTIONS =
             Joiner.on(';').join(ImmutableList.of("AUTO_SERVER=TRUE", "AUTO_SERVER_PORT=6543"));
 
-
     public static class DevelopmentSettingProvider extends SettingsProvider {
 
         @Override

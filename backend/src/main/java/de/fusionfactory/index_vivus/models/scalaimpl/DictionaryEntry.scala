@@ -64,6 +64,18 @@ object DictionaryEntry {
   def fetchAll(): JList[DictionaryEntry] = db.withSession ( implicit s => Query(DEs).list )
 
   def fetchAll(s: Session): JList[DictionaryEntry] = transactionForSession(s)( implicit s => Query(DEs).list )
+
+  def fetchKeywordsForLanguage(lang: Language): JList[String] = fetchKeywordsForLanguageHelper(lang)
+
+  def fetchKeywordsForLanguage(lang: Language, s: Session): JList[String] =
+      fetchKeywordsForLanguageHelper(lang, Some(s))
+
+  protected def fetchKeywordsForLanguageHelper(lang: Language, s: Option[Session] = None): List[String] = {
+    val work = { implicit s: Session =>
+      DEs.keywordsForLanguageQuery(lang).list()
+    }
+    inTransaction(s)(work)
+  }
 }
 
 
@@ -79,7 +91,7 @@ case class DictionaryEntry /*protected[scalaimpl]*/ (id: Option[Int],
   extends DictionaryEntryBean with  IDictionaryEntry {
 
   def fetchAbbreviations(s: Option[Session] = None): List[Abbreviation] = {
-    val work: Session => List[Abbreviation] = { implicit s =>
+    val work = { implicit s: Session =>
       DEs.joinOccurringAbbreviationsQuery.list()
     }
     inTransaction(s)(work)
