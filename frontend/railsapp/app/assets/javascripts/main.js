@@ -27,6 +27,11 @@
         $fulltextSearchForm.submit(function(event) {
             event.preventDefault();
 
+            if (! $fulltextSearchInput.val()) {
+                alert("Bitte geben Sie einen Suchbegriff ein.");
+                return;
+            }
+
             searchFulltext( $fulltextSearchInput.val(), 1 );
         });
     });
@@ -58,7 +63,10 @@
 
         if (matches.length == 0) {
             console.log("0 matches");
-            $('#tbResult > tbody').append(
+            $('#tbResult > tbody')
+            .addClass('no-results')
+            .removeClass('results')
+            .append(
                 $('<tr></tr>').append(
                     $('<td colspan="2"></td>').text("Keine Ergebnisse")
                 )
@@ -70,6 +78,8 @@
             var detailsUrl = '/details/'+match.id;
 
             $('#tbResult > tbody')
+            .addClass('results')
+            .removeClass('no-results')
             .append(
                 $tr = $('<tr></tr>')
                 .append(

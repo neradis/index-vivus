@@ -36,6 +36,11 @@
         $keywordForm.submit(function(event) {
             event.preventDefault();
 
+            if (! $keywordInput.val()) {
+                alert("Bitte geben Sie einen Suchbegriff ein.");
+                return;
+            }
+
             searchKeyword( $keywordInput.val() );
         });
 
