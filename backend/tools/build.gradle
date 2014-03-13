@@ -27,6 +27,8 @@ task cleanIndices(dependsOn: backend.classes) << {
     ext.dataDir = new File(backend.projectDir, "data/$envName")
 
     fileTree(dataDir).include("*.model").include {"index.lucene.bin/**/*"}.each { it.delete() }
+
+    new File(dataDir, 'index.lucene.bin').deleteDir()
 }
 
 
