@@ -68,7 +68,7 @@ public class Indexer {
 	}
 
 	private void createIndex() throws IOException {
-        logger.fatal("Create new Index");
+        logger.info("Create new Index");
         Analyzer standardAnalyzer = new StandardAnalyzer(Version.LUCENE_46);
 		IndexWriterConfig config = new IndexWriterConfig(Version.LUCENE_46, standardAnalyzer);
 		IndexWriter indexWriter = new IndexWriter(directoryIndex, config);
