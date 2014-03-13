@@ -14,7 +14,6 @@ task queryBackendEnvironment(dependsOn: backend.classes) << {
 }
 
 task cleanDb(dependsOn: backend.classes) << {
-    println("in cleanDb")
     ext.envName = de.fusionfactory.index_vivus.configuration.Environment.getActive().name
 
     ext.dataDir = new File(backend.projectDir, "data/$envName")
@@ -22,12 +21,20 @@ task cleanDb(dependsOn: backend.classes) << {
     fileTree(dataDir).include("*.db").each { it.delete() }
 }
 
+task cleanIndices(dependsOn: backend.classes) << {
+    ext.envName = de.fusionfactory.index_vivus.configuration.Environment.getActive().name
+
+    ext.dataDir = new File(backend.projectDir, "data/$envName")
+
+    fileTree(dataDir).include("*.model").include {"index.lucene.bin/**/*"}.each { it.delete() }
+}
+
+
 task initDb(dependsOn: backend.classes) << {
     de.fusionfactory.index_vivus.persistence.DbHelper.createMissingTables()
 }
 
 task dbReport(dependsOn: [backend.classes, initDb]) << {
-    println("in dbReport")
     ext.envName = de.fusionfactory.index_vivus.configuration.Environment.getActive().name
     ext.abbr = de.fusionfactory.index_vivus.models.scalaimpl.Abbreviation
     ext.entry = de.fusionfactory.index_vivus.models.scalaimpl.DictionaryEntry
@@ -58,7 +65,7 @@ task loadFixtures(type: JavaExec, dependsOn: backend.classes) {
     }
 }
 
-task importDictionaries(type: JavaExec, dependsOn: backend.classes) {
+task importDictionaries(type: JavaExec, dependsOn: [backend.classes, queryBackendEnvironment]) {
     main = 'de.fusionfactory.index_vivus.xmlimport.Importer'
     args = []
 
@@ -69,7 +76,7 @@ task importDictionaries(type: JavaExec, dependsOn: backend.classes) {
     }
 }
 
-task makeIndex(type: JavaExec, dependsOn: [backend.classes, queryBackendEnvironment]) {
+task createFulltextIndex(type: JavaExec, dependsOn: [backend.classes, queryBackendEnvironment]) {
     main = 'de.fusionfactory.index_vivus.indexer.Indexer'
     args = []
 
@@ -77,14 +84,5 @@ task makeIndex(type: JavaExec, dependsOn: [backend.classes, queryBackendEnvironm
 
     doFirst {
         systemProperties.env = backendEnvironment.toLowerCase()
-    }
-}
-
-task createFulltextIndex(dependsOn: backend.compileScala) << {
-    try{
-        new de.fusionfactory.index_vivus.indexer.Indexer().ensureIndexCreated()
-
-    } catch (Exception e) {
-        println "exception: $e"
     }
 }
