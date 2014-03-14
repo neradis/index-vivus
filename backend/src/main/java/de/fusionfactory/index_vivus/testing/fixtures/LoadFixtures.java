@@ -109,11 +109,10 @@ public class LoadFixtures {
     public static void createFixtures() {
         createMissingTables();
         createDictionaryEntryFixtures();
-        /*createAbbreviationFixtures();
-        addAbbreviationOccurrenceRelations();*/
+        createAbbreviationFixtures();
     }
 
-    public static void createFixturesIfDevelopment() {
+    public static void ensureFixturesForDevelopment() {
         if(Environment.getActive() == Environment.DEVELOPMENT){
             createFixtures();
         }

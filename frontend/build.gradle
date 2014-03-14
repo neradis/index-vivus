@@ -1,7 +1,7 @@
 import org.apache.tools.ant.taskdefs.condition.Os
 import org.gradle.process.ExecSpec
 
-evaluationDependsOn(':backend')
+evaluationDependsOn(':tools')
 
 ext {
     jrubyHome = file('ruby/jruby-1.7.8').canonicalFile
@@ -9,7 +9,7 @@ ext {
     appBase = file('railsapp').canonicalFile
 
     backend = project(':backend')
-    backendTools = project(':backend/tools')
+    tools = project(':tools')
 }
 
 [file("${gemsHome}/bin"), appBase].each {
@@ -97,34 +97,34 @@ task generateClasspathScript << {
     file("$appBase/add_classpath.rb").write(script)
 }
 
-task railsCmd(type: RubyExec, dependsOn: [backend.classes, backendTools.queryBackendEnvironment,
+task railsCmd(type: RubyExec, dependsOn: [backend.classes, tools.queryBackendEnvironment,
         generateClasspathScript]) {
     description "Run a Ruby script using the JRuby installation bundled in this project (PWD will be the rails app)"
 
     workingDir = appBase
 
     doFirst {
-        environment('RAILS_ENV', environment.'RAILS_ENV' ?: backendTools.backendEnvironment.toLowerCase())
+        environment('RAILS_ENV', environment.'RAILS_ENV' ?: tools.backendEnvironment.toLowerCase())
         ExecUtils.addCmdLineArgs(delegate)
         logger.warn(commandLine.join(' '))
     }
 }
 
-task railsConsole(type: RubyExec, dependsOn: [backend.classes, backendTools.queryBackendEnvironment,
+task railsConsole(type: RubyExec, dependsOn: [backend.classes, tools.queryBackendEnvironment,
         generateClasspathScript]) {
     description "Start an IRB session in the initialised rails context"
 
     workingDir = appBase
 
     doFirst {
-        environment('RAILS_ENV', environment.'RAILS_ENV' ?: backendTools.backendEnvironment.toLowerCase())
+        environment('RAILS_ENV', environment.'RAILS_ENV' ?: tools.backendEnvironment.toLowerCase())
         args('-S', 'rails', 'console')
         logger.warn(commandLine.join(' '))
     }
 }
 
 
-task railsServer(type: RubyExec, dependsOn: [backend.classes, backendTools.queryBackendEnvironment,
+task railsServer(type: RubyExec, dependsOn: [backend.classes, tools.queryBackendEnvironment,
         generateClasspathScript]) {
     description "Run the default server for the rails app (WEBRick)"
 
@@ -132,7 +132,7 @@ task railsServer(type: RubyExec, dependsOn: [backend.classes, backendTools.query
     workingDir = appBase
 
     doFirst {
-        environment('RAILS_ENV', environment.'RAILS_ENV' ?: backendTools.backendEnvironment.toLowerCase())
+        environment('RAILS_ENV', environment.'RAILS_ENV' ?: tools.backendEnvironment.toLowerCase())
         args('-S', 'rails', 'server')
         logger.warn(commandLine.join(' '))
     }

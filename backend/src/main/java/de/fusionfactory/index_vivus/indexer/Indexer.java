@@ -9,6 +9,7 @@ import de.fusionfactory.index_vivus.models.scalaimpl.DictionaryEntry;
 import de.fusionfactory.index_vivus.services.Language;
 import de.fusionfactory.index_vivus.services.scalaimpl.DictionaryEntryListWithTotalCount;
 import de.fusionfactory.index_vivus.services.scalaimpl.DictionaryEntryListWithTotalCount$;
+import de.fusionfactory.index_vivus.testing.fixtures.LoadFixtures;
 import de.fusionfactory.index_vivus.tokenizer.Tokenizer;
 import de.fusionfactory.index_vivus.tools.scala.Utils$;
 import org.apache.log4j.Logger;
@@ -255,6 +256,9 @@ public class Indexer {
     }
 
     public static void main(String[] args) {
+        //need to re-populate memory db for DEVELOPMENT with the fixutres (otherwise there is nothing to index
+        LoadFixtures.ensureFixturesForDevelopment();
+
         try {
             new Indexer().createIndex();
         } catch (IOException e) {

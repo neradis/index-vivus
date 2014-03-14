@@ -151,19 +151,6 @@ task view {
     }
 
     doLast {
-        //viewFiles(configurations.compile)
-        //viewFiles(configurations.compile + sourceSets.main.output.with { files(it.classesDir, it.resourcesDir) })
-
-        /*viewObj(compileScala)*/
-        /*viewFiles(compileJava.outputs.outputFiles)*/
-
-        viewObj(sourceSets.main.scala)
-        println(sourceSets.main.scala.srcDirs.join(', '))
+        viewObj(project)
     }
-}
-
-//old, currently unused helper method
-def replaceSuffix(File orig, int suffixLen, List<String> newSuffix) {
-    def prefix = (1..suffixLen).inject(orig.canonicalFile) { File f, int k -> f.parentFile }
-    newSuffix.inject(prefix) { File f, String comp -> new File(f, comp) }
 }
