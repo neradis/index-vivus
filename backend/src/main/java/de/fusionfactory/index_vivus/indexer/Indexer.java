@@ -8,7 +8,8 @@ import de.fusionfactory.index_vivus.language_lookup.Lookup;
 import de.fusionfactory.index_vivus.models.scalaimpl.DictionaryEntry;
 import de.fusionfactory.index_vivus.services.Language;
 import de.fusionfactory.index_vivus.services.scalaimpl.DictionaryEntryListWithTotalCount;
-import de.fusionfactory.index_vivus.services.scalaimpl.DictionaryEntryListWithTotalCount$;
+import de.fusionfactory.index_vivus.services.scalaimpl.DictionaryEntryListWithTotalCountImpl$;
+import de.fusionfactory.index_vivus.services.scalaimpl.IndexSearch;
 import de.fusionfactory.index_vivus.testing.fixtures.LoadFixtures;
 import de.fusionfactory.index_vivus.tokenizer.Tokenizer;
 import de.fusionfactory.index_vivus.tools.scala.Utils$;
@@ -38,7 +39,7 @@ import static java.lang.String.format;
  * Date: 23.01.14
  * Time: 19:23
  */
-public class Indexer {
+public class Indexer implements IndexSearch{
     private Tokenizer tokenizer = new Tokenizer();
     private File fsDirectoryFile = new File(LocationProvider.getInstance().getDataDir().getPath(), "index.lucene.bin");
 	private Directory directoryIndex;
@@ -165,7 +166,7 @@ public class Indexer {
 
             @Override
             protected DictionaryEntryListWithTotalCount transformResults(List<DictionaryEntry> hitsPage, int total) {
-                return DictionaryEntryListWithTotalCount$.MODULE$.apply(hitsPage, total);
+                return DictionaryEntryListWithTotalCountImpl$.MODULE$.apply(hitsPage, total);
             }
         });
     }
