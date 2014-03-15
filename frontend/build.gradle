@@ -28,9 +28,10 @@ class ExecUtils {
             }
             exec.args(argTokens)
         } catch (MissingPropertyException mpe) {
-            exec.logger.warn("""|[WARNING] You started a configurate execution task without giving additional commands to the process
-                          |using -P$CMD_ARGS='<your args>'. Use this command line switch for your gradle invocation
-                          |if you intent to specify command arguments.""".stripMargin('|').split().join(' '))
+            exec.logger.warn(
+                    """|[WARNING] You started a configurate execution task without giving additional commands to the
+                       |process using -P$CMD_ARGS='<your args>'. Use this command line switch for your gradle invocation
+                       |if you intent to specify command arguments.""".stripMargin('|').split().join(' '))
         } catch (IllegalArgumentException iae) {
             throw new TaskExecutionException(exec, iae)
         }
@@ -38,7 +39,7 @@ class ExecUtils {
 
 }
 
-ext.backendClasspath = backend.configurations.compile + backend.sourceSets.main.output
+ext.backendClasspath = project(':backend').sourceSets.main.runtimeClasspath
 
 task showCP << {
     println backendClasspath.getAsPath()
