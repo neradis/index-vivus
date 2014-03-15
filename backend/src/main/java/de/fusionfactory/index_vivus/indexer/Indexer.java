@@ -44,12 +44,11 @@ public class Indexer {
 	private Directory directoryIndex;
     private static Logger logger = Logger.getLogger(Indexer.class);
     private static Logger preprocLogger = Logger.getLogger("DESCRIPTION_PREPROCESSING");
-    private Lookup langLookup;
+    private Lookup langLookup = new Lookup(Language.GERMAN);
     public static int TOP_HIT_COUNT = 10;
 
     public Indexer() {
         logger.info(format("Using %s as directory for Lucene index files", fsDirectoryFile.getAbsolutePath()));
-		langLookup = new Lookup(Language.GERMAN);
 
         try {
 			directoryIndex = new SimpleFSDirectory(fsDirectoryFile);
@@ -82,7 +81,7 @@ public class Indexer {
 			logger.info("progress... " + i + " .. done");
 			i++;
 		}
-
+        langLookup.shutdown();
 		indexWriter.close();
 	}
 

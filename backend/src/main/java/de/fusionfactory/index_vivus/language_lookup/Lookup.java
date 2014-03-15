@@ -1,13 +1,20 @@
 package de.fusionfactory.index_vivus.language_lookup;
 
-import de.fusionfactory.index_vivus.language_lookup.methods.*;
+import de.fusionfactory.index_vivus.language_lookup.methods.LookupMethod;
+import de.fusionfactory.index_vivus.language_lookup.methods.StemmedWordListLookup;
+import de.fusionfactory.index_vivus.language_lookup.methods.UniLeStemmedWordListLookup;
+import de.fusionfactory.index_vivus.language_lookup.methods.WordlistLookup;
 import de.fusionfactory.index_vivus.services.Language;
 import org.apache.log4j.Logger;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created with IntelliJ IDEA.
@@ -20,7 +27,7 @@ public class Lookup extends LookupMethod {
 	private static Logger logger = Logger.getLogger(Lookup.class);
 	private GermanTokenMemory germanTokenMemory;
 	private static int maxBatchThreads = 10;
-	ExecutorService executorService;
+	private ExecutorService executor;
 
 	/**
 	 * Sets the Max Threads to process the batch request.
@@ -43,7 +50,7 @@ public class Lookup extends LookupMethod {
 		));
 
 		germanTokenMemory = GermanTokenMemory.getInstance();
-		executorService = Executors.newFixedThreadPool(maxBatchThreads);
+		executor = Executors.newFixedThreadPool(maxBatchThreads);
 	}
 
 	/**
@@ -59,7 +66,7 @@ public class Lookup extends LookupMethod {
 		List<LanguageLookupResult> _isExpectedLanguage = Collections.synchronizedList(new ArrayList<LanguageLookupResult>());
 
 		for (String word : wordList) {
-			executorService.execute(new BatchThreadHandler(word, countDownLatch, this, _isExpectedLanguage));
+			executor.execute(new BatchThreadHandler(word, countDownLatch, this, _isExpectedLanguage));
 		}
 		countDownLatch.await();
 //		executorService.shutdown();
@@ -117,6 +124,15 @@ public class Lookup extends LookupMethod {
 	public Language getLanguage(String word) throws WordNotFoundException {
 		return null;
 	}
+
+    public void shutdown() {
+        executor.shutdown();
+        try {
+            executor.awaitTermination(10, TimeUnit.SECONDS);
+        } catch (InterruptedException ie) {
+            throw new IllegalStateException("unexpected thread interrupt", ie);
+        }
+    }
 
 	/**
 	 * THe Batch Thread Handler.
