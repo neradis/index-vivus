@@ -42,7 +42,7 @@
             printSearchResults(matches);
             $pagination.empty();
 
-            doPagination(pageNo, result.hasPrev, result.hasNext, function (switchToPage) {
+            doPagination(pageNo, result.total, result.hasPrev, result.hasNext, function (switchToPage) {
                 searchFulltext(value, switchToPage);
             });
         });
@@ -102,7 +102,7 @@
      *      function(switchToPage)
      *      @param {Integer} switchToPage   New page no.
      */
-    function doPagination(currentPage, hasPrev, hasNext, switchPageCallback) {
+    function doPagination(currentPage, totalPages, hasPrev, hasNext, switchPageCallback) {
         $pagination
         .removeClass('active')
         .empty();
@@ -128,6 +128,10 @@
                 })
             );
         }
+
+        $pagination.append(
+            $('<div class="info"></div>').text("Seite "+currentPage+" von "+totalPages)
+        );
     }
 
     function loadAllAbbreviations() {
