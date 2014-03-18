@@ -207,7 +207,7 @@ def queryEnvironment() { //using tasks must depend on queryBackendEnvironment
         project.ext.backendEnvironment = de.fusionfactory.index_vivus.configuration.Environment.getActive().name
         project.ext.backendDataDir = de.fusionfactory.index_vivus.configuration.LocationProvider.instance.dataDir
     } catch (MissingPropertyException mpe) {
-        throw new GradleScriptException("Need classes from :backend to configure :tools tasks")
+        throw new GradleScriptException("Need classes from :backend to configure :tools tasks", mpe)
     }
 }
 
