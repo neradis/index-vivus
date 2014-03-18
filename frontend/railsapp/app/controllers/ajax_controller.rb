@@ -49,12 +49,14 @@ class AjaxController < ApplicationController
 
     def get_abbreviation_expansions
         begin
-            expansions = @abbreviation_set_service.get_abbreviation_expansions(@@language_by_string[params[:lang]])
+            expansions_map = @abbreviation_set_service.get_abbreviation_expansions(@@language_by_string[params[:lang]])
+            expansions = java_hashmap_to_ruby_hash(expansions_map)
         rescue Java::JavaUtil::NoSuchElementException => nse
             raise "Unknown language: #{params[:lang]}"
         rescue Exception => e
-            expansions = ["error #{e} (#{e.class})"]
+            expansions = { :error => "error #{e} (#{e.class})" }
         end
+
         render :json => expansions
     end
 
@@ -74,5 +76,11 @@ class AjaxController < ApplicationController
         end
 
         return serialized
+    end
+
+    def java_hashmap_to_ruby_hash (map)
+        hash = {}
+        map.each { |key, value| hash[key] = value }
+        return hash
     end
 end
