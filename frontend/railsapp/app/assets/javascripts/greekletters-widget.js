@@ -16,7 +16,7 @@
         $keywordInput.keyup(function() {
             parseInput($(this).val());
         });
-        $("#language-selector li:last").click(function() {
+        $("#language-selector").change(function() {
             hideWidget();
         });
     });
@@ -38,13 +38,12 @@
     alphabet["w"] = new Array("ώ","ὼ","ῶ","ὠ","ὤ","ὢ","ὦ","ὡ","ὥ","ὣ","ὧ");
 
     function parseInput(value) {
-        $widget.find("input[type=button]").remove();
-
         var letter = value.substr(value.length-1);
         if(alphabet[letter] == undefined) {
             hideWidget();
             return;
         } else {
+            $widget.find("input[type=button]").remove();
             showWidget();
         }
 
@@ -72,7 +71,7 @@
         value = $keywordInput.val();
         var letter = value.substr(value.length-1);
 
-        if(alphabet[letter] != undefined && $("#language-selector .ui-selected").data("lang") == "greek") {
+        if(alphabet[letter] != undefined && getKeywordLanguage() == "greek") {
             $widget.fadeIn();
         }
         

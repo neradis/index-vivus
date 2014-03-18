@@ -4,6 +4,7 @@
     var $pagination;
 
     var FULLTEXT_RESULTS_PER_PAGE = 20;
+    var DESCRIPTION_MAX_LENGTH = 300;
 
     var wordTypeLabels = {
         "ADJECTIVE"     : "Adjektiv",
@@ -20,7 +21,9 @@
 
     $(function() {
         var $fulltextSearchInput = $("#inputFulltextSearch");
-        var $fulltextSearchForm = $("#fulltextSearch > form");
+        var $fulltextSearchForm = $("#fulltextSearch").parent("form");
+
+        $('#language-selector').bootstrapSwitch();
 
         $pagination = $('#result > .pagination');
 
@@ -58,11 +61,14 @@
     function printSearchResults(matches) {
         var $tr;
 
+        $('#result').addClass('active');
+
         $("#tbResult tbody tr").remove();
         $("#tbResult").addClass('active');
 
         if (matches.length == 0) {
-            console.log("0 matches");
+            $pagination.hide();
+
             $('#tbResult > tbody')
             .addClass('no-results')
             .removeClass('results')
@@ -74,8 +80,12 @@
             return;
         }
 
+        $pagination.show();
         $.each(matches, function(i, match) {
             var detailsUrl = '/details/'+match.id;
+            var description = match.description.length < DESCRIPTION_MAX_LENGTH
+                            ? match.description
+                            : match.description.substr(0, DESCRIPTION_MAX_LENGTH) + "...";
 
             $('#tbResult > tbody')
             .addClass('results')
@@ -86,7 +96,7 @@
                     $('<td></td>').append(
                         $('<a></a>').text(match.keyword).attr('href', detailsUrl)
                     ),
-                    $('<td></td>').text(match.description)
+                    $('<td></td>').text(description)
                 )
             );
 

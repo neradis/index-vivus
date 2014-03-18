@@ -1,17 +1,10 @@
 (function($) {
+    var $keywordForm, $keywordInput, $langSelector;
+
     $(function() {
-        var $keywordForm  = $('#keywordSearch > form');
-        var $keywordInput = $('#inputKeywordSearch');
-        var $langSelector = $('#language-selector');
-
-        $langSelector.selectable({
-            selected: function() {
-                $('#inputKeywordSearch').autocomplete( "search" );
-            }
-        });
-
-        $langSelector.find("> li:first").addClass('ui-selected');
-
+        $keywordForm  = $('#keywordSearch > form');
+        $keywordInput = $('#inputKeywordSearch');
+        $langSelector = $('#language-selector');
 
         $keywordInput.autocomplete({
             source : function(request, responseCallback) {
@@ -43,19 +36,21 @@
 
             searchKeyword( $keywordInput.val() );
         });
-
-
-        function getKeywordLanguage() {
-            return $langSelector.find('> .ui-selected').data('lang');;
-        }
-
-        function searchKeyword(value) {
-            var lang = getKeywordLanguage();
-
-            $.getJSON("ajax/keyword/matches/"+encodeURIComponent(lang)+"/"+encodeURIComponent(value), function(result) {
-                printSearchResults(result);
-            });
-        }
     });
+
+
+    function getKeywordLanguage() {
+        return $langSelector.is(':checked') ? $langSelector.data('on-value') : $langSelector.data('off-value');
+    }
+
+    function searchKeyword(value) {
+        var lang = getKeywordLanguage();
+
+        $.getJSON("ajax/keyword/matches/"+encodeURIComponent(lang)+"/"+encodeURIComponent(value), function(result) {
+            printSearchResults(result);
+        });
+    }
+
+    window.getKeywordLanguage = getKeywordLanguage;
 })(jQuery);
 
