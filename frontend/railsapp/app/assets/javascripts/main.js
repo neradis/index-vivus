@@ -7,19 +7,6 @@
     var FULLTEXT_RESULTS_PER_PAGE = 20;
     var LANGUAGES = ["greek", "latin"];
 
-    var wordTypeLabels = {
-        "ADJECTIVE"     : "Adjektiv",
-        "ADVERB"        : "Adverb",
-        "CONJUNCTION"   : "Konjunktion",
-        "INTERJECTION"  : "Interjektion",
-        "NOUN"          : "Nomen",
-        "OTHER"         : "Anderes",
-        "PREPOSITION"   : "Präposition",
-        "PRONOUN"       : "Pronomen",
-        "UNKNOWN"       : "Unbekannt",
-        "VERB"          : "Verb"
-    };
-
     $(function() {
         var $fulltextSearchInput = $("#inputFulltextSearch");
         var $fulltextSearchForm = $("#fulltextSearch").parent("form");
