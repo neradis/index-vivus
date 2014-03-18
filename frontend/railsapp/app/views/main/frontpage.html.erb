@@ -1,32 +1,38 @@
-<div id="keywordSearch" class="box">
-	<form>
-		<h3>Stichwortsuche</h3>
-
-		<ul id="language-selector">
-			<li class="ui-state-default" data-lang="greek">G</li>
-			<li class="ui-state-default" data-lang="latin">L</li>
-		</ul>
-
-		<input type="text" id="inputKeywordSearch" name="inputKeywordSearch">
-		<input type="submit" value="suchen" class="inline">
-		<div id="widget">
-        		<p>Greek Alphabet</p>
-		</div>
-	</form>
-	
-</div>
-<div id="searchWrapper">
-	<div class="clear"></div>
-	<div id="fulltextSearch" class="box">
+<% content_for :top_right do %>
+<div class="col-md-9 keyword-search-col">
+	<div id="keywordSearch" class="panel panel-default well">
+		<div class="panel-heading">Stichwortsuche</div>
 		<form>
-			<h3>Volltextsuche</h3>
-			<input type="text" id="inputFulltextSearch" name="inputFulltextSearch" />
-			<input type="submit" value="suchen" class="inline" />
+			<fieldset class="panel-body">
+				<input type="checkbox" id="language-selector" checked data-on-label="G" data-off-label="L" data-on-value="greek" data-off-value="latin" />
+
+				<input type="text" id="inputKeywordSearch" name="inputKeywordSearch" />
+				<input type="submit" value="suchen" />
+
+				<div id="widget">
+		        	<p>Greek Alphabet</p>
+				</div>
+			</fieldset>
 		</form>
 	</div>
 </div>
-<div class="clear"></div>
-<div id="result">
+<% end %>
+
+<div class="panel panel-default well">
+	<div class="panel-heading">Volltextsuche</div>
+	<form>
+		<fieldset id="fulltextSearch" class="panel-body">
+			<div class="row">
+				<div class="col-md-10 input-col">
+					<input type="text" id="inputFulltextSearch" name="inputFulltextSearch" />
+				</div>
+				<input type="submit" value="suchen" class="col-md-2" />
+			</div>
+		</fieldset>
+	</form>
+</div>
+
+<div id="result" class="panel panel-default well">
 	<table id ="tbResult">
 		<thead>
 			<tr>

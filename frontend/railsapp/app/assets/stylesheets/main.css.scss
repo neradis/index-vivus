@@ -2,12 +2,14 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+@import "bootstrap";
+@import "bootstrap/theme";
 @import "_mixins";
 
 html {
-    @include linear-gradient-three-stops(white 0%, #9FBFD2 450px, #9FBFD2 100%);
 	background-size: 100% 100%;
-        background-repeat: no-repeat;
+    background-repeat: no-repeat;
+    min-height: 100%;
 }
 
 body {
@@ -58,7 +60,6 @@ h3, h5 {
 
 #wrapper {
 	width: 850px;
-	min-height: 900px;
 	margin: auto;
 }
 
@@ -79,20 +80,23 @@ h3, h5 {
 	float: left;
 }
 
+#top-row {
+	#title-col {
+		a {
+			color: black;
+			text-decoration: none;
+		}
+	}
+
+    .panel {
+        margin-top: 20px
+    }
+}
+
 #feedback {
 	font-size: 0.5em;
 }
 
-
-input[type="submit"] {
-	@include linear-gradient(white 0%, #9FBFD2 50%);
-	border: 0;
-	margin: 2px;
-
-	&:hover {
-		@include linear-gradient(white 0%, #F39814 50%);
-	}
-}
 
 tr {
 	border-bottom: 1px solid #AFAFAF;
