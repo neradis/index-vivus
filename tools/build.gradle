@@ -108,6 +108,7 @@ task createFulltextIndex(type: JavaExec, dependsOn: [backend.classes, initDb, qu
     }
 }
 
+if(classesReady()) {
 
 task createAll(dependsOn: [backend.classes, queryBackendEnvironment]) {
     description """|Creates required non-program artifacts to ensure an operational front-end (i.e. a populated database
@@ -169,14 +170,45 @@ task recreateAll(dependsOn: [backend.classes]) {
     }
 }
 
-for(t in[createAll, recreateAll, cleanDdAndIndices, loadFixtures, importDictionaries, createFulltextIndex, dbReport]) {
+for(t in [createAll, recreateAll]) {
     t.group = 'maintenance'
 }
 
-def queryEnvironment() {
+} //end if(classesReady())
 
-    project.ext.backendEnvironment = de.fusionfactory.index_vivus.configuration.Environment.getActive().name
-    project.ext.backendDataDir = de.fusionfactory.index_vivus.configuration.LocationProvider.instance.dataDir
+
+for(t in [cleanDdAndIndices, loadFixtures, importDictionaries, createFulltextIndex, dbReport]) {
+    t.group = 'maintenance'
+}
+
+def classesReady() {
+    def loadFailed = {
+        project.logger.warn("""|[WARNING] Some tasks could not be configured, because classes in :backend have not
+                               |been sucessfully compiled yet. Run 'gradle :backend:classes' first."""
+                               .stripMargin('|').split().join(' '))
+    }
+
+    try {
+        de.fusionfactory.index_vivus.configuration.Environment.active
+        de.fusionfactory.index_vivus.configuration.LocationProvider.instance
+    } catch (NoClassDefFoundError ncdf) {
+        loadFailed()
+        return false
+    } catch (MissingPropertyException mpe) {
+        loadFailed()
+        return false
+    }
+    return true
+}
+
+
+def queryEnvironment() { //using tasks must depend on queryBackendEnvironment
+    try {
+        project.ext.backendEnvironment = de.fusionfactory.index_vivus.configuration.Environment.getActive().name
+        project.ext.backendDataDir = de.fusionfactory.index_vivus.configuration.LocationProvider.instance.dataDir
+    } catch (MissingPropertyException mpe) {
+        throw new GradleScriptException("Need classes from :backend to configure :tools tasks")
+    }
 }
 
 def dbExists() { //using tasks must depend on queryBackendEnvironment
