@@ -6,6 +6,8 @@ import scala.slick.driver.H2Driver.simple.{Session => H2Session, _}
 import scala.collection.convert.wrapAll._
 import java.util.{List => JList}
 import de.fusionfactory.index_vivus.persistence.ORMError
+import de.fusionfactory.index_vivus.services.Language
+import de.fusionfactory.index_vivus.services.scalaimpl._
 
 /**
  * Created by Markus Ackermann.
@@ -16,6 +18,8 @@ trait AbbreviationBean extends ICrudOpsProvider[Abbreviation, AbbreviationCrudOp
   def getId = id.get
 
   def getIdOption = id
+
+  def getLanguage: Language = sourceLanguage
 
   def crud(): AbbreviationCrudOps = new AbbreviationCrudOps(this)
 

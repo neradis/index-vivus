@@ -2,8 +2,8 @@ package de.fusionfactory.index_vivus.models.scalaimpl
 
 import scala.slick.driver.H2Driver.simple._
 import de.fusionfactory.index_vivus.models.scalaimpl.{DictionaryEntries => DEs}
-import de.fusionfactory.index_vivus.models.scalaimpl.DictionaryEntryBean.lang2Byte
 import de.fusionfactory.index_vivus.services.Language
+import de.fusionfactory.index_vivus.services.scalaimpl._
 
 
 /**
