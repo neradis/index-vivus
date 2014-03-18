@@ -1,14 +1,18 @@
 java_import 'de.fusionfactory.index_vivus.services.scalaimpl.KeywordSearchService'
 java_import 'de.fusionfactory.index_vivus.services.scalaimpl.FullTextSearchService'
 java_import 'de.fusionfactory.index_vivus.services.Language'
+java_import 'de.fusionfactory.index_vivus.services.scalaimpl.AbbreviationSetsService'
+
 
 class AjaxController < ApplicationController
 
     def initialize
         super
         @@language_by_string = {'latin' => Language::LATIN, 
-                                'greek' => Language::GREEK}
+                                'greek' => Language::GREEK,
+                                'all' => Language::ALL}
         @keyword_search_service = KeywordSearchService::get_instance
+        @abbreviation_set_service = AbbreviationSetsService::get_instance
         @fulltext_search_service=FullTextSearchService.new
     end
 
@@ -36,11 +40,24 @@ class AjaxController < ApplicationController
       
       render :json => {
         :page_no    => resultpage.page,
+        :total      => resultpage.total_hits,
         :hits       => serialize_matches(resultpage.hits),
         :hasPrev    => resultpage.has_previous_page,
         :hasNext    => resultpage.has_next_page
       }
     end
+
+    def get_abbreviation_expansions
+        begin
+            expansions = @abbreviation_set_service.get_abbreviation_expansions(@@language_by_string[params[:lang]])
+        rescue Java::JavaUtil::NoSuchElementException => nse
+            raise "Unknown language: #{params[:lang]}"
+        rescue Exception => e
+            expansions = ["error #{e} (#{e.class})"]
+        end
+        render :json => expansions
+    end
+
 
     private
 
