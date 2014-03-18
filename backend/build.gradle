@@ -51,12 +51,15 @@ dependencies {
     compile 'org.apache.lucene:lucene-analyzers:3.6.2'
     compile 'org.apache.lucene:lucene-analyzers-common:4.6.0'
     compile 'org.apache.lucene:lucene-queryparser:4.6.0'
+    compile 'org.ahocorasick:ahocorasick:0.2.2'
 
     compile ':lingpipe:4.1.0'
     compile 'log4j:log4j:1.2.+'
     compile 'org.slf4j:slf4j-log4j12:1.7.+' //needed for trace messages of h2
 
-    testCompile "org.scalatest:scalatest_2.10:2.0"
+    testCompile "org.scalatest:scalatest_$scalaVersion:2.0.M5b"
+    testCompile "org.scalamock:scalamock-scalatest-support_$scalaVersion:3.0.1"
+
     testCompile 'log4j:log4j:1.2.+'
 }
 
@@ -151,19 +154,6 @@ task view {
     }
 
     doLast {
-        //viewFiles(configurations.compile)
-        //viewFiles(configurations.compile + sourceSets.main.output.with { files(it.classesDir, it.resourcesDir) })
-
-        /*viewObj(compileScala)*/
-        /*viewFiles(compileJava.outputs.outputFiles)*/
-
-        viewObj(sourceSets.main.scala)
-        println(sourceSets.main.scala.srcDirs.join(', '))
+        viewObj(project)
     }
-}
-
-//old, currently unused helper method
-def replaceSuffix(File orig, int suffixLen, List<String> newSuffix) {
-    def prefix = (1..suffixLen).inject(orig.canonicalFile) { File f, int k -> f.parentFile }
-    newSuffix.inject(prefix) { File f, String comp -> new File(f, comp) }
 }

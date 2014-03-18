@@ -52,7 +52,6 @@ import static java.lang.String.format;
 public abstract class Importer {
     protected static Logger logger = Logger.getLogger(Importer.class);
     protected final Optional<Integer> integerAbsent = Optional.absent();
-    protected final Optional<String> stringAbsent = Optional.absent();
     protected final short logEntryBatchSize = 1000;
     protected ArrayList<Abbreviation> abbreviations = null;
 

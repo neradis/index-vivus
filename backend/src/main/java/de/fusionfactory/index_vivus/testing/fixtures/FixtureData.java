@@ -59,9 +59,9 @@ public class FixtureData {
 
 
     public static final ImmutableSet<Abbreviation> ABBREVIATIONS = ImmutableSet.of(
-            Abbreviation.create("abgek.", "abgekürzt"),
-            Abbreviation.create("spez.", "speziell"),
-            Abbreviation.create("subst.", "substantivisch")
+            Abbreviation.create(LATIN, "abgek.", "abgekürzt"),
+            Abbreviation.create(LATIN, "spez.", "speziell"),
+            Abbreviation.create(LATIN, "subst.", "substantivisch")
     );
 
     public static final ImmutableMap<EntryDescription, String> ABBREVIATION_OCCURENCE_HINTS = ImmutableMap.of(

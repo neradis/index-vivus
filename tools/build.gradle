@@ -1,0 +1,190 @@
+evaluationDependsOn(':backend')
+
+ext.backend = project(':backend')
+
+buildscript {
+    dependencies {
+        classpath project(':backend').sourceSets.main.runtimeClasspath
+    }
+}
+
+task queryBackendEnvironment(dependsOn: backend.classes) << { queryEnvironment() }
+
+task cleanDb(dependsOn: [backend.classes, queryBackendEnvironment]) << {
+
+    fileTree(backendDataDir).include("*.db").each { it.delete() }
+}
+
+task cleanIndices(dependsOn: [backend.classes, queryBackendEnvironment]) << {
+
+    ext.dataDir = project.backendDataDir
+
+    fileTree(dataDir).include('*.model').each { it.delete() }
+    new File(dataDir, 'index.lucene.bin').deleteDir()
+}
+
+task cleanDdAndIndices(dependsOn: [cleanDb, cleanIndices]) {
+    description "Delete the files of the database, the keyword language model and the fulltext index"
+}
+
+task initDb(type: JavaExec, dependsOn: [backend.classes, queryBackendEnvironment]) {
+
+    main = 'de.fusionfactory.index_vivus.persistence.DatabaseInitialiser'
+    args = []
+
+    classpath = backend.sourceSets.main.runtimeClasspath
+
+    doFirst {
+        systemProperties.env = backendEnvironment.toLowerCase()
+    }
+}
+
+task dbReport(dependsOn: [backend.classes, initDb, queryBackendEnvironment]) {
+    description "List statistics (and optionally examples) of entities in the DB"
+
+    doLast {
+        ext.abbr = de.fusionfactory.index_vivus.models.scalaimpl.Abbreviation
+        ext.entry = de.fusionfactory.index_vivus.models.scalaimpl.DictionaryEntry
+        ext.lang = de.fusionfactory.index_vivus.services.Language
+
+        ext.examples = false
+        try {
+            examples = Boolean.parseBoolean(project.properties.examples)
+        } catch (MissingPropertyException mpe) { /*ignored*/
+        }
+
+        ext.listReport = { String descFormat, List list ->
+            printf(descFormat + '%n', list.size())
+            if (examples) println(list[0..<Math.min(32, list.size())].join('\n'))
+            println()
+        }
+
+        println("DB content summary for $project.backendEnvironment")
+        listReport('%d abbreviations', abbr.fetchAll())
+
+        listReport('%d Latin entries', entry.fetchBySourceLanguage(lang.LATIN))
+
+        listReport('%d Greek entries', entry.fetchBySourceLanguage(lang.GREEK))
+    }
+}
+
+task loadFixtures(type: JavaExec, dependsOn: backend.classes) {
+    description "Add testing fixtures for entries and abbreviations to DB"
+
+    main = 'de.fusionfactory.index_vivus.testing.fixtures.LoadFixtures'
+    args = []
+
+    classpath = backend.sourceSets.main.runtimeClasspath
+
+    doFirst {
+        systemProperties.env = backendEnvironment.toLowerCase()
+    }
+}
+
+task importDictionaries(type: JavaExec, dependsOn: [backend.classes, initDb, queryBackendEnvironment]) {
+    description "Initialise the DB and import the entries from our raw dictionary transcriptions"
+
+    main = 'de.fusionfactory.index_vivus.xmlimport.Importer'
+    args = []
+
+    classpath = backend.sourceSets.main.runtimeClasspath
+
+    doFirst {
+        systemProperties.env = backendEnvironment.toLowerCase()
+    }
+}
+
+task createFulltextIndex(type: JavaExec, dependsOn: [backend.classes, initDb, queryBackendEnvironment]) {
+    mustRunAfter(project.importDictionaries)
+    description "Creates the fulltext index"
+
+    main = 'de.fusionfactory.index_vivus.indexer.Indexer'
+    args = []
+
+    classpath = backend.sourceSets.main.runtimeClasspath
+
+    doFirst {
+        systemProperties.env = backendEnvironment.toLowerCase()
+    }
+}
+
+
+task createAll(dependsOn: [backend.classes, queryBackendEnvironment]) {
+    description """|Creates required non-program artifacts to ensure an operational front-end (i.e. a populated database
+                   |and the corresponding fulltext index)""".stripMargin('|').split().join(' ')
+
+
+    ext.messages = []
+    queryEnvironment()
+
+    if (!dbExists()) {
+        messages << "createAll: Created database and imported entries."
+        it.dependsOn importDictionaries
+    } else {
+        messages << "createAll: Database already existed - skipped DB creation and entry imports."
+    }
+
+    if (!indexExists()) {
+        messages << "createAll: Created fulltext index."
+        it.dependsOn createFulltextIndex
+    } else {
+        messages << "createAll: Fulltext index already existed - skipped indexing."
+    }
+
+    doFirst {
+        messages.each logger.&lifecycle
+    }
+}
+
+task recreateAll(dependsOn: [backend.classes]) {
+    description """|Possibly deletes and then (re-)creates the required non-program artifacts to ensure an operational
+                   |front-end (i.e. a populated database and the corresponding fulltext index)""".stripMargin('|')
+            .split().join(' ')
+
+    ext.messages = []
+    queryEnvironment()
+
+    if (dbExists()) {
+        messages << "recreateAll: Deleted existing database files."
+        importDictionaries.dependsOn cleanDb
+        messages << "recreateAll: Created database anew and imported entries."
+        it.dependsOn importDictionaries
+    } else {
+        messages << "recreateAll: Created database and imported entries."
+        it.dependsOn importDictionaries
+    }
+
+    if (indexExists()) {
+        messages << "recreateAll: Deleted existing index files."
+        project.createFulltextIndex.dependsOn cleanIndices
+        messages << "recreateAll: Created fulltext index anew."
+        it.dependsOn createFulltextIndex
+    } else {
+        messages << "recreateAll: Created fulltext index"
+        it.dependsOn createFulltextIndex
+    }
+
+    doFirst {
+        messages.each logger.&lifecycle
+    }
+}
+
+for(t in[createAll, recreateAll, cleanDdAndIndices, loadFixtures, importDictionaries, createFulltextIndex, dbReport]) {
+    t.group = 'maintenance'
+}
+
+def queryEnvironment() {
+
+    project.ext.backendEnvironment = de.fusionfactory.index_vivus.configuration.Environment.getActive().name
+    project.ext.backendDataDir = de.fusionfactory.index_vivus.configuration.LocationProvider.instance.dataDir
+}
+
+def dbExists() { //using tasks must depend on queryBackendEnvironment
+
+    fileTree(project.backendDataDir).include("*h2.db").any { it.exists() }
+}
+
+def indexExists() { //using tasks must depend on queryBackendEnvironment
+
+    new File(project.backendDataDir, 'index.lucene.bin').isDirectory()
+}

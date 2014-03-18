@@ -7,6 +7,6 @@ require 'java'
 
 require File.expand_path('../../add_classpath.rb', __FILE__)
 
-Java::DeFusionfactoryIndex_vivusTestingFixtures::LoadFixtures.createFixturesIfDevelopment
+Java::DeFusionfactoryIndex_vivusTestingFixtures::LoadFixtures.ensureFixturesForDevelopment
 
 require 'bundler/setup' if File.exists?(ENV['BUNDLE_GEMFILE'])

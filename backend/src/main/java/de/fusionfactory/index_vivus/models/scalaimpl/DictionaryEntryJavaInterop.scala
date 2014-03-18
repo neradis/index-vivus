@@ -2,15 +2,15 @@ package de.fusionfactory.index_vivus.models.scalaimpl
 
 import de.fusionfactory.index_vivus.models._
 import de.fusionfactory.index_vivus.tools.scala.Utils.OptionConversions._
-import scala.slick.driver.H2Driver.simple.{Session => H2Session, _}
+import scala.slick.driver.H2Driver.simple.{_}
 import scala.slick.session.Session
 import de.fusionfactory.index_vivus.persistence.SlickTools.{database => db}
+import de.fusionfactory.index_vivus.services.scalaimpl._
 import DictionaryEntry._
 
 import java.util.{List => JList}
 import scala.collection.convert.wrapAll._
 import com.google.common.base.Optional
-import DictionaryEntryBean._
 import de.fusionfactory.index_vivus.persistence.ORMError
 import de.fusionfactory.index_vivus.services.Language
 import scala.Some
@@ -18,42 +18,19 @@ import com.google.common.collect.ImmutableList
 
 /**
  * Created by Markus Ackermann.
- * No rights reserved. 
+ * No rights reserved.
  */
-
-object DictionaryEntryBean {
-
-  lazy val posIdxRange = 0 until WordType.values.length
-
-  def lang2Byte(wt: Language): Byte = Language.values().indexOf(wt).toByte 
-    
-  def byte2Lang(idx: Byte): Language = Language.values.apply(idx)
-
-  def int2Lang(idx: Int): Language = Language.values.apply(idx)
-
-  def pos2Byte(wt: WordType): Option[Byte] = wt match {
-    case WordType.UNKNOWN => None
-    case wt : WordType => Some(WordType.values().indexOf(wt).toByte)
-  }
-
-  def byte2Pos(idx: Option[Byte]): WordType = idx match {
-    case Some(b: Byte) if posIdxRange contains b => WordType.values.apply(b)
-    case None => WordType.UNKNOWN
-    case _ => throw new IllegalStateException(s"index $idx out of bounds for ${classOf[WordType].getSimpleName}")
-  }
-}
-
 trait DictionaryEntryBean extends ICrudOpsProvider[DictionaryEntry,DictionaryEntryCrudOps] with IDictionaryEntry { this: DictionaryEntry =>
 
   def getId: Int = id.get
 
   def getIdOptional: Optional[Integer] = id
 
-  def getLanguage: Language = byte2Lang(sourceLanguage)
+  def getLanguage: Language = sourceLanguage
 
-  def getWordType: WordType = byte2Pos(posIdx)
+  def getWordType: WordType = posIdx
 
-  def setWordType(wordType: WordType): Unit = posIdx = pos2Byte(wordType)
+  def setWordType(wordType: WordType): Unit = posIdx = wordType
 
   def getPreviousEntryId: Optional[Integer] = prevId
 

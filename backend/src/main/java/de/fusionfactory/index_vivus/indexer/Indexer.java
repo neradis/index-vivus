@@ -8,7 +8,9 @@ import de.fusionfactory.index_vivus.language_lookup.Lookup;
 import de.fusionfactory.index_vivus.models.scalaimpl.DictionaryEntry;
 import de.fusionfactory.index_vivus.services.Language;
 import de.fusionfactory.index_vivus.services.scalaimpl.DictionaryEntryListWithTotalCount;
-import de.fusionfactory.index_vivus.services.scalaimpl.DictionaryEntryListWithTotalCount$;
+import de.fusionfactory.index_vivus.services.scalaimpl.DictionaryEntryListWithTotalCountImpl$;
+import de.fusionfactory.index_vivus.services.scalaimpl.IndexSearch;
+import de.fusionfactory.index_vivus.testing.fixtures.LoadFixtures;
 import de.fusionfactory.index_vivus.tokenizer.Tokenizer;
 import de.fusionfactory.index_vivus.tools.scala.Utils$;
 import org.apache.log4j.Logger;
@@ -37,7 +39,7 @@ import static java.lang.String.format;
  * Date: 23.01.14
  * Time: 19:23
  */
-public class Indexer {
+public class Indexer implements IndexSearch{
     private Tokenizer tokenizer = new Tokenizer();
     private File fsDirectoryFile = new File(LocationProvider.getInstance().getDataDir().getPath(), "index.lucene.bin");
 	private Directory directoryIndex;
@@ -59,13 +61,15 @@ public class Indexer {
     public void ensureIndexCreated() throws IOException {
         if (fsDirectoryFile.exists()) {
 			logger.info("FSDirectory exists, use it O_o.");
-		} else {
-			createIndex();
+			fsDirectoryFile.delete();
 		}
+//		else {
+			createIndex();
+//		}
 	}
 
 	private void createIndex() throws IOException {
-        logger.fatal("Create new Index");
+        logger.info("Create new Index");
         Analyzer standardAnalyzer = new StandardAnalyzer(Version.LUCENE_46);
 		IndexWriterConfig config = new IndexWriterConfig(Version.LUCENE_46, standardAnalyzer);
 		IndexWriter indexWriter = new IndexWriter(directoryIndex, config);
@@ -78,7 +82,7 @@ public class Indexer {
 			logger.info("progress... " + i + " .. done");
 			i++;
 		}
-
+        langLookup.shutdown();
 		indexWriter.close();
 	}
 
@@ -157,12 +161,12 @@ public class Indexer {
 
             @Override
             protected int numberOfDocsToCollect() {
-                return Integer.MAX_VALUE - 1024;
+                return 10000;
             }
 
             @Override
             protected DictionaryEntryListWithTotalCount transformResults(List<DictionaryEntry> hitsPage, int total) {
-                return DictionaryEntryListWithTotalCount$.MODULE$.apply(hitsPage, total);
+                return DictionaryEntryListWithTotalCountImpl$.MODULE$.apply(hitsPage, total);
             }
         });
     }
@@ -252,6 +256,9 @@ public class Indexer {
     }
 
     public static void main(String[] args) {
+        //need to re-populate memory db for DEVELOPMENT with the fixutres (otherwise there is nothing to index
+        LoadFixtures.ensureFixturesForDevelopment();
+
         try {
             new Indexer().createIndex();
         } catch (IOException e) {

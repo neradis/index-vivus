@@ -28,8 +28,9 @@ class SpellCheckerTest extends FlatSpec  with BeforeAndAfter {
 
     val sc = new  SpellChecker(Language.LATIN)
     Thread.sleep(1000) // wait to give Spellchecker a chance to complete it's async initialization
-    assertResult("dominus")(sc.getBestAlternativeWord("dominvs"))
-    assertResult("dominare")(sc.getBestAlternativeWord("dominave"))
+
+    "dominus" === sc.getBestAlternativeWord("dominvs")
+    "dominare" === sc.getBestAlternativeWord("dominave")
     assert(Set("dominare", "dominus") subsetOf sc.getAutocompleteSuggestions("dom").toSet)
   }
 
