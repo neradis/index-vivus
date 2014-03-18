@@ -114,19 +114,29 @@
      */
     function doPagination(currentPage, hasPrev, hasNext, switchPageCallback) {
         $pagination
+        .removeClass('active')
         .empty();
+
+        if (hasPrev) {
+            $pagination
+            .addClass('active')
+            .append(
+                $('<a class="prev-page"></a>').text("< Seite "+(currentPage-1))
+                .click(function() {
+                    switchPageCallback(currentPage-1);
+                })
+            );
+        }
 
         if (hasNext) {
             $pagination
             .addClass('active')
             .append(
-                $('<a class="next-page"></a>').text("Mehr Ergebnisse")
+                $('<a class="next-page"></a>').text("Seite "+(currentPage+1)+" >")
                 .click(function() {
                     switchPageCallback(currentPage+1);
                 })
             );
-        } else {
-            $pagination.removeClass('active');
         }
     }
 

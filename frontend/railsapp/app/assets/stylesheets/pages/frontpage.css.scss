@@ -41,6 +41,24 @@
     &.active {
         @include opacity(1);
     }
+
+    > .pagination {
+        width: 200px;
+        margin: 20px 0 0;
+        padding: 4px;
+        @include opacity(0);
+        @include transition(opacity 0.5s ease);
+
+        &.active {
+            @include opacity(1);
+        }
+
+        a {
+            display: inline-block;
+            margin: 0 20px;
+            cursor: pointer;
+        }
+    }
 }
 
 #tbResult {
@@ -108,26 +126,6 @@
 
         &:hover {
             @include linear-gradient(white 0%, #F2F7F9 50%);
-        }
-    }
-}
-
-
-#result {
-    > .pagination {
-        margin-top: 10px;
-        padding: 4px;
-        background: #D9DBDD;
-        @include opacity(0);
-        @include transition(opacity 0.5s ease);
-
-        &.active {
-            @include opacity(1);
-        }
-
-        a {
-            display: block;
-            cursor: pointer;
         }
     }
 }
