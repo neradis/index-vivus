@@ -3,8 +3,9 @@
 (function($) {
     var $pagination;
 
-    var FULLTEXT_RESULTS_PER_PAGE = 20;
     var DESCRIPTION_MAX_LENGTH = 300;
+    var FULLTEXT_RESULTS_PER_PAGE = 20;
+    var LANGUAGES = ["greek", "latin"];
 
     var wordTypeLabels = {
         "ADJECTIVE"     : "Adjektiv",
@@ -37,6 +38,8 @@
 
             searchFulltext( $fulltextSearchInput.val(), 1 );
         });
+
+        loadAllAbbreviations();
     });
 
 
@@ -140,10 +143,64 @@
         }
     }
 
+    function loadAllAbbreviations() {
+        var languages = LANGUAGES;
+        var completelyLoaded = 0;
+
+        window.abbreviations = {};
+        window.abbreviationsLoaded = false;
+        window.abbreviationsLoadedCallbacks = [];   // are called when abbreviations are ready
+
+        for (var i=0; i<languages.length; i++) {
+            var lang = languages[i];
+            loadAbbreviations(lang, function() {
+                completelyLoaded++;
+
+                if (completelyLoaded == languages.length) {
+                    allAbbreviationsLoaded();
+                }
+            });
+        }
+    }
+
+    function loadAbbreviations(lang, callback) {
+        $.get('/ajax/abbrevations/expansions/'+lang, function(json) {
+            window.abbreviations[lang] = json;
+            callback();
+        }, 'json');
+    }
+
+    function allAbbreviationsLoaded() {
+        window.abbreviationsLoaded = true;
+
+        for (var i=0; i<abbreviationsLoadedCallbacks.length; i++) {
+            var callback = abbreviationsLoadedCallbacks[i];
+            callback();
+        }
+    }
+
+    function augmentAbbreviations(domElement, lang) {
+        var $text = $(domElement);
+
+        if (!abbreviationsLoaded) {
+            abbreviationsLoadedCallbacks.push(function() {
+                augmentAbbreviations(domElement, lang);
+            });
+            return;
+        }
+
+        $text.find('abbr').each(function(index, abbrTag) {
+            var $abbr = $(abbrTag);
+            $abbr.attr('title', abbreviations[lang][$abbr.text()]);
+        });
+    }
+
 
     // Exports:
 
     window.searchFulltext = searchFulltext;
     window.printSearchResults = printSearchResults;
+    window.augmentAbbreviations = augmentAbbreviations;
+
 })(jQuery);
 
