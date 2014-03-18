@@ -19,7 +19,7 @@ task cleanIndices(dependsOn: [backend.classes, queryBackendEnvironment]) << {
 
     ext.dataDir = project.backendDataDir
 
-    fileTree(dataDir).include("*.model").include { "index.lucene.bin/**/*" }.each { it.delete() }
+    fileTree(dataDir).include('*.model').each { it.delete() }
     new File(dataDir, 'index.lucene.bin').deleteDir()
 }
 
@@ -27,8 +27,16 @@ task cleanDdAndIndices(dependsOn: [cleanDb, cleanIndices]) {
     description "Delete the files of the database, the keyword language model and the fulltext index"
 }
 
-task initDb(dependsOn: backend.classes) << {
-    de.fusionfactory.index_vivus.persistence.DbHelper.createMissingTables()
+task initDb(type: JavaExec, dependsOn: [backend.classes, queryBackendEnvironment]) {
+
+    main = 'de.fusionfactory.index_vivus.persistence.DatabaseInitialiser'
+    args = []
+
+    classpath = backend.sourceSets.main.runtimeClasspath
+
+    doFirst {
+        systemProperties.env = backendEnvironment.toLowerCase()
+    }
 }
 
 task dbReport(dependsOn: [backend.classes, initDb, queryBackendEnvironment]) {
@@ -138,11 +146,11 @@ task recreateAll(dependsOn: [backend.classes]) {
 
     if (dbExists()) {
         messages << "recreateAll: Deleted existing database files."
-        project.importDictionaries.dependsOn cleanDb
-        messages << "recreateAll: Created database anew and import entries."
+        importDictionaries.dependsOn cleanDb
+        messages << "recreateAll: Created database anew and imported entries."
         it.dependsOn importDictionaries
     } else {
-        messages << "recreateAll: Created database and import entries."
+        messages << "recreateAll: Created database and imported entries."
         it.dependsOn importDictionaries
     }
 
