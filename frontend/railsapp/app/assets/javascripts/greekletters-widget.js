@@ -43,17 +43,17 @@
             hideWidget();
             return;
         } else {
-            $widget.find("input[type=button]").remove();
+            $widget.find(".btn").remove();
             showWidget();
         }
 
         var diacritics = alphabet[letter];
         for(var i=0; i<diacritics.length; i++) {
             $widget.append(
-                $('<input type="button" class="btn" />')
-                .val(diacritics[i])
+                $('<button type="button" class="btn btn-primary"></button>')
+                .text(diacritics[i])
                 .click(function() {
-                    insertLetter( $(this).val() );
+                    insertLetter( $(this).text() );
                 })
             );
         }
