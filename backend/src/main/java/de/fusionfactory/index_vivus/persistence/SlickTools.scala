@@ -31,6 +31,7 @@ object SlickTools {
   lazy val database =  {
     val cpds = new ComboPooledDataSource()
     cpds.setDriverClass("org.h2.Driver")
+    logger info s"Using database: ${SettingsProvider.getInstance.getDatabaseUrl}"
     cpds.setJdbcUrl(SettingsProvider.getInstance.getDatabaseUrl)
     cpds.setMinPoolSize(4)
     cpds.setMaxPoolSize(32)
