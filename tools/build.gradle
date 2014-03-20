@@ -1,6 +1,9 @@
 evaluationDependsOn(':backend')
 
-ext.backend = project(':backend')
+ext {
+    backend = project(':backend')
+    backendNotReady = false
+}
 
 buildscript {
     dependencies {
@@ -108,7 +111,7 @@ task createFulltextIndex(type: JavaExec, dependsOn: [backend.classes, initDb, qu
     }
 }
 
-if(classesReady()) {
+tasksIfBackendClassesReady {
 
 task createAll(dependsOn: [backend.classes, queryBackendEnvironment]) {
     description """|Creates required non-program artifacts to ensure an operational front-end (i.e. a populated database
@@ -174,40 +177,53 @@ for(t in [createAll, recreateAll]) {
     t.group = 'maintenance'
 }
 
-} //end if(classesReady())
+} //end of tasksIfBackendClassesReady closure
 
 
 for(t in [cleanDdAndIndices, loadFixtures, importDictionaries, createFulltextIndex, dbReport]) {
     t.group = 'maintenance'
 }
 
-def classesReady() {
-    def loadFailed = {
+def tasksIfBackendClassesReady(Closure taskInit) {
+    def loadFailedMsg = {
         project.logger.warn("""|[WARNING] Some tasks could not be configured, because classes in :backend have not
-                               |been sucessfully compiled yet. Run 'gradle :backend:classes' first."""
+                               |been sucessfully compiled yet. This build run may fail.
+                               |Run 'gradle :backend:classes' first."""
                                .stripMargin('|').split().join(' '))
-    }
+        project.backendNotReady = true
+     }
 
     try {
-        de.fusionfactory.index_vivus.configuration.Environment.active
-        de.fusionfactory.index_vivus.configuration.LocationProvider.instance
+        taskInit.call()
     } catch (NoClassDefFoundError ncdf) {
-        loadFailed()
-        return false
+        loadFailedMsg()
+    } catch (ClassNotFoundException cnfe) {
+        loadFailedMsg()
+    }catch (com.typesafe.config.ConfigException.BadPath bp) {
+        loadFailedMsg()
     } catch (MissingPropertyException mpe) {
-        loadFailed()
-        return false
-    }
-    return true
+        logger.lifecycle("missing prop name: ${mpe.property}")
+        loadFailedMsg()
+    } /*catch(Exception e) {
+        logger.lifecycle "unexpected exception type: ${e.getClass()}"
+        throw new GradleScriptException("unexpected exception for tasksIfBackend...", e)
+    }*/
 }
 
 
-def queryEnvironment() { //using tasks must depend on queryBackendEnvironment
+def queryEnvironment() {
     try {
-        project.ext.backendEnvironment = de.fusionfactory.index_vivus.configuration.Environment.getActive().name
         project.ext.backendDataDir = de.fusionfactory.index_vivus.configuration.LocationProvider.instance.dataDir
-    } catch (MissingPropertyException mpe) {
-        throw new GradleScriptException("Need classes from :backend to configure :tools tasks", mpe)
+        project.ext.backendEnvironment = de.fusionfactory.index_vivus.configuration.Environment.getActive().name
+    } catch(Throwable e) {
+        /*if the backendNotReady flag was already set we are in the execution phase and had not all backend assets
+          ready at the start -> throw GradleScripException to nag the user
+          if the flag is no set, progagate the exception as caught (e.g. to allow tasksIfBackendClassesReady to igore
+          them with a warning*/
+        def msg = """|Error since backend classes and property files were not in place.
+                     |Run 'gradle :backend:classes first""".stripMargin('|').split().join(' ')
+
+        throw (project.backendNotReady ? new GradleScriptException(msg, e) : e)
     }
 }
 

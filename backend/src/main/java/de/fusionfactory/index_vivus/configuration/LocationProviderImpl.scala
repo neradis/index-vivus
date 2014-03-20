@@ -1,14 +1,26 @@
 package de.fusionfactory.index_vivus.configuration
 
-import com.typesafe.config.{ConfigFactory, Config}
+import com.typesafe.config.{ConfigException, ConfigFactory, Config}
 import java.io.File
+import com.google.common.io.Resources
+import scala.util.{Failure, Success, Try}
 
 /**
  * Created by Markus Ackermann.
  * No rights reserved. 
  */
 class LocationProviderImpl extends LocationProvider {
-  lazy val buildProps : Config = ConfigFactory.load("build.properties")
+
+  val BUILD_PROPERTY_FILE = "build.properties"
+
+  lazy val buildProps : Config =  {
+    Try(Resources.getResource(BUILD_PROPERTY_FILE)) match { //check if file is available in classpath
+      case Success(_) => ConfigFactory.load(BUILD_PROPERTY_FILE)
+      case Failure(ex: IllegalArgumentException) =>
+        throw new ConfigException.BadPath(BUILD_PROPERTY_FILE, "cannot be located in classpath")
+      case Failure(ex) => throw ex
+    }
+  }
 
   override def getProjectRoot = new File(buildProps.getString("project.rootDir"))
   override def getProjectBuild = new File(buildProps.getString("project.buildDir"))
