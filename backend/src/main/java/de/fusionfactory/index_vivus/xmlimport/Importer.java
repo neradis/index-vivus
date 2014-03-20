@@ -145,7 +145,7 @@ public abstract class Importer {
 
                         if (innerChild.getNodeName().equals("p")) {
                             String html = this.extractInnerHtml(innerChild);
-                            //look for abbreviations in the description and add <abbrv></abbrv> tags
+                            //look for abbreviations in the description and add <abbr></abbr> tags
                             String lastAbbrv = "";
 
                             for (Abbreviation abbrv : this.abbreviations) {
@@ -159,7 +159,7 @@ public abstract class Importer {
                                 if (html.contains(" " + aBuf)) {
                                     //logger.info("HAHA: " + aBuf);
 
-                                    html = html.replace(" " + aBuf, " <abbrv>" + aBuf + "</abbrv>");
+                                    html = html.replace(" " + aBuf, " <abbr>" + aBuf + "</abbr>");
                                     // no duplicate matches are tracked!
 
                                     if (!abbrvMatches.contains(abbrv))
@@ -177,7 +177,7 @@ public abstract class Importer {
                     descriptionHtml = descriptionHtml.trim();
                     //strips all the html tags and unescape resulting string from cleaner
                     description = StringEscapeUtils.unescapeHtml4(Jsoup.clean(descriptionHtml, "",
-                                                                  Whitelist.none(),
+                                                                  Whitelist.none().addTags("abbr"),
                                                                   new org.jsoup.nodes.Document.OutputSettings().prettyPrint(false)));
                 }
             }
