@@ -155,7 +155,7 @@
     }
 
     function loadAbbreviations(lang, callback) {
-        $.get('/ajax/abbrevations/expansions/'+lang, function(json) {
+        $.get('/ajax/abbreviations/expansions/'+lang, function(json) {
             window.abbreviations[lang] = json;
             callback();
         }, 'json');
