@@ -36,6 +36,8 @@
                          encodeURIComponent(FULLTEXT_RESULTS_PER_PAGE) + '/' + 
                          encodeURIComponent(pageNo);
 
+        showSearchResultsThrobber();
+
         $.getJSON(requestUri, function(result) {
             var matches = result.hits;
 
@@ -48,10 +50,16 @@
         });
     }
 
+    function showSearchResultsThrobber() {
+        $('#result').addClass('active');
+        $('#result > .throbber').addClass('active');
+    }
+
     function printSearchResults(matches) {
         var $tr;
 
         $('#result').addClass('active');
+        $('#result > .throbber').removeClass('active');
 
         $("#tbResult tbody tr").remove();
         $("#tbResult").addClass('active');
@@ -189,9 +197,10 @@
 
     // Exports:
 
-    window.searchFulltext = searchFulltext;
-    window.printSearchResults = printSearchResults;
     window.augmentAbbreviations = augmentAbbreviations;
+    window.printSearchResults = printSearchResults;
+    window.searchFulltext = searchFulltext;
+    window.showSearchResultsThrobber = showSearchResultsThrobber;
 
 })(jQuery);
 

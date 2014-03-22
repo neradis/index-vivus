@@ -50,6 +50,8 @@
     function searchKeyword(value) {
         var lang = getKeywordLanguage();
 
+        showSearchResultsThrobber();
+
         $.getJSON("ajax/keyword/matches/"+encodeURIComponent(lang)+"/"+encodeURIComponent(value), function(result) {
             printSearchResults(result);
         });

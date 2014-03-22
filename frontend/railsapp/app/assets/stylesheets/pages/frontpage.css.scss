@@ -67,6 +67,27 @@
         @include opacity(1);
     }
 
+    > .throbber {
+        position: absolute;
+        margin-top: 10px;
+
+        @include opacity(0);
+        @include transition(opacity 0.2s ease);
+
+        &.active {
+            @include opacity(1);
+        }
+    }
+
+    > table {
+        @include opacity(0);
+        @include transition(opacity 0.2s ease);
+
+        &.active {
+            @include opacity(1);
+        }
+    }
+
     > .pagination {
         width: 220px;
         margin: 20px 0 0;
