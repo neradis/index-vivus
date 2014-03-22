@@ -18,6 +18,10 @@
                 .done(function(data) {
                     responseCallback(data);
                 });
+            },
+
+            select : function(event, ui) {
+                $keywordForm.submit();
             }
         });
 
