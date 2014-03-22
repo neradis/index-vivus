@@ -42,7 +42,7 @@
             printSearchResults(matches);
             $pagination.empty();
 
-            doPagination(pageNo, result.total, result.hasPrev, result.hasNext, function (switchToPage) {
+            doPagination(pageNo, Math.ceil(result.total/FULLTEXT_RESULTS_PER_PAGE), result.hasPrev, result.hasNext, function (switchToPage) {
                 searchFulltext(value, switchToPage);
             });
         });
