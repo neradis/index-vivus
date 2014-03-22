@@ -12,9 +12,34 @@
     }
 
     .has-switch {
+        > div {
+            @include transition(left 0 ease);
+        }
+
+        label[for="language-selector"] {
+            width: 0;
+        }
+
         .switch-left, .switch-right {
             background: #428bca;
             color: white;
+            @include transition((background 0.1s ease));
+        }
+
+        &.switch-on {
+            .switch-right {
+                background: #a2b7ca;
+            }
+        }
+
+        &.switch-off {
+            > div {
+                margin-left: 50%;
+            }
+
+            .switch-left {
+                background: #a2b7ca;
+            }
         }
     }
 
