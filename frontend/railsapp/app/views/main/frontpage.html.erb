@@ -5,10 +5,10 @@
 		<form>
 			<fieldset class="panel-body">
 				<div class="row">
-				    <div class="col-md-4">Language</div>
+				    <div class="col-md-4">Sprache</div>
 				</div>
 
-				<input type="checkbox" id="language-selector" checked data-label-text="LA" checked data-on-label="G" data-off-label="L" data-on-value="greek" data-off-value="latin" />
+				<input type="checkbox" id="language-selector" checked data-label-text="LA" checked data-on-label="Gr" data-off-label="La" data-on-value="greek" data-off-value="latin" />
 
 				<input type="text" id="inputKeywordSearch" name="inputKeywordSearch" />
 				<input type="submit" value="suchen" />
@@ -44,6 +44,8 @@
 </div>
 
 <div id="result" class="panel panel-default well">
+	<%= image_tag('ajax-loader.gif', class: 'throbber', alt: "loading") %>
+
 	<table id ="tbResult" class="table table-striped">
 		<thead>
 			<tr>

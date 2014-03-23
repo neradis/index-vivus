@@ -18,6 +18,10 @@
                 .done(function(data) {
                     responseCallback(data);
                 });
+            },
+
+            select : function(event, ui) {
+                $keywordForm.submit();
             }
         });
 
@@ -45,6 +49,8 @@
 
     function searchKeyword(value) {
         var lang = getKeywordLanguage();
+
+        showSearchResultsThrobber();
 
         $.getJSON("ajax/keyword/matches/"+encodeURIComponent(lang)+"/"+encodeURIComponent(value), function(result) {
             printSearchResults(result);
