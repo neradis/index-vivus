@@ -68,7 +68,7 @@ public class Indexer implements IndexSearch{
 //		}
 	}
 
-	private void createIndex() throws IOException {
+	public void createIndex() throws IOException {
         logger.info("Create new Index");
         Analyzer standardAnalyzer = new StandardAnalyzer(Version.LUCENE_46);
 		IndexWriterConfig config = new IndexWriterConfig(Version.LUCENE_46, standardAnalyzer);

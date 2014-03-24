@@ -2,7 +2,7 @@ package de.fusionfactory.index_vivus.persistence
 
 import scala.slick.session.{Session, Database}
 import scala.slick.driver.H2Driver.simple.{Session => H2Session, _}
-import de.fusionfactory.index_vivus.configuration.SettingsProvider
+import de.fusionfactory.index_vivus.configuration.{LocationProvider, SettingsProvider}
 import de.fusionfactory.index_vivus.models.scalaimpl.{GermanTokens, AbbreviationOccurrences, Abbreviations, DictionaryEntries}
 import scala.slick.lifted.Query
 import SlickTools.{database => db}
@@ -10,6 +10,9 @@ import SlickTools.{database => db}
 import org.apache.log4j.Logger
 import java.sql.SQLException
 import com.mchange.v2.c3p0.ComboPooledDataSource
+import java.nio.file.Files
+import java.io.FileFilter
+import com.aliasi.io.FileExtensionFilter
 
 /**
  * Created by Markus Ackermann.
@@ -18,6 +21,7 @@ import com.mchange.v2.c3p0.ComboPooledDataSource
 object SlickTools {
 
   lazy val logger = Logger.getLogger(SlickTools.getClass)
+  lazy val dataDir = LocationProvider.getInstance.getDataDir
 
   def transactionForSession[T](session: Session)(work: Session => T): T = session.withTransaction(work(session))
 
@@ -73,4 +77,16 @@ object SlickTools {
     database withTransaction work
   }
 
+  def dbFilesExist = {
+    dataDir.listFiles(new FileExtensionFilter(false, "h2.db")).nonEmpty
+  }
+
+  def deleteDbFiles = {
+    val dbFiles = dataDir.listFiles(new FileExtensionFilter(false, "h2.db"))
+    if( dbFiles.exists(_.getName.endsWith("lock.db")) )
+      throw new IllegalStateException("Trying to delete db that is in use.")
+    dbFiles foreach ( _.delete() )
+  }
+
 }
+
