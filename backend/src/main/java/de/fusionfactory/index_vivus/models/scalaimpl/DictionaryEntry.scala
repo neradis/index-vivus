@@ -4,7 +4,6 @@ import com.google.common.base.Optional
 import de.fusionfactory.index_vivus.models.{IDictionaryEntry, WordType}
 import scala.beans.BeanProperty
 import java.util.{List => JList}
-import scala.slick.session.Session
 import de.fusionfactory.index_vivus.models.scalaimpl.{DictionaryEntries => DEs}
 import de.fusionfactory.index_vivus.persistence.SlickTools.{database => db, _}
 import de.fusionfactory.index_vivus.tools.scala.Utils.OptionConversions._
@@ -65,19 +64,18 @@ object DictionaryEntry {
 
   def fetchAll(s: Session): JList[DictionaryEntry] = transactionForSession(s)( implicit s => Query(DEs).list )
 
-  def fetchKeywordsForLanguage(lang: Language): JList[String] = fetchKeywordsForLanguageHelper(lang)
+  def fetchKeywordsForLanguage(lang: Language): JList[String] =
+    db.withSession( implicit s => DEs.keywordsForLanguageQuery(lang).list )
 
   def fetchKeywordsForLanguage(lang: Language, s: Session): JList[String] =
-      fetchKeywordsForLanguageHelper(lang, Some(s))
+      transactionForSession(s)( implicit s => DEs.keywordsForLanguageQuery(lang).list )
 
-  protected def fetchKeywordsForLanguageHelper(lang: Language, s: Option[Session] = None): List[String] = {
-    val work = { implicit s: Session =>
-      DEs.keywordsForLanguageQuery(lang).list()
-    }
-    inTransaction(s)(work)
-  }
+  def keywordExists(keyword: String, lang: Language): Boolean =
+    db.withSession( implicit s => DEs.byKeywordAndSourceLanguageQuery(keyword, lang).exists.run )
+
+  def keywordExists(keyword: String, lang: Language, s: Session): Boolean =
+    transactionForSession(s)( implicit s => DEs.byKeywordAndSourceLanguageQuery(keyword, lang).exists.run )
 }
-
 
 case class DictionaryEntry /*protected[scalaimpl]*/ (id: Option[Int],
                                                  sourceLanguage: Byte,

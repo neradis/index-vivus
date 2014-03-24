@@ -1,5 +1,6 @@
 package de.fusionfactory.index_vivus.services;
 
+import com.google.common.base.Optional;
 import de.fusionfactory.index_vivus.models.IDictionaryEntry;
 
 import java.util.List;
@@ -10,6 +11,12 @@ import java.util.List;
  * Time: 15:07
  */
 public interface IKeywordSearchService {
+
     List<? extends IDictionaryEntry> getMatches(String keyword, Language language);
+
+    List<? extends IDictionaryEntry> getMatchesWithAlternative(String keywordCandidate,
+                                                               Optional<String> completionAlternative,
+                                                               Language language);
+
     List<String> getCompletions(String keyword, Language language);
 }
