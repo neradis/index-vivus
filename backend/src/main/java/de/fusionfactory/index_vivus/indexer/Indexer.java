@@ -40,10 +40,10 @@ import static java.lang.String.format;
  * Date: 23.01.14
  * Time: 19:23
  */
-public class Indexer implements IndexSearch {
+public class Indexer implements IndexSearch{
     private Tokenizer tokenizer = new Tokenizer();
     private File fsDirectoryFile = new File(LocationProvider.getInstance().getDataDir().getPath(), "index.lucene.bin");
-    private Directory directoryIndex;
+	private Directory directoryIndex;
     private static Logger logger = Logger.getLogger(Indexer.class);
     private static Logger preprocLogger = Logger.getLogger("DESCRIPTION_PREPROCESSING");
     private Lookup langLookup = new Lookup(Language.GERMAN);
@@ -53,11 +53,11 @@ public class Indexer implements IndexSearch {
         logger.info(format("Using %s as directory for Lucene index files", fsDirectoryFile.getAbsolutePath()));
 
         try {
-            directoryIndex = new SimpleFSDirectory(fsDirectoryFile);
+			directoryIndex = new SimpleFSDirectory(fsDirectoryFile);
         } catch (IOException ioe) {
             throw new FulltextIndexingException("unable to open index directory", ioe);
         }
-    }
+	}
 
     public void ensureIndexCreated() throws IOException {
         if (fsDirectoryFile.exists()) {
@@ -68,28 +68,28 @@ public class Indexer implements IndexSearch {
         }
     }
 
-    private void createIndex() throws IOException {
+	public void createIndex() throws IOException {
         logger.info("Create new Index");
         Analyzer standardAnalyzer = new StandardAnalyzer(Version.LUCENE_46);
-        IndexWriterConfig config = new IndexWriterConfig(Version.LUCENE_46, standardAnalyzer);
-        IndexWriter indexWriter = new IndexWriter(directoryIndex, config);
+		IndexWriterConfig config = new IndexWriterConfig(Version.LUCENE_46, standardAnalyzer);
+		IndexWriter indexWriter = new IndexWriter(directoryIndex, config);
 
-        List<DictionaryEntry> dictionaryEntryList = DictionaryEntry.fetchAll();
-        int i = 0;
-        for (DictionaryEntry e : dictionaryEntryList) {
-            logger.info("progress... " + i);
-            insertDocument(indexWriter, e);
-            logger.info("progress... " + i + " .. done");
-            i++;
-        }
+		List<DictionaryEntry> dictionaryEntryList = DictionaryEntry.fetchAll();
+		int i = 0;
+		for (DictionaryEntry e : dictionaryEntryList) {
+			logger.info("progress... " + i);
+			insertDocument(indexWriter, e);
+			logger.info("progress... " + i + " .. done");
+			i++;
+		}
         langLookup.shutdown();
-        indexWriter.close();
-    }
+		indexWriter.close();
+	}
 
-    private void insertDocument(IndexWriter w, DictionaryEntry entry) throws IOException {
-        int dbId = entry.getId(), lang = entry.sourceLanguage();
+	private void insertDocument(IndexWriter w, DictionaryEntry entry) throws IOException {
+		int dbId = entry.getId(), lang = entry.sourceLanguage();
 
-        List<String> tokens = tokenizer.getTokenizedString(entry.getDescription());
+		List<String> tokens = tokenizer.getTokenizedString(entry.getDescription());
 
         List<String> germanTokens;
         try {
@@ -108,12 +108,12 @@ public class Indexer implements IndexSearch {
         }
 
         Document document = new Document();
-        document.add(new IntField("DbId", dbId, Field.Store.YES));
-        document.add(new IntField("Lang", lang, Field.Store.YES));
-        document.add(new TextField("Content", content, Field.Store.NO));
+		document.add(new IntField("DbId", dbId, Field.Store.YES));
+		document.add(new IntField("Lang", lang, Field.Store.YES));
+		document.add(new TextField("Content", content, Field.Store.NO));
 
-        w.addDocument(document);
-    }
+		w.addDocument(document);
+	}
 
     public List<DictionaryEntry> getTopSearchResults(String query) throws IOException, ParseException {
         return getTopSearchResults(query, Language.ALL);
@@ -222,6 +222,7 @@ public class Indexer implements IndexSearch {
         }
 
         ScoreDoc[] hits = selTrans.selectHits(collector);
+
         for (ScoreDoc hit : hits) {
             Document d;
             try {
