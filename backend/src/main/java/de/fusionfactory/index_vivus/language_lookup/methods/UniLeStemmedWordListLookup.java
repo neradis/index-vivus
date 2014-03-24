@@ -1,11 +1,12 @@
 package de.fusionfactory.index_vivus.language_lookup.methods;
 
-import com.google.common.io.Resources;
 import de.fusionfactory.index_vivus.language_lookup.WordNotFoundException;
 import de.fusionfactory.index_vivus.services.Language;
+import de.fusionfactory.index_vivus.tools.scala.Utils;
 import org.apache.log4j.Logger;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.HashSet;
@@ -18,7 +19,7 @@ import java.util.Scanner;
  * Time: 11:40
  */
 public class UniLeStemmedWordListLookup extends LookupMethod {
-    private static String wordListFile = Resources.getResource("word_language/word_baseform_minimized.txt").getPath();
+  private static File wordListFile = Utils.fileForResouce("word_language/word_baseform_minimized.txt");
     private Logger logger = Logger.getLogger(this.getClass());
     private HashSet<String> hashSet = new HashSet<String>();
 
