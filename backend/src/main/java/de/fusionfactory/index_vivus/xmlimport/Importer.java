@@ -60,7 +60,7 @@ public abstract class Importer {
 
         if (Environment.getActive().equals(Environment.DEVELOPMENT) || Environment.getActive().equals(Environment.TEST)) {
             DbHelper.createMissingTables();
-        }
+    }
         abbreviations = new ArrayList<>();
     }
 
@@ -114,24 +114,24 @@ public abstract class Importer {
                 Node childContent = entryContent.item(c);
                 // keyword
                 if (childContent.getNodeName().equals("lem")) {
-                String buf = childContent.getFirstChild().getNodeValue().trim();
-                //personal name ergo noun
+                    String buf = childContent.getFirstChild().getNodeValue().trim();
+                    //personal name ergo noun
 
-                if (Character.isUpperCase(buf.charAt(0)))
-                    wordType = WordType.NOUN;
+                    if (Character.isUpperCase(buf.charAt(0)))
+                        wordType = WordType.NOUN;
 
 
-                if (buf.contains("[") && !buf.contains("[*]")) {
-                    //keyword without the ordinal number
+                    if (buf.contains("[") && !buf.contains("[*]")) {
+                        //keyword without the ordinal number
 
-                    keyword = buf.substring(0, buf.indexOf("[")).trim();
-                    //take the number within square brackets
-                    keyGroupIndex = Byte.parseByte(buf.substring(buf.indexOf("[") + 1, buf.indexOf("]")));
+                        keyword = buf.substring(0, buf.indexOf("[")).trim();
+                        //take the number within square brackets
+                        keyGroupIndex = Byte.parseByte(buf.substring(buf.indexOf("[") + 1, buf.indexOf("]")));
 
-                } else if (buf.contains("[*]"))
-                    keyword = buf.substring(0, buf.indexOf("[")).trim();
-                else
-                    keyword = buf;
+                    } else if (buf.contains("[*]"))
+                        keyword = buf.substring(0, buf.indexOf("[")).trim();
+                    else
+                        keyword = buf;
                 }
 
                 // text content containing one or no header element (<h3>) and a <p> element
@@ -177,14 +177,14 @@ public abstract class Importer {
                     descriptionHtml = descriptionHtml.trim();
                     //strips all the html tags and unescape resulting string from cleaner
                     description = StringEscapeUtils.unescapeHtml4(Jsoup.clean(descriptionHtml, "",
-                                                                  Whitelist.none().addTags("abbr"),
-                                                                  new org.jsoup.nodes.Document.OutputSettings().prettyPrint(false)));
+                            Whitelist.none().addTags("abbr"),
+                            new org.jsoup.nodes.Document.OutputSettings().prettyPrint(false)));
                 }
             }
             //add entry to the bulk linkedHashMap with the dictionary entry and the related list of abbreviation matches
             entryBulk.put(DictionaryEntry.create(sourceLanguage(), integerAbsent, integerAbsent,
-                                                 keyGroupIndex, keyword, description,
-                                                 Optional.of(descriptionHtml), wordType), abbrvMatches);
+                    keyGroupIndex, keyword, description,
+                    Optional.of(descriptionHtml), wordType), abbrvMatches);
             processed++;
             logCounter++;
             if (logCounter >= logEntryBatchSize) {
@@ -312,12 +312,12 @@ public abstract class Importer {
 
     public class EntryImportTransaction extends DbHelper.Operations<Object> {
         private Optional<DictionaryEntry> prevE;
-        private LinkedHashMap<DictionaryEntry,ArrayList<Abbreviation>> currentEntryBulk;
+        private LinkedHashMap<DictionaryEntry, ArrayList<Abbreviation>> currentEntryBulk;
         private int added;
         static final short warningThreshold = 10;
         private short warningE;
 
-        public EntryImportTransaction(Optional<DictionaryEntry> prevE, LinkedHashMap<DictionaryEntry,ArrayList<Abbreviation>> currentEntryBulk,
+        public EntryImportTransaction(Optional<DictionaryEntry> prevE, LinkedHashMap<DictionaryEntry, ArrayList<Abbreviation>> currentEntryBulk,
                                       short warningE) {
             this.prevE = prevE;
             this.currentEntryBulk = currentEntryBulk;
@@ -327,7 +327,7 @@ public abstract class Importer {
 
         @Override
         public Object perform(Session tx) {
-            for(Map.Entry<DictionaryEntry,ArrayList<Abbreviation>> bulkEntry : currentEntryBulk.entrySet()) {
+            for (Map.Entry<DictionaryEntry, ArrayList<Abbreviation>> bulkEntry : currentEntryBulk.entrySet()) {
                 DictionaryEntry currentE = bulkEntry.getKey();
                 ArrayList<Abbreviation> abbrvMatches = bulkEntry.getValue();
                 //empty list to avoid duplicate checks for entries (very costly ;))
@@ -352,13 +352,13 @@ public abstract class Importer {
                     } else if (warningE < warningThreshold) {
                         String dupList = Joiner.on(" \n").join(duplicates);
                         logger.warn(format("Already found entries in database with same content as dictionary entry %s(%d):%n%s%n - SKIPPED",
-                               currentE.getKeyword(),currentE.getKeywordGroupIndex() , dupList));
+                                currentE.getKeyword(), currentE.getKeywordGroupIndex(), dupList));
                         warningE++;
                     }
                     //take entry from database for id instead of inserting it as a new one
                     //because of the warning it's safe to use get() without check
                     currentE = DictionaryEntry.fetchByKeywordAndGroupId(currentE.getKeyword(),
-                                                                        currentE.getKeywordGroupIndex()).get();
+                            currentE.getKeywordGroupIndex()).get();
                 }
                 //logger.debug("prev: " + prevE);
                 //logger.debug("current: " + currentE);
@@ -393,12 +393,12 @@ public abstract class Importer {
 
     public static void main(String[] args) {
         List<Importer> importers = ImmutableList.of(new GeorgesImporter(), new PapeImporter());
-        for(Importer importer : importers) {
+        for (Importer importer : importers) {
             try {
                 importer.importFromDefaultLocation();
-            } catch (IOException | SAXException  ex) {
+            } catch (IOException | SAXException ex) {
                 logger.warn(format("Import for dictionary failed due to:%n%s", ex.getMessage()));
             }
         }
-    }
+  }
 }

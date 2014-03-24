@@ -10,8 +10,6 @@ import SlickTools.{database => db}
 import org.apache.log4j.Logger
 import java.sql.SQLException
 import com.mchange.v2.c3p0.ComboPooledDataSource
-import java.nio.file.Files
-import java.io.FileFilter
 import com.aliasi.io.FileExtensionFilter
 
 /**
@@ -32,7 +30,7 @@ object SlickTools {
       transactionForSession(s.get)(work)
   }
 
-  lazy val database =  {
+  lazy val database = {
     val cpds = new ComboPooledDataSource()
     cpds.setDriverClass("org.h2.Driver")
     cpds.setJdbcUrl(SettingsProvider.getInstance.getDatabaseUrl)
@@ -83,9 +81,9 @@ object SlickTools {
 
   def deleteDbFiles = {
     val dbFiles = dataDir.listFiles(new FileExtensionFilter(false, "h2.db"))
-    if( dbFiles.exists(_.getName.endsWith("lock.db")) )
+    if (dbFiles.exists(_.getName.endsWith("lock.db")))
       throw new IllegalStateException("Trying to delete db that is in use.")
-    dbFiles foreach ( _.delete() )
+    dbFiles foreach (_.delete())
   }
 
 }

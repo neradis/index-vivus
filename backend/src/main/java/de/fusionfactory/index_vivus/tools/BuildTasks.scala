@@ -23,8 +23,8 @@ import com.aliasi.io.FileExtensionFilter
 object BuildTasks {
 
   lazy val logger = Logger.getLogger(BuildTasks.getClass)
-  lazy val indexDir = new File(LocationProvider.getInstance.getDataDir, "index.lucene.bin") 
-  
+  lazy val indexDir = new File(LocationProvider.getInstance.getDataDir, "index.lucene.bin")
+
   def initDb = DbHelper.createMissingTables()
 
   def loadFixtures = fixtures.LoadFixtures.createFixtures()
@@ -37,9 +37,9 @@ object BuildTasks {
   }
 
   def indexExists = indexDir.isDirectory
-  
+
   def deleteIndeces = {
-    LocationProvider.getInstance.getDataDir.listFiles(new FileExtensionFilter(false, "model")) foreach ( _.delete() )
+    LocationProvider.getInstance.getDataDir.listFiles(new FileExtensionFilter(false, "model")) foreach (_.delete())
     FileUtils.deleteDirectory(indexDir)
   }
 }
@@ -76,12 +76,12 @@ object CleanDbAndIndices extends App {
 }
 
 object CreateAll extends App {
-  if( !dbFilesExist ) {
+  if (!dbFilesExist) {
     logger.info("Creating database and importing entries...")
     initDb
     importDictionaries
   }
-  if( !indexExists ) {
+  if (!indexExists) {
     logger.info("Creating fulltext index...")
     createFulltextIndex
   }

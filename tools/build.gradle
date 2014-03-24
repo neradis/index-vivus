@@ -122,5 +122,5 @@ task queryBackendEnvironment(dependsOn: backend.classes) << {
           them with a warning*/
         def msg = """|Error since backend classes and property files were not in place.
                      |Run 'gradle :backend:classes first""".stripMargin('|').split().join(' ')
-   }
+    }
 }
