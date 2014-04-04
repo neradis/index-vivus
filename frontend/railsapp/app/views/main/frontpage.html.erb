@@ -4,18 +4,29 @@
 		<div class="panel-heading">Stichwortsuche</div>
 		<form>
 			<fieldset class="panel-body">
-				<input type="checkbox" id="language-selector" checked data-on-label="G" data-off-label="L" data-on-value="greek" data-off-value="latin" />
+				<div class="row">
+				    <div class="col-md-4">Sprache</div>
+				</div>
+
+				<input type="checkbox" id="language-selector" checked data-label-text="LA" checked data-on-label="Gr" data-off-label="La" data-on-value="greek" data-off-value="latin" />
 
 				<input type="text" id="inputKeywordSearch" name="inputKeywordSearch" />
 				<input type="submit" value="suchen" />
-
-				<div id="widget">
-		        	<p>Greek Alphabet</p>
-				</div>
 			</fieldset>
 		</form>
 	</div>
+	  <div class="row">
+              <div class="col-md-4 col-md-offset-6">
+	         <div id="widget" class="panel panel-default well">
+	           <div class="panel-heading">Greek Alphabet</div>
+	         </div>
+              </div>
+          </div>
 </div>
+
+
+
+
 <% end %>
 
 <div class="panel panel-default well">
@@ -33,7 +44,9 @@
 </div>
 
 <div id="result" class="panel panel-default well">
-	<table id ="tbResult">
+	<%= image_tag('ajax-loader.gif', class: 'throbber', alt: "loading") %>
+
+	<table id ="tbResult" class="table table-striped">
 		<thead>
 			<tr>
 				<td>Ergebnis</td><td>Beschreibung</td>

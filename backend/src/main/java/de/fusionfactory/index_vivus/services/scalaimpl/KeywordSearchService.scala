@@ -55,8 +55,7 @@ class KeywordSearchService private() extends IKeywordSearchService {
     fetchCompleter(language).getAutocompleteSuggestions(keyword).toList
   }
 
-  def getMatchesWithAlternative(keywordCandidate: String, completionAlternative: Optional[String],
-                                language: Language): List[_ <: IDictionaryEntry]= {
+  def getMatchesWithAlternative(keywordCandidate: String, completionAlternative: Optional[String], language: Language) = {
     db.withTransaction( s =>
       if(DE.keywordExists(keywordCandidate, language, s)) {
         DE.fetchByKeywordAndSourceLanguage(keywordCandidate, language, s)

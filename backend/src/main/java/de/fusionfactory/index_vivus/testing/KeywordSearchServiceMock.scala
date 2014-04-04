@@ -8,6 +8,7 @@ import com.google.common.base.Optional
 import java.util
 import com.google.common.collect.ImmutableList
 import de.fusionfactory.index_vivus.models.scalaimpl.Abbreviation
+import de.fusionfactory.index_vivus.tools.scala.Utils.OptionConversions._
 import scala.slick.session.Session
 
 /**
@@ -30,9 +31,20 @@ class KeywordSearchServiceMock extends IKeywordSearchService{
 
   def getCompletions(kw: String, lang: Language) = wordsByLanguage(lang).filter(_.startsWith(kw))
 
+  override def getMatchesWithAlternative(keywordCandidate: String, completionAlternative: Optional[String],
+                                         language: Language) = {
+    def listForWord(w: String) =
+      wordsByLanguage(language) filter (w == _) map ( w => dictEntryStub(w, language))
+
+    listForWord(keywordCandidate) match {
+      case Nil => completionAlternative.map(listForWord).getOrElse(List.empty)
+      case l : List[IDictionaryEntry] => l
+    }
+  }
+
   private def dictEntryStub(kw: String, lang: Language) = new IDictionaryEntry {
 
-    def getLanguage: Language = Language.LATIN
+    def getLanguage: Language = lang
 
     def setDescription(description: String): Unit = ???
 

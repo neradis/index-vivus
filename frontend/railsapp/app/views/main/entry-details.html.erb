@@ -1,6 +1,13 @@
 <%
-	dict_entry = get_dictionary_entry(params[:id].to_i)
+	dict_entry   = get_dictionary_entry(params[:id].to_i)
+	language_str = "latin" #java_lang_to_s(dict_entry.get_language)
 %>
+
+<%= javascript_tag do -%>
+$(function() {
+	augmentAbbreviations($('#translation > .panel-body'), '<%= language_str %>');
+});
+<% end -%>
 
 <% content_for :top_right do %>
 <div class="col-md-9">
@@ -22,8 +29,11 @@
 <% end %>
 
 <div id="translation" class="panel panel-default well">
-	<h3><%= dict_entry.get_keyword %></h3>
-	<%= dict_entry.get_html_description.is_present ? dict_entry.get_html_description.get.html_safe : dict_entry.get_description %>
+	<div class="panel-heading"><%= dict_entry.get_keyword %></div>
+
+	<div class="panel-body">
+		<%= dict_entry.get_html_description.is_present ? dict_entry.get_html_description.get.html_safe : dict_entry.get_description %>
+	</div>
 </div>
 
 <%
