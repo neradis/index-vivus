@@ -1,0 +1,1 @@
+../../bootstrap-switch/build/js/bootstrap-switch.js

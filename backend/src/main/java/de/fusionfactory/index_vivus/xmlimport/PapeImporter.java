@@ -1,7 +1,6 @@
 package de.fusionfactory.index_vivus.xmlimport;
 
 import de.fusionfactory.index_vivus.services.Language;
-import org.apache.log4j.Level;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
@@ -19,7 +18,6 @@ public class PapeImporter extends Importer{
 
     public PapeImporter() {
         super();
-        logger.setLevel(Level.DEBUG);
     }
 
     @Override

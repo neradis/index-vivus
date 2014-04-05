@@ -1,0 +1,126 @@
+evaluationDependsOn(':backend')
+
+ext {
+    backend = project(':backend')
+    backendNotReady = false
+}
+
+buildscript {
+    dependencies {
+        classpath project(':backend').sourceSets.main.runtimeClasspath
+    }
+}
+
+task cleanDb(type: JavaExec, dependsOn: backend.classes) {
+
+    toolTaskDefaults(delegate)
+    main = 'de.fusionfactory.index_vivus.tools.CleanDb'
+}
+
+task cleanIndices(type: JavaExec, dependsOn: backend.classes) {
+
+    toolTaskDefaults(delegate)
+    main = 'de.fusionfactory.index_vivus.tools.CleanDb'
+}
+
+task initDb(type: JavaExec, dependsOn: [backend.classes]) {
+
+    toolTaskDefaults(delegate)
+    main = 'de.fusionfactory.index_vivus.tools.InitDb'
+}
+
+task dbReport(dependsOn: [backend.classes, initDb]) {
+    description "List statistics (and optionally examples) of entities in the DB"
+
+    doLast {
+        ext.abbr = de.fusionfactory.index_vivus.models.scalaimpl.Abbreviation
+        ext.entry = de.fusionfactory.index_vivus.models.scalaimpl.DictionaryEntry
+        ext.lang = de.fusionfactory.index_vivus.services.Language
+
+        ext.examples = false
+        try {
+            examples = Boolean.parseBoolean(project.properties.examples)
+        } catch (MissingPropertyException mpe) { /*ignored*/
+        }
+
+        ext.listReport = { String descFormat, List list ->
+            printf(descFormat + '%n', list.size())
+            if (examples) println(list[0..<Math.min(32, list.size())].join('\n'))
+            println()
+        }
+
+        println("DB content summary for $project.backendEnvironment")
+        listReport('%d abbreviations', abbr.fetchAll())
+
+        listReport('%d Latin entries', entry.fetchBySourceLanguage(lang.LATIN))
+
+        listReport('%d Greek entries', entry.fetchBySourceLanguage(lang.GREEK))
+    }
+}
+
+task loadFixtures(type: JavaExec, dependsOn: backend.classes) {
+    description "Add testing fixtures for entries and abbreviations to DB"
+
+    toolTaskDefaults(delegate)
+    main = 'de.fusionfactory.index_vivus.tools.LoadFixtures'
+}
+
+task importDictionaries(type: JavaExec, dependsOn: [backend.classes]) {
+    description "Initialise the DB and import the entries from our raw dictionary transcriptions"
+
+    toolTaskDefaults(delegate)
+    main = 'de.fusionfactory.index_vivus.tools.ImportDictionaries'
+}
+
+task createFulltextIndex(type: JavaExec, dependsOn: [backend.classes]) {
+    mustRunAfter(project.importDictionaries)
+    description "Creates the fulltext index"
+
+    toolTaskDefaults(delegate)
+    main = 'de.fusionfactory.index_vivus.tools.CreateFulltextIndex'
+}
+
+task createAll(type: JavaExec, dependsOn: [backend.classes]) {
+    mustRunAfter(project.importDictionaries)
+    description """|Creates required non-program artifacts to ensure an operational front-end (i.e. a populated database
+                   |and the corresponding fulltext index)""".stripMargin('|').split().join(' ')
+
+    toolTaskDefaults(delegate)
+    main = 'de.fusionfactory.index_vivus.tools.CreateAll'
+}
+
+task recreateAll(type: JavaExec, dependsOn: [backend.classes]) {
+    mustRunAfter(project.importDictionaries)
+    description """|Possibly deletes and then (re-)creates the required non-program artifacts to ensure an operational
+                   |front-end (i.e. a populated database and the corresponding fulltext index)""".stripMargin('|')
+            .split().join(' ')
+
+    toolTaskDefaults(delegate)
+    main = 'de.fusionfactory.index_vivus.tools.ReCreateAll'
+}
+
+for (t in [cleanDb, cleanIndices, loadFixtures, importDictionaries, createFulltextIndex, dbReport,
+           createAll, recreateAll]) {
+    t.group = 'maintenance'
+}
+
+def toolTaskDefaults(JavaExec javaExec) {
+    javaExec.ext.envProp = System.getProperty('env')
+    if (javaExec.envProp) javaExec.jvmArgs("-Denv=$javaExec.envProp")
+    javaExec.classpath = backend.sourceSets.main.runtimeClasspath
+}
+
+task queryBackendEnvironment(dependsOn: backend.classes) << {
+
+    try {
+        project.ext.backendDataDir = de.fusionfactory.index_vivus.configuration.LocationProvider.instance.dataDir
+        project.ext.backendEnvironment = de.fusionfactory.index_vivus.configuration.Environment.getActive().name
+    } catch (Throwable e) {
+        /*if the backendNotReady flag was already set we are in the execution phase and had not all backend assets
+          ready at the start -> throw GradleScripException to nag the user
+          if the flag is no set, progagate the exception as caught (e.g. to allow tasksIfBackendClassesReady to igore
+          them with a warning*/
+        def msg = """|Error since backend classes and property files were not in place.
+                     |Run 'gradle :backend:classes first""".stripMargin('|').split().join(' ')
+    }
+}

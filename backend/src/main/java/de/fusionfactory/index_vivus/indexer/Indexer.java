@@ -8,7 +8,9 @@ import de.fusionfactory.index_vivus.language_lookup.Lookup;
 import de.fusionfactory.index_vivus.models.scalaimpl.DictionaryEntry;
 import de.fusionfactory.index_vivus.services.Language;
 import de.fusionfactory.index_vivus.services.scalaimpl.DictionaryEntryListWithTotalCount;
-import de.fusionfactory.index_vivus.services.scalaimpl.DictionaryEntryListWithTotalCount$;
+import de.fusionfactory.index_vivus.services.scalaimpl.DictionaryEntryListWithTotalCountImpl$;
+import de.fusionfactory.index_vivus.services.scalaimpl.IndexSearch;
+import de.fusionfactory.index_vivus.testing.fixtures.LoadFixtures;
 import de.fusionfactory.index_vivus.tokenizer.Tokenizer;
 import de.fusionfactory.index_vivus.tools.scala.Utils$;
 import org.apache.log4j.Logger;
@@ -18,8 +20,12 @@ import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.IntField;
 import org.apache.lucene.document.TextField;
-import org.apache.lucene.index.*;
+import org.apache.lucene.index.DirectoryReader;
+import org.apache.lucene.index.IndexReader;
+import org.apache.lucene.index.IndexWriter;
+import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.queryparser.classic.ParseException;
+import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.*;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.SimpleFSDirectory;
@@ -37,10 +43,10 @@ import static java.lang.String.format;
  * Date: 23.01.14
  * Time: 19:23
  */
-public class Indexer {
+public class Indexer implements IndexSearch {
     private Tokenizer tokenizer = new Tokenizer();
     private File fsDirectoryFile = new File(LocationProvider.getInstance().getDataDir().getPath(), "index.lucene.bin");
-	private Directory directoryIndex;
+    private Directory directoryIndex;
     private static Logger logger = Logger.getLogger(Indexer.class);
     private static Logger preprocLogger = Logger.getLogger("DESCRIPTION_PREPROCESSING");
     private Lookup langLookup = new Lookup(Language.GERMAN);
@@ -50,42 +56,43 @@ public class Indexer {
         logger.info(format("Using %s as directory for Lucene index files", fsDirectoryFile.getAbsolutePath()));
 
         try {
-			directoryIndex = new SimpleFSDirectory(fsDirectoryFile);
+            directoryIndex = new SimpleFSDirectory(fsDirectoryFile);
         } catch (IOException ioe) {
             throw new FulltextIndexingException("unable to open index directory", ioe);
         }
-	}
+    }
 
     public void ensureIndexCreated() throws IOException {
         if (fsDirectoryFile.exists()) {
-			logger.info("FSDirectory exists, use it O_o.");
-		} else {
-			createIndex();
-		}
-	}
+            logger.info("FSDirectory exists, use it O_o.");
+//			fsDirectoryFile.delete();
+        } else {
+            createIndex();
+        }
+    }
 
-	private void createIndex() throws IOException {
-        logger.fatal("Create new Index");
+    public void createIndex() throws IOException {
+        logger.info("Create new Index");
         Analyzer standardAnalyzer = new StandardAnalyzer(Version.LUCENE_46);
-		IndexWriterConfig config = new IndexWriterConfig(Version.LUCENE_46, standardAnalyzer);
-		IndexWriter indexWriter = new IndexWriter(directoryIndex, config);
+        IndexWriterConfig config = new IndexWriterConfig(Version.LUCENE_46, standardAnalyzer);
+        IndexWriter indexWriter = new IndexWriter(directoryIndex, config);
 
-		List<DictionaryEntry> dictionaryEntryList = DictionaryEntry.fetchAll();
-		int i = 0;
-		for (DictionaryEntry e : dictionaryEntryList) {
-			logger.info("progress... " + i);
-			insertDocument(indexWriter, e);
-			logger.info("progress... " + i + " .. done");
-			i++;
-		}
+        List<DictionaryEntry> dictionaryEntryList = DictionaryEntry.fetchAll();
+        int i = 0;
+        for (DictionaryEntry e : dictionaryEntryList) {
+            logger.info("progress... " + i);
+            insertDocument(indexWriter, e);
+            logger.info("progress... " + i + " .. done");
+            i++;
+        }
+        langLookup.shutdown();
+        indexWriter.close();
+    }
 
-		indexWriter.close();
-	}
+    private void insertDocument(IndexWriter w, DictionaryEntry entry) throws IOException {
+        int dbId = entry.getId(), lang = entry.sourceLanguage();
 
-	private void insertDocument(IndexWriter w, DictionaryEntry entry) throws IOException {
-		int dbId = entry.getId(), lang = entry.sourceLanguage();
-
-		List<String> tokens = tokenizer.getTokenizedString(entry.getDescription());
+        List<String> tokens = tokenizer.getTokenizedString(entry.getDescription());
 
         List<String> germanTokens;
         try {
@@ -104,12 +111,12 @@ public class Indexer {
         }
 
         Document document = new Document();
-		document.add(new IntField("DbId", dbId, Field.Store.YES));
-		document.add(new IntField("Lang", lang, Field.Store.YES));
-		document.add(new TextField("Content", content, Field.Store.NO));
+        document.add(new IntField("DbId", dbId, Field.Store.YES));
+        document.add(new IntField("Lang", lang, Field.Store.YES));
+        document.add(new TextField("Content", content, Field.Store.NO));
 
-		w.addDocument(document);
-	}
+        w.addDocument(document);
+    }
 
     public List<DictionaryEntry> getTopSearchResults(String query) throws IOException, ParseException {
         return getTopSearchResults(query, Language.ALL);
@@ -157,12 +164,12 @@ public class Indexer {
 
             @Override
             protected int numberOfDocsToCollect() {
-                return Integer.MAX_VALUE - 1024;
+                return 10000;
             }
 
             @Override
             protected DictionaryEntryListWithTotalCount transformResults(List<DictionaryEntry> hitsPage, int total) {
-                return DictionaryEntryListWithTotalCount$.MODULE$.apply(hitsPage, total);
+                return DictionaryEntryListWithTotalCountImpl$.MODULE$.apply(hitsPage, total);
             }
         });
     }
@@ -179,8 +186,15 @@ public class Indexer {
         Query q = new BooleanQuery();
 
         //TODO: use query parse instead of a single TermQuery to enable boolean operators (AND, OR, NOT, etc.)
-        Query query1 = new TermQuery(new Term("Content", query));
-        ((BooleanQuery) q).add(query1, BooleanClause.Occur.MUST);
+        QueryParser queryParser = new QueryParser(Version.LUCENE_46, "Content", new StandardAnalyzer(Version.LUCENE_46));
+        try {
+            Query parsedQuery = queryParser.parse("" + query + "");
+            ((BooleanQuery) q).add(parsedQuery, BooleanClause.Occur.MUST);
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
         if (!language.equals(Language.ALL)) {
             int languageId = Utils$.MODULE$.lang2Byte(language);
             //TODO: check if it's really correct and sound to define the @code{precisionStep} here
@@ -252,6 +266,9 @@ public class Indexer {
     }
 
     public static void main(String[] args) {
+        //need to re-populate memory db for DEVELOPMENT with the fixutres (otherwise there is nothing to index
+        LoadFixtures.ensureFixturesForDevelopment();
+
         try {
             new Indexer().createIndex();
         } catch (IOException e) {

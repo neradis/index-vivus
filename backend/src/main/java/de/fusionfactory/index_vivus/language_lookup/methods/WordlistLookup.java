@@ -1,11 +1,14 @@
 package de.fusionfactory.index_vivus.language_lookup.methods;
 
-import com.google.common.io.Resources;
 import de.fusionfactory.index_vivus.language_lookup.WordNotFoundException;
 import de.fusionfactory.index_vivus.services.Language;
+import de.fusionfactory.index_vivus.tools.scala.Utils;
 import org.apache.log4j.Logger;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.util.HashSet;
 import java.util.Scanner;
 
@@ -16,7 +19,7 @@ import java.util.Scanner;
  * Time: 14:58
  */
 public class WordlistLookup extends LookupMethod {
-    private static String wordListFile = Resources.getResource("word_language/top10000de.txt").getPath();
+  private static File wordListFile = Utils.fileForResouce("word_language/top10000de.txt");
     private Logger logger = Logger.getLogger(WordlistLookup.class);
     private HashSet<String> hashSet;
 

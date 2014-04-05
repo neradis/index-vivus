@@ -4,6 +4,7 @@
     var $pagination;
 
     var FULLTEXT_RESULTS_PER_PAGE = 20;
+    var DESCRIPTION_MAX_LENGTH = 300;
 
     var wordTypeLabels = {
         "ADJECTIVE"     : "Adjektiv",
@@ -20,12 +21,19 @@
 
     $(function() {
         var $fulltextSearchInput = $("#inputFulltextSearch");
-        var $fulltextSearchForm = $("#fulltextSearch > form");
+        var $fulltextSearchForm = $("#fulltextSearch").parent("form");
+
+        $('#language-selector').bootstrapSwitch();
 
         $pagination = $('#result > .pagination');
 
         $fulltextSearchForm.submit(function(event) {
             event.preventDefault();
+
+            if (! $fulltextSearchInput.val()) {
+                alert("Bitte geben Sie einen Suchbegriff ein.");
+                return;
+            }
 
             searchFulltext( $fulltextSearchInput.val(), 1 );
         });
@@ -53,12 +61,18 @@
     function printSearchResults(matches) {
         var $tr;
 
+        $('#result').addClass('active');
+
         $("#tbResult tbody tr").remove();
         $("#tbResult").addClass('active');
 
         if (matches.length == 0) {
-            console.log("0 matches");
-            $('#tbResult > tbody').append(
+            $pagination.hide();
+
+            $('#tbResult > tbody')
+            .addClass('no-results')
+            .removeClass('results')
+            .append(
                 $('<tr></tr>').append(
                     $('<td colspan="2"></td>').text("Keine Ergebnisse")
                 )
@@ -66,17 +80,23 @@
             return;
         }
 
+        $pagination.show();
         $.each(matches, function(i, match) {
             var detailsUrl = '/details/'+match.id;
+            var description = match.description.length < DESCRIPTION_MAX_LENGTH
+                            ? match.description
+                            : match.description.substr(0, DESCRIPTION_MAX_LENGTH) + "...";
 
             $('#tbResult > tbody')
+            .addClass('results')
+            .removeClass('no-results')
             .append(
                 $tr = $('<tr></tr>')
                 .append(
                     $('<td></td>').append(
                         $('<a></a>').text(match.keyword).attr('href', detailsUrl)
                     ),
-                    $('<td></td>').text(match.description)
+                    $('<td></td>').text(description)
                 )
             );
 
@@ -94,19 +114,29 @@
      */
     function doPagination(currentPage, hasPrev, hasNext, switchPageCallback) {
         $pagination
+        .removeClass('active')
         .empty();
+
+        if (hasPrev) {
+            $pagination
+            .addClass('active')
+            .append(
+                $('<a class="prev-page"></a>').text("< Seite "+(currentPage-1))
+                .click(function() {
+                    switchPageCallback(currentPage-1);
+                })
+            );
+        }
 
         if (hasNext) {
             $pagination
             .addClass('active')
             .append(
-                $('<a class="next-page"></a>').text("Mehr Ergebnisse")
+                $('<a class="next-page"></a>').text("Seite "+(currentPage+1)+" >")
                 .click(function() {
                     switchPageCallback(currentPage+1);
                 })
             );
-        } else {
-            $pagination.removeClass('active');
         }
     }
 

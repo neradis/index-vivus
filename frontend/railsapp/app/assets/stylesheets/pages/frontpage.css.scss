@@ -3,42 +3,63 @@
 
 
 #keywordSearch {
-    width: 290px;
-    padding: 10px 15px;
     float: right;
 
-    h3 {
-        margin-left: 5px;
-        text-align: center;
+    form > .panel-body {
+        padding-left: 0;
+        padding-right: 0;
+        padding-bottom: 0;
+    }
+
+    .has-switch {
+        .switch-left, .switch-right {
+            background: #428bca;
+            color: white;
+        }
     }
 
     input[type="text"] {
-        float: left;
-        display: inline;
-        width: 125px;
-        margin: 1px 10px;
-    }
-
-    input[type="submit"] {
-        float: right;
+        margin-left: 10px;
+        margin-right: 10px;
     }
 }
 
 #fulltextSearch {
-    padding: 10px 15px 15px;
-    height: 40px;
-    margin: 25px 0px 45px;
-
-    input[type="text"] {
-        width: 745px;
-        float: left;
+    .input-col {
+        padding-left: 0;
     }
 
-    input[type="submit"] {
-        float: right;
+    input[type="text"] {
+        width: 100%;
     }
 }
 
+#result {
+    @include opacity(0);
+    @include transition(opacity 0.5s ease);
+
+    &.active {
+        @include opacity(1);
+    }
+
+    > .pagination {
+        width: 200px;
+        margin: 20px 0 0;
+        padding: 4px;
+        @include opacity(0);
+        @include transition(opacity 0.5s ease);
+
+        &.active {
+            @include opacity(1);
+        }
+
+        a {
+            display: inline-block;
+            margin: 0 20px;
+            cursor: pointer;
+        }
+    }
+}
 
 #tbResult {
     width: 100%;
@@ -46,12 +67,6 @@
     margin: 0 auto;
 
     @include box-shadow(1px 1px 5px 1px #ccc);
-    @include opacity(0);
-    @include transition(opacity 0.5s ease);
-
-    &.active {
-        @include opacity(1);
-    }
 
     > thead {
         background-color: #A2CBF2;
@@ -86,41 +101,13 @@
     }
 }
 
-#language-selector {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    width: 250px;
-
-    li {
-        margin: 4px;
-        padding: 1px;
-        margin-top: -2px;
-        float: left;
-        width: 25px;
-        height: 25px;
-        cursor: pointer;
-        font-size: 1.3em;
-        text-align: center;
-        @include linear-gradient(white 0%, #9FBFD2 50%);
-
-        &.ui-selecting {
-            background: #FECA40;
-        }
-
-        &.ui-selected {
-            @include linear-gradient(white 0%, #F39814 50%);
-            color: white;
-        }
-    }
-}
 
 #widget {
     width: 200px;
     padding: 7px;
     margin: 0px;
     position: absolute;
-    top :160px;
+    z-index: 10;
     @include linear-gradient(#F2F7F9 0%, #9FBFD2 50%);
         
     border-radius: 3px;
@@ -139,26 +126,6 @@
 
         &:hover {
             @include linear-gradient(white 0%, #F2F7F9 50%);
-        }
-    }
-}
-
-
-#result {
-    > .pagination {
-        margin-top: 10px;
-        padding: 4px;
-        background: #D9DBDD;
-        @include opacity(0);
-        @include transition(opacity 0.5s ease);
-
-        &.active {
-            @include opacity(1);
-        }
-
-        a {
-            display: block;
-            cursor: pointer;
         }
     }
 }

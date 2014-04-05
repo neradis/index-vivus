@@ -23,7 +23,7 @@ public abstract class SettingsProvider {
     );
 
     public static SettingsProvider getInstance() {
-        if( !activeSettings.isPresent() ) {
+        if (!activeSettings.isPresent()) {
             activeSettings = Optional.of(env2Settings.get(Environment.getActive()));
         }
         return activeSettings.get();
@@ -62,10 +62,15 @@ public abstract class SettingsProvider {
         }
     }
 
+    public static File dbFile(String pathSuffix) {
+
+        return new File(LocationProvider.getInstance().getDataDir(), pathSuffix);
+    }
+
     private static String buildFileDbUrl(String pathSuffix) {
-        File dbFile = new File(LocationProvider.getInstance().getDataDir(), pathSuffix);
+
         try {
-            return String.format("jdbc:h2:file:%s;%s", dbFile.getCanonicalPath(), H2_FILE_DB_OPTIONS);
+            return String.format("jdbc:h2:file:%s;%s", dbFile(pathSuffix).getCanonicalPath(), H2_FILE_DB_OPTIONS);
         } catch (IOException ioe) {
             throw new RuntimeException(ioe);
         }

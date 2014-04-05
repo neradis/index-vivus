@@ -9,9 +9,9 @@ import de.fusionfactory.index_vivus.models.scalaimpl.{DictionaryEntries => DEs}
 import de.fusionfactory.index_vivus.persistence.SlickTools.{database => db, _}
 import de.fusionfactory.index_vivus.tools.scala.Utils.OptionConversions._
 import scala.collection.convert.wrapAll._
-import scala.slick.driver.H2Driver.simple.{Session => H2Session, _}
-import DictionaryEntryBean._
+import scala.slick.driver.H2Driver.simple._
 import de.fusionfactory.index_vivus.services.Language
+import de.fusionfactory.index_vivus.services.scalaimpl._
 
 
 /**
@@ -23,7 +23,7 @@ object DictionaryEntry {
 
   def apply(lang: Language, prevId: Option[Int] = None, nextId: Option[Int] = None, keywordGroupIndex: Byte,keyword: String,
             description: String, htmlDescription: Option[String]  = None, pos: WordType = WordType.UNKNOWN):DictionaryEntry = {
-    apply(None, lang2Byte(lang), prevId, nextId, keywordGroupIndex, keyword, description, htmlDescription, pos2Byte(pos))
+    apply(None, lang, prevId, nextId, keywordGroupIndex, keyword, description, htmlDescription, pos)
   }
 
   def create(lang: Language, prevId: Optional[Integer], nextId: Optional[Integer], keywordGroupIndex: Byte,keyword: String,

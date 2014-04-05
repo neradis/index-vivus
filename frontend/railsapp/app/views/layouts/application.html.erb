@@ -1,15 +1,23 @@
 <!DOCTYPE html>
-<html>
+<html lang="de">
 <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Index Vivus</title>
   <%= stylesheet_link_tag    "application", :media => "all" %>
   <%= javascript_include_tag "application" %>
   <%= csrf_meta_tags %>
 </head>
-<body>
-    <div id="wrapper">
-        <h1>index vivus</h1>
-        <%= yield %>
+<body role="document">
+  <div class="container">
+    <div id="top-row" class="row">
+      <div id="title-col" class="col-md-3" role="banner">
+        <h1><a href="/" title="Startseite">index vivus</a></h1>
+      </div>
+      <%= yield :top_right %>
     </div>
+
+    <%= yield %>
+  </div>
 </body>
 </html>

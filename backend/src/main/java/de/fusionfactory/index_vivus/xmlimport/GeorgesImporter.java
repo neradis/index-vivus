@@ -87,7 +87,7 @@ public class GeorgesImporter extends Importer {
             }
             ArrayList<Abbreviation> aBuf = new ArrayList<>();
             for (Map.Entry<String, String> entry : inpAbbrvs.entrySet())
-                aBuf.add(Abbreviation.create(entry.getKey(), entry.getValue()));
+                aBuf.add(Abbreviation.create(sourceLanguage(), entry.getKey(), entry.getValue()));
             logger.info("Processed abbreviations: " + processed);
             AbbreviationsImportTransaction abbrvImport = new AbbreviationsImportTransaction(aBuf);
             DbHelper.transaction(abbrvImport);
