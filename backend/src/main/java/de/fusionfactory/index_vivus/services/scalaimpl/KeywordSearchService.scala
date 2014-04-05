@@ -28,15 +28,15 @@ object KeywordSearchService extends App{
   def getInstance = instance
 
 
-  logger.debug("requesting completion")
+  /*logger.debug("requesting completion")
   instance.getCompletions("dom", Language.LATIN)
   logger.debug("starting wait loop till completion ready")
   val sw = new Stopwatch().start()
   while( !instance.autocompletionReady(Language.LATIN)) {
-    Thread.sleep(100)
+    Thread.sleep(100) //TODO: check if blocking really is really required
   }
   sw.stop()
-  logger.debug(s"waited ${sw.elapsedTime(TimeUnit.MILLISECONDS)} ms")
+  logger.debug(s"waited ${sw.elapsedTime(TimeUnit.MILLISECONDS)} ms")*/
 }
 
 
