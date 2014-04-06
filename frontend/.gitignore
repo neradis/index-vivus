@@ -1,5 +1,6 @@
-#gem home of bundled jruby
+#gem home and gem cache of bundled jruby
 ruby/gems
+ruby/jruby-1.7.8/lib/ruby/gems/shared/cache
 
 #regenerated rails files
 railsapp/db/
