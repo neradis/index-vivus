@@ -92,6 +92,7 @@ public class GeorgesImporter extends Importer {
             AbbreviationsImportTransaction abbrvImport = new AbbreviationsImportTransaction(aBuf);
             DbHelper.transaction(abbrvImport);
 
+            //debug output
             this.abbreviations.addAll(abbrvImport.getAbbreviations());
             for (Abbreviation abbrv : this.abbreviations)
                 logger.debug(abbrv);
@@ -101,8 +102,6 @@ public class GeorgesImporter extends Importer {
     public static void main(String[] args) {
         try {
             new GeorgesImporter().importFromDefaultLocation();
-
-
         } catch (IOException e) {
             e.printStackTrace();
         } catch (SAXException e) {
