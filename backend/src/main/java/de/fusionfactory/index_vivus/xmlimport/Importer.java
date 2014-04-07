@@ -54,6 +54,7 @@ public abstract class Importer {
     protected final Optional<Integer> integerAbsent = Optional.absent();
     protected final short logEntryBatchSize = 1000;
     protected ArrayList<Abbreviation> abbreviations = null;
+    protected final String abbrTag = "<abbr>";
 
     public Importer() {
         // check for existing tables and create them, if not existent (for mode DEV and TEST)
