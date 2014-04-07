@@ -45,7 +45,7 @@ public class GeorgesImporter extends Importer {
                     return o1.toLowerCase().compareTo(o2.toLowerCase());
                 }
             });
-
+            int errorC = 0;
             for (int c = 0; c < abbrvContent.getLength(); c++) {
                 Node abbrvNode = abbrvContent.item(c);
                 if (abbrvNode.getNodeName().equals("p")) {
@@ -55,6 +55,7 @@ public class GeorgesImporter extends Importer {
                     String abbrvRaw = abbrvLine.substring(abbrvLine.indexOf("<b>"), abbrvLine.lastIndexOf("</b>") + 4);
                     //skip the '*' entry
                     if (abbrvRaw.substring(abbrvRaw.indexOf("<b>") + 3, abbrvRaw.indexOf("</b>")).equals("*")) {
+                        errorC++;
                         processed++;
                         continue;
                     }
@@ -88,14 +89,15 @@ public class GeorgesImporter extends Importer {
             ArrayList<Abbreviation> aBuf = new ArrayList<>();
             for (Map.Entry<String, String> entry : inpAbbrvs.entrySet())
                 aBuf.add(Abbreviation.create(sourceLanguage(), entry.getKey(), entry.getValue()));
-            logger.info("Processed abbreviations: " + processed);
+            logger.info("Lines processed: " + processed);
+            logger.info("Thereof invalid: " + errorC);
             AbbreviationsImportTransaction abbrvImport = new AbbreviationsImportTransaction(aBuf);
             DbHelper.transaction(abbrvImport);
 
-            //debug output
             this.abbreviations.addAll(abbrvImport.getAbbreviations());
-            for (Abbreviation abbrv : this.abbreviations)
-                logger.debug(abbrv);
+            //debug output
+            //for (Abbreviation abbrv : this.abbreviations)
+            //    logger.debug(abbrv);
         }
     }
 

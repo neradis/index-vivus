@@ -81,10 +81,8 @@ public class PapeImporter extends Importer{
                                 inpAbbrvs.put(abbrv, inpAbbrvs.get(abbrv) + " " + abbrvLabel);
                             else
                                 inpAbbrvs.put(abbrv, inpAbbrvs.get(abbrv) + abbrvLabel);
-
-
                         }
-                        processed++;
+                        processed ++;
                         continue;
                     }
                     // \u2013 is the unicode '-', if not existent in the line then ignore
@@ -93,6 +91,7 @@ public class PapeImporter extends Importer{
                         errorC++;
                         continue;
                     }
+
                     //select all abbrv short formes (all up to the hiven)
                     //trim some insignificant chars and normalize delimiters
                     String abbrvRaw = abbrvLine.substring(abbrvLine.indexOf(">") + 1,abbrvLine.indexOf(hivenCP))
@@ -117,21 +116,21 @@ public class PapeImporter extends Importer{
                         else
                             inpAbbrvs.put(abbrv, abbrvLabel);
                     }
-
-                    processed++;
+                    processed ++;
                 }
             }
-            logger.info(errorC);
-            logger.info(processed);
-            /*ArrayList<Abbreviation> aBuf = new ArrayList<>();
+            ArrayList<Abbreviation> aBuf = new ArrayList<>();
             for (Map.Entry<String, String> entry : inpAbbrvs.entrySet())
-                aBuf.add(Abbreviation.create(entry.getKey(), entry.getValue()));
+                aBuf.add(Abbreviation.create(sourceLanguage(), entry.getKey(), entry.getValue()));
+            logger.info("Lines processed: " + processed);
+            logger.info("Thereof invalid: " + errorC);
             AbbreviationsImportTransaction abbrvImport = new AbbreviationsImportTransaction(aBuf);
-            DbHelper.transaction(abbrvImport);*/
+            DbHelper.transaction(abbrvImport);
 
-            //this.abbreviations.addAll(abbrvImport.getAbbreviations());
-            for (Map.Entry<String, String> entry : inpAbbrvs.entrySet())
-                logger.debug(entry.getKey() + "\n\t" + entry.getValue());
+            this.abbreviations.addAll(abbrvImport.getAbbreviations());
+            //debug output
+            //for (Abbreviation abbrv : this.abbreviations)
+            //    logger.debug(abbrv);
         }
     }
     public static void main (String args[]) {
