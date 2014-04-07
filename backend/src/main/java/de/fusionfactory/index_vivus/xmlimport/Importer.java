@@ -211,8 +211,8 @@ public abstract class Importer {
             prevEntry = entryImp.getPrevE();
             added += entryImp.getAdded();
         }
-        logger.info("Processed entries: " + processed);
-        logger.info("Added dictionary entries: " + added);
+        logger.info("Entries processed: " + processed);
+        logger.info("Dictionary entries added: " + added);
     }
 
     public void importFromDefaultLocation() throws IOException, SAXException {
@@ -302,7 +302,7 @@ public abstract class Importer {
                 abbreviations.set(a, abbrvWithId);
 
             }
-            logger.info("Added abbreviations: " + added);
+            logger.info("Abbreviations added: " + added);
             return null;
         }
 
