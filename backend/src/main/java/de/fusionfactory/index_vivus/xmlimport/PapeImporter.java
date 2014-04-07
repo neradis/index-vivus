@@ -1,11 +1,14 @@
 package de.fusionfactory.index_vivus.xmlimport;
 
+import de.fusionfactory.index_vivus.models.scalaimpl.Abbreviation;
+import de.fusionfactory.index_vivus.persistence.DbHelper;
 import de.fusionfactory.index_vivus.services.Language;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Map;
 import java.util.TreeMap;
@@ -61,16 +64,25 @@ public class PapeImporter extends Importer{
                     String abbrvLine = this.extractInnerHtml(abbrvNode);
                     String abbrvLabel, abbrv;
 
-                    if(continuingAbbr != null) {
+                    //we have a continuing line and no false positive (needs to have no hiven)
+                    if(continuingAbbr != null && !abbrvLine.contains(hivenCP)) {
                         String[] abbrvRaws = continuingAbbr.split(",");
-                        abbrvLabel = abbrvLine.substring(abbrvLine.indexOf(hivenCP) + 1, abbrvLine.indexOf("</p>")).replace("od.", "oder").trim();
+                        abbrvLabel = abbrvLine.substring(abbrvLine.indexOf(">") + 1, abbrvLine.indexOf("</p>")).replace("od.", "oder").trim();
                         //set continuingAbbr to null if abbrLabel ends in current line
                         if(abbrvLabel.endsWith("."))
                             continuingAbbr = null;
                         abbrvLabel = abbrvLabel.substring(0, abbrvLabel.length() - 1);
                         for (int a = 0; a < abbrvRaws.length; a ++) {
                             abbrv = abbrvRaws[a].trim();
-                            inpAbbrvs.put(abbrv, inpAbbrvs.get(abbrv) + abbrvLabel);
+                            //some semantic checks ( '-' or '=' at the end of the line)
+                            if(inpAbbrvs.get(abbrv).endsWith("-"))
+                                inpAbbrvs.put(abbrv, inpAbbrvs.get(abbrv).substring(0,inpAbbrvs.get(abbrv).length() - 1) + abbrvLabel);
+                            else if(inpAbbrvs.get(abbrv).endsWith("="))
+                                inpAbbrvs.put(abbrv, inpAbbrvs.get(abbrv) + " " + abbrvLabel);
+                            else
+                                inpAbbrvs.put(abbrv, inpAbbrvs.get(abbrv) + abbrvLabel);
+
+
                         }
                         processed++;
                         continue;
@@ -91,7 +103,7 @@ public class PapeImporter extends Importer{
                     //select the abbrv label (everything after the hiven till the start of the <p> tag)
                     abbrvLabel = abbrvLine.substring(abbrvLine.indexOf(hivenCP) + 1, abbrvLine.indexOf("</p>")).replace("od.", "oder").trim();
                     //if no trailing dot then abbrLabel is continued in the next line
-                    if(!abbrvLabel.endsWith("."))
+                    if(!abbrvLabel.endsWith(".")  && !abbrvLabel.endsWith(")"))
                         //using abbrvRaw gives us to add the next abbrvLabel line to all abbrvs in the current line (if there are commas)
                         continuingAbbr = abbrvRaw;
                     else
@@ -111,13 +123,13 @@ public class PapeImporter extends Importer{
             }
             logger.info(errorC);
             logger.info(processed);
-           /* ArrayList<Abbreviation> aBuf = new ArrayList<>();
+            /*ArrayList<Abbreviation> aBuf = new ArrayList<>();
             for (Map.Entry<String, String> entry : inpAbbrvs.entrySet())
                 aBuf.add(Abbreviation.create(entry.getKey(), entry.getValue()));
             AbbreviationsImportTransaction abbrvImport = new AbbreviationsImportTransaction(aBuf);
-            DbHelper.transaction(abbrvImport);
+            DbHelper.transaction(abbrvImport);*/
 
-            this.abbreviations.addAll(abbrvImport.getAbbreviations());*/
+            //this.abbreviations.addAll(abbrvImport.getAbbreviations());
             for (Map.Entry<String, String> entry : inpAbbrvs.entrySet())
                 logger.debug(entry.getKey() + "\n\t" + entry.getValue());
         }
