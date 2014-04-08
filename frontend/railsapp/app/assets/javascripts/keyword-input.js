@@ -21,6 +21,7 @@
             },
 
             select : function(event, ui) {
+                $keywordInput.val( ui.item.value );
                 $keywordForm.submit();
             }
         });
@@ -52,8 +53,12 @@
 
         showSearchResultsThrobber();
 
-        $.getJSON("ajax/keyword/matches/"+encodeURIComponent(lang)+"/"+encodeURIComponent(value), function(result) {
-            printSearchResults(result);
+        $.getJSON("ajax/keyword/matches/"+encodeURIComponent(lang)+"/"+encodeURIComponent(value), function(results) {
+            if (results.length == 1) {
+                window.location.href = "/details/"+results[0].id;
+            } else {
+                printSearchResults(results);
+            }
         });
     }
 
