@@ -211,8 +211,8 @@ public abstract class Importer {
             prevEntry = entryImp.getPrevE();
             added += entryImp.getAdded();
         }
-        logger.info("Processed entries: " + processed);
-        logger.info("Added dictionary entries: " + added);
+        logger.info("Entries processed: " + processed);
+        logger.info("Dictionary entries added: " + added);
     }
 
     public void importFromDefaultLocation() throws IOException, SAXException {
@@ -242,11 +242,13 @@ public abstract class Importer {
                         content.normalizeDocument();
                         //first file in a collection starts with 000 and contains meta info
                         if (fileHandle.getName().contains("000")) {
+                            logger.info("Metadata file...");
                             //search for string 'Verzeichnis' in the metadata articles
                             this.parseAbbrvData((NodeList) XPathFactory.newInstance().newXPath().evaluate("//article[contains(lem,'Verzeichnis')]",
                                     content.getDocumentElement(),
                                     XPathConstants.NODESET));
                         } else {
+                            logger.info("Regular data file...");
                             // all entries in the file
                             this.parseEntryData(content.getElementsByTagName("article"));
                         }
@@ -302,7 +304,7 @@ public abstract class Importer {
                 abbreviations.set(a, abbrvWithId);
 
             }
-            logger.info("Added abbreviations: " + added);
+            logger.info("Abbreviations added: " + added);
             return null;
         }
 
