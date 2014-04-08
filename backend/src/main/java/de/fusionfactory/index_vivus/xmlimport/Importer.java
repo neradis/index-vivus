@@ -242,11 +242,13 @@ public abstract class Importer {
                         content.normalizeDocument();
                         //first file in a collection starts with 000 and contains meta info
                         if (fileHandle.getName().contains("000")) {
+                            logger.info("Metadata file...");
                             //search for string 'Verzeichnis' in the metadata articles
                             this.parseAbbrvData((NodeList) XPathFactory.newInstance().newXPath().evaluate("//article[contains(lem,'Verzeichnis')]",
                                     content.getDocumentElement(),
                                     XPathConstants.NODESET));
                         } else {
+                            logger.info("Regular data file...");
                             // all entries in the file
                             this.parseEntryData(content.getElementsByTagName("article"));
                         }
