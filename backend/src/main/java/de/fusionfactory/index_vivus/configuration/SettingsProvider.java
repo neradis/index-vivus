@@ -14,65 +14,65 @@ import java.io.IOException;
  */
 public abstract class SettingsProvider {
 
-  private static Optional<SettingsProvider> activeSettings = Optional.absent();
+    private static Optional<SettingsProvider> activeSettings = Optional.absent();
 
-  private static ImmutableMap<Environment, SettingsProvider> env2Settings = ImmutableMap.of(
-      Environment.DEVELOPMENT, new DevelopmentSettingProvider(),
-      Environment.TEST, new TestSettingsProvider(),
-      Environment.PRODUCTION, new ProductionSettingsProvider()
-  );
+    private static ImmutableMap<Environment, SettingsProvider> env2Settings = ImmutableMap.of(
+            Environment.DEVELOPMENT, new DevelopmentSettingProvider(),
+            Environment.TEST, new TestSettingsProvider(),
+            Environment.PRODUCTION, new ProductionSettingsProvider()
+    );
 
-  public static SettingsProvider getInstance() {
-    if (!activeSettings.isPresent()) {
-      activeSettings = Optional.of(env2Settings.get(Environment.getActive()));
+    public static SettingsProvider getInstance() {
+        if (!activeSettings.isPresent()) {
+            activeSettings = Optional.of(env2Settings.get(Environment.getActive()));
+        }
+        return activeSettings.get();
     }
-    return activeSettings.get();
-  }
 
-  abstract public String getDatabaseUrl();
+    abstract public String getDatabaseUrl();
 
 
-  public final static String H2_MEM_DB_OPTIONS =
-      Joiner.on(',').join(ImmutableList.of("DB_CLOSE_DELAY=-1"));
+    public final static String H2_MEM_DB_OPTIONS =
+            Joiner.on(',').join(ImmutableList.of("DB_CLOSE_DELAY=-1"));
 
-  public final static String H2_FILE_DB_OPTIONS =
-      Joiner.on(';').join(ImmutableList.of("AUTO_SERVER=TRUE", "AUTO_SERVER_PORT=6543"));
+    public final static String H2_FILE_DB_OPTIONS =
+            Joiner.on(';').join(ImmutableList.of("AUTO_SERVER=TRUE", "AUTO_SERVER_PORT=6543"));
 
-  public static class DevelopmentSettingProvider extends SettingsProvider {
+    public static class DevelopmentSettingProvider extends SettingsProvider {
 
-    @Override
-    public String getDatabaseUrl() {
-      return "jdbc:h2:mem:index_vivus_dev;" + H2_MEM_DB_OPTIONS;
+        @Override
+        public String getDatabaseUrl() {
+            return "jdbc:h2:mem:index_vivus_dev;" + H2_MEM_DB_OPTIONS;
+        }
     }
-  }
 
-  public static class TestSettingsProvider extends SettingsProvider {
+    public static class TestSettingsProvider extends SettingsProvider {
 
-    @Override
-    public String getDatabaseUrl() {
-      return buildFileDbUrl("index_vivus_test");
+        @Override
+        public String getDatabaseUrl() {
+            return buildFileDbUrl("index_vivus_test");
+        }
     }
-  }
 
-  public static class ProductionSettingsProvider extends SettingsProvider {
+    public static class ProductionSettingsProvider extends SettingsProvider {
 
-    @Override
-    public String getDatabaseUrl() {
-      return buildFileDbUrl("index_vivus_prod");
+        @Override
+        public String getDatabaseUrl() {
+            return buildFileDbUrl("index_vivus_prod");
+        }
     }
-  }
 
-  public static File dbFile(String pathSuffix) {
+    public static File dbFile(String pathSuffix) {
 
-    return new File(LocationProvider.getInstance().getDataDir(), pathSuffix);
-  }
-
-  private static String buildFileDbUrl(String pathSuffix) {
-
-    try {
-      return String.format("jdbc:h2:file:%s;%s", dbFile(pathSuffix).getCanonicalPath(), H2_FILE_DB_OPTIONS);
-    } catch (IOException ioe) {
-      throw new RuntimeException(ioe);
+        return new File(LocationProvider.getInstance().getDataDir(), pathSuffix);
     }
-  }
+
+    private static String buildFileDbUrl(String pathSuffix) {
+
+        try {
+            return String.format("jdbc:h2:file:%s;%s", dbFile(pathSuffix).getCanonicalPath(), H2_FILE_DB_OPTIONS);
+        } catch (IOException ioe) {
+            throw new RuntimeException(ioe);
+        }
+    }
 }

@@ -26,13 +26,13 @@ object KeywordSearchServiceTest {
 
   lazy val expectedCompletions = Map(
     DEVELOPMENT -> Expectations("dom", Set("dominare", "dominus"), Set("dominare, dominus")),
-    TEST -> Expectations("aba", Set("abacinus", "abactus", "abacus"), Set("abacinus", "abacus")),
+    TEST -> Expectations("aba", Set("abante", "abactor", "abaculus"), Set("abacinus", "abacus")),
     PRODUCTION -> Expectations("dom", Set("domus", "dominus", "dominulus"), Set("domus"))
   )
 
   lazy val completionReadyTimeout = Map(
     DEVELOPMENT -> Duration(10, MILLISECONDS),
-    TEST -> Duration(2, SECONDS),
+    TEST -> Duration(8, SECONDS),
     PRODUCTION -> Duration(16, SECONDS)
   )
 }

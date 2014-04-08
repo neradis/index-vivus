@@ -20,18 +20,18 @@ class SpellCheckerTest extends FlatSpec  with BeforeAndAfter {
     }
   }
 
-  "The completion service" should "offer sound corrections (dominare/dominus)" in {
+  "The completion service" should "offer sound corrections (dominare/dominus) in dev env" in {
     if(Environment.getActive == Environment.DEVELOPMENT) {
       DbHelper.createMissingTables()
       LoadFixtures.createFixtures()
+
+      val sc = new  SpellChecker(Language.LATIN)
+      Thread.sleep(1000) // wait to give Spellchecker a chance to complete it's async initialization
+
+      "dominus" === sc.getBestAlternativeWord("dominvs")
+      "dominare" === sc.getBestAlternativeWord("dominave")
+      assert(Set("dominare", "dominus") subsetOf sc.getAutocompleteSuggestions("dom").toSet)
     }
-
-    val sc = new  SpellChecker(Language.LATIN)
-    Thread.sleep(1000) // wait to give Spellchecker a chance to complete it's async initialization
-
-    "dominus" === sc.getBestAlternativeWord("dominvs")
-    "dominare" === sc.getBestAlternativeWord("dominave")
-    assert(Set("dominare", "dominus") subsetOf sc.getAutocompleteSuggestions("dom").toSet)
   }
 
 
