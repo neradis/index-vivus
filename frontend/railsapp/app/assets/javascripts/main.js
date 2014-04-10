@@ -56,8 +56,6 @@
     }
 
     function printSearchResults(matches) {
-        var $tr;
-
         $('#result').addClass('active');
         $('#result > .throbber').removeClass('active');
 
@@ -77,6 +75,12 @@
             );
             return;
         }
+
+        fillResultsTable(matches);
+    }
+
+    function fillResultsTable(matches) {
+        var $tr;
 
         $.each(matches, function(i, match) {
             var detailsUrl = '/details/'+match.id;
