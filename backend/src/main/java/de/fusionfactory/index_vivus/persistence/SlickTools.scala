@@ -1,9 +1,9 @@
 package de.fusionfactory.index_vivus.persistence
 
 import scala.slick.session.{Session, Database}
-import scala.slick.driver.H2Driver.simple.{Session => H2Session, _}
+import scala.slick.driver.H2Driver.simple._
 import de.fusionfactory.index_vivus.configuration.{LocationProvider, SettingsProvider}
-import de.fusionfactory.index_vivus.models.scalaimpl.{GermanTokens, AbbreviationOccurrences, Abbreviations, DictionaryEntries}
+import de.fusionfactory.index_vivus.models.scalaimpl._
 import scala.slick.lifted.Query
 import SlickTools.{database => db}
 
@@ -29,6 +29,8 @@ object SlickTools {
     else
       transactionForSession(s.get)(work)
   }
+
+  def inNewTransaction[T](work: Session => T): T = inTransaction(None)(work)
 
   lazy val database = {
     val cpds = new ComboPooledDataSource()
