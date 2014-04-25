@@ -3,6 +3,7 @@ package de.fusionfactory.index_vivus.tools.scala
 import com.google.common.base.Optional
 import java.lang.{Boolean => JBoolean}
 import de.fusionfactory.index_vivus.services.Language
+import de.fusionfactory.index_vivus.services
 import com.google.common.io.Resources
 import java.io.File
 
@@ -18,7 +19,7 @@ object Utils {
 
   def matchingNone[T]: Option[T] = Option.empty[T]
 
-  def lang2Byte(l: Language) = Language.values().indexOf(l).toByte
+  def lang2Byte(l: Language) = services.scalaimpl.lang2Byte(l)
 
   def fileForResouce(resourceName: String) = {
     new File(Resources.getResource(resourceName).toURI)

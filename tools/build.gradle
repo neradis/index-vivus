@@ -20,7 +20,7 @@ task cleanDb(type: JavaExec, dependsOn: backend.classes) {
 task cleanIndices(type: JavaExec, dependsOn: backend.classes) {
 
     toolTaskDefaults(delegate)
-    main = 'de.fusionfactory.index_vivus.tools.CleanDb'
+    main = 'de.fusionfactory.index_vivus.tools.CleanIndices'
 }
 
 task initDb(type: JavaExec, dependsOn: [backend.classes]) {
