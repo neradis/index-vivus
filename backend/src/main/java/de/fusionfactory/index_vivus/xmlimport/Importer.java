@@ -11,6 +11,7 @@ import de.fusionfactory.index_vivus.models.scalaimpl.AbbreviationOccurrence;
 import de.fusionfactory.index_vivus.models.scalaimpl.DictionaryEntry;
 import de.fusionfactory.index_vivus.persistence.DbHelper;
 import de.fusionfactory.index_vivus.services.Language;
+import de.fusionfactory.index_vivus.tools.scala.Utils;
 import org.ahocorasick.trie.Token;
 import org.ahocorasick.trie.Trie;
 import org.apache.commons.lang3.StringEscapeUtils;
@@ -230,7 +231,7 @@ public abstract class Importer {
         boolean noFiles = true;
 
         if (files != null) {
-            for (File fileHandle : files) {
+            for (File fileHandle : Utils.moveMetaDataFilesToFront(files)) {
                 if (fileHandle.isFile() && fileHandle.getName().startsWith(sourceFilePrefix())
                         && fileHandle.getName().contains(".xml")) {
 
