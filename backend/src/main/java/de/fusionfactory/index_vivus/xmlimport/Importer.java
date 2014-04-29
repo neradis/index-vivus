@@ -181,8 +181,7 @@ public abstract class Importer {
                     descriptionHtml = descriptionHtml.trim();
                     //strips all the html tags and unescape resulting string from cleaner
                     description = StringEscapeUtils.unescapeHtml4(Jsoup.clean(descriptionHtml, "",
-                            Whitelist.none().addTags(this.abbrTag),
-                            new org.jsoup.nodes.Document.OutputSettings().prettyPrint(false)));
+                            Whitelist.none(), new org.jsoup.nodes.Document.OutputSettings().prettyPrint(false)));
                 }
             }
             //add entry to the bulk linkedHashMap with the dictionary entry and the related list of abbreviation matches
