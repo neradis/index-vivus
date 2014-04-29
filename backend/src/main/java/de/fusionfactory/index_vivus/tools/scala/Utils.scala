@@ -6,6 +6,7 @@ import de.fusionfactory.index_vivus.services.Language
 import de.fusionfactory.index_vivus.services
 import com.google.common.io.Resources
 import java.io.File
+import com.google.common.collect.ImmutableList
 
 
 /**
@@ -25,6 +26,11 @@ object Utils {
     new File(Resources.getResource(resourceName).toURI)
   }
 
+  def moveMetaDataFilesToFront(fileArray: Array[File]): ImmutableList[File] = {
+    def isMetaData(f: File) = f.getName.contains("000")
+    ImmutableList.copyOf(fileArray.filter(isMetaData) ++ fileArray.filterNot(isMetaData))
+  }
+  
   object OptionConversions {
 
     implicit def optional2Option[T](opt: Optional[T]): Option[T] = opt match {
