@@ -11,6 +11,8 @@ import de.fusionfactory.index_vivus.models.scalaimpl.AbbreviationOccurrence;
 import de.fusionfactory.index_vivus.models.scalaimpl.DictionaryEntry;
 import de.fusionfactory.index_vivus.persistence.DbHelper;
 import de.fusionfactory.index_vivus.services.Language;
+import org.ahocorasick.trie.Token;
+import org.ahocorasick.trie.Trie;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
@@ -37,10 +39,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.StringWriter;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static java.lang.String.format;
 
@@ -53,15 +52,15 @@ public abstract class Importer {
     protected static Logger logger = Logger.getLogger(Importer.class);
     protected final Optional<Integer> integerAbsent = Optional.absent();
     protected final short logEntryBatchSize = 1000;
+    protected final String abbrTag = "abbr";
     protected ArrayList<Abbreviation> abbreviations = null;
-    protected final String abbrTag = "<abbr>";
 
     public Importer() {
         // check for existing tables and create them, if not existent (for mode DEV and TEST)
 
         if (Environment.getActive().equals(Environment.DEVELOPMENT) || Environment.getActive().equals(Environment.TEST)) {
             DbHelper.createMissingTables();
-    }
+        }
         abbreviations = new ArrayList<>();
     }
 
@@ -101,12 +100,22 @@ public abstract class Importer {
         long processed = 0, added = 0, logCounter = 0, count = entries.getLength();
         short warningsPrinted = 0;
         logger.info("Input entries in file: " + count);
+         /* build up abbreviation prefix tree (add all abbreviations) for one time
+             - whole words to skip cases with the abbreviation as part/in the end of a longer one.
+             - remove overlaps to find longer abbreviations before shorter ones
+               with the same suffix (e.g. 'Alex. Aet.' before 'Alex.' */
+        Trie abbrTrie = new Trie().onlyWholeWords().removeOverlaps();
+        for (Abbreviation abbr : this.abbreviations)
+            abbrTrie.addKeyword(abbr.getShortForm());
+
         LinkedHashMap<DictionaryEntry, ArrayList<Abbreviation>> entryBulk = new LinkedHashMap<>();
         for (int i = 0; i < entries.getLength(); i++) {
-            //if(processed > 500)
-            //    break;
+            // DEBUG stop after x entries
+            // if(processed > 500)
+            //     break;
             String keyword = "", description = "", descriptionHtml = null;
             WordType wordType = WordType.UNKNOWN;
+            //is only higher than one with more than one usage for an abbreviation short form
             byte keyGroupIndex = 1;
 
             NodeList entryContent = entries.item(i).getChildNodes();
@@ -145,40 +154,33 @@ public abstract class Importer {
                         //one of the description for the entry
 
                         if (innerChild.getNodeName().equals("p")) {
-                            String html = this.extractInnerHtml(innerChild);
-                            //look for abbreviations in the description and add <abbr></abbr> tags
-                            String lastAbbrv = "";
+                            StringBuffer html = new StringBuffer();
+                            /* with tokenize we can work on the fly with the matches, so we don't need parseText()
+                            Collection<Emit> abbrvFounds = abbrTrie.parseText(this.extractInnerHtml(innerChild));
+                            for(Emit e : abbrvFounds)
+                                logger.info(e.getKeyword() + " " + e.getStart() + " " + e.getEnd());*/
 
-                            for (Abbreviation abbrv : this.abbreviations) {
-                                String aBuf = abbrv.getShortForm();
-                                //don't search for a short name more than once (for instance n. = nach. & n. = generis neutrius.)
-
-                                if (lastAbbrv.equals(aBuf))
-                                    continue;
-                                //abbreviation match, edit htmlDescription and add to list
-
-                                if (html.contains(" " + aBuf)) {
-                                    //logger.info("HAHA: " + aBuf);
-
-                                    html = html.replace(" " + aBuf, " <abbr>" + aBuf + "</abbr>");
-                                    // no duplicate matches are tracked!
-
-                                    if (!abbrvMatches.contains(abbrv))
-                                        abbrvMatches.add(abbrv);
-                                }
-                                lastAbbrv = aBuf;
+                            Collection<Token> htmlTokens = abbrTrie.tokenize(this.extractInnerHtml(innerChild));
+                            //add each token to the result buffer, for an abbreviation match with <abbr> Tag
+                            for (Token htmlT : htmlTokens) {
+                                //logger.info(htmlT.getFragment() + " " + htmlT.isMatch());
+                                if (htmlT.isMatch())
+                                    html.append("<" + this.abbrTag + ">");
+                                html.append(htmlT.getFragment());
+                                if (htmlT.isMatch())
+                                    html.append("</" + this.abbrTag + ">");
                             }
-                            //WTF java: adding NULL as a word ?
+                            //WTF java: adding NULL as a word?
                             if (descriptionHtml == null)
-                                descriptionHtml = html;
+                                descriptionHtml = html.toString();
                             else
-                                descriptionHtml += html + "\n";
+                                descriptionHtml += html.toString() + "\n";
                         }
                     }
                     descriptionHtml = descriptionHtml.trim();
                     //strips all the html tags and unescape resulting string from cleaner
                     description = StringEscapeUtils.unescapeHtml4(Jsoup.clean(descriptionHtml, "",
-                            Whitelist.none().addTags("abbr"),
+                            Whitelist.none().addTags(this.abbrTag),
                             new org.jsoup.nodes.Document.OutputSettings().prettyPrint(false)));
                 }
             }
@@ -403,5 +405,5 @@ public abstract class Importer {
                 logger.warn(format("Import for dictionary failed due to:%n%s", ex.getMessage()));
             }
         }
-  }
+    }
 }
