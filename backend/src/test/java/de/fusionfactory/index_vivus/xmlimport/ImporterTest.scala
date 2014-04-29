@@ -13,6 +13,8 @@ import Function.tupled
 import de.fusionfactory.index_vivus.models.scalaimpl.DictionaryEntry
 import scala.slick.session.Session
 import de.fusionfactory.index_vivus.services.Language
+import org.apache.log4j.Logger
+import scala.collection.mutable.ListBuffer
 
 /**
  * Created by Markus Ackermann.
@@ -21,6 +23,7 @@ import de.fusionfactory.index_vivus.services.Language
 
 object ImporterTest {
 
+  lazy val logger = Logger.getLogger(classOf[ImporterTest])
   lazy val markedOccPattern = "<abbr>[^<]+?</abbr>".r
   lazy val shortForms = AbbreviationSetsServiceTest.georgesAbbrSelection.keys.toSet
   lazy val shortFormTrie = shortForms.foldLeft(new Trie().removeOverlaps()) {
@@ -29,6 +32,7 @@ object ImporterTest {
 }
 
 class ImporterTest extends FlatSpec with BeforeAndAfter {
+
 
   before {
     if (Environment.getActive == Environment.DEVELOPMENT) {
@@ -49,6 +53,9 @@ class ImporterTest extends FlatSpec with BeforeAndAfter {
 
   "The importer" should "add <abbr>-tags around occurring abbreviations in Latin entries" in {
 
+    var lastMarked: Option[String] = None
+    val missing = ListBuffer.empty[String]
+
     SlickTools.database.withTransaction {
       implicit s: Session =>
         for {
@@ -58,11 +65,15 @@ class ImporterTest extends FlatSpec with BeforeAndAfter {
           (occ, occWithContext) <- abbrOccs(text).zip(abbrOccsWithContext(text))
         } {
           occWithContext match {
-            case occ: String if markedOccPattern.findFirstMatchIn(occ).isDefined => ()
-            case s => fail(s"No tag for $occ in $occWithContext (entry id: $eid)")
+            case occ: String if markedOccPattern.findFirstMatchIn(occ).isDefined => lastMarked = Some(occ)
+            case s => if (missing.size < 10) missing += s"No tag for $occ in $occWithContext (entry id: $eid)"
           }
         }
     }
+
+    if (missing.nonEmpty)
+      fail(lastMarked map (_ => s"Some abbreviation marks missing:\n${missing.mkString("\n")}") getOrElse
+          s"No abbreviation tags at all! Some of the missed ones are:\n${missing.mkString("\n")}")
   }
 
   val expCharsMap = Map(

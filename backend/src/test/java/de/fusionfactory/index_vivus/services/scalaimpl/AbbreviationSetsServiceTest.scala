@@ -19,8 +19,6 @@ import de.fusionfactory.index_vivus.services.Language
 object AbbreviationSetsServiceTest {
 
   lazy val georgesAbbrSelection = Map(
-    "A." -> "Anfang.",
-    "a." -> "andere.",
     "a. a. O." -> "am angeführten Orte.",
     "allg." -> "allgemein.",
     "in ders. Bed." -> "in derselben Bedeutung.",
@@ -61,12 +59,12 @@ class AbbreviationSetsServiceTest extends FlatSpec with BeforeAndAfter {
   }
 
   "The abbreviation set service" should "give correct an complete listings of abbreviations and their expansions" in {
-    
+
     val expected = expectedAbbreviations(Environment.getActive)
 
     val actual = AbbreviationSetsService.getInstance.getAbbreviationExpansions(Language.LATIN)
 
-    expected.entrySet  subsetOf actual.entrySet
+    expected.entrySet subsetOf actual.entrySet
 
   }
 }
