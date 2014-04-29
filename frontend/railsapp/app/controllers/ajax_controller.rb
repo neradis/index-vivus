@@ -1,8 +1,8 @@
 java_import 'de.fusionfactory.index_vivus.services.scalaimpl.KeywordSearchService'
 java_import 'de.fusionfactory.index_vivus.services.scalaimpl.FullTextSearchService'
+java_import 'com.google.common.base.Optional'
 java_import 'de.fusionfactory.index_vivus.services.Language'
 java_import 'de.fusionfactory.index_vivus.services.scalaimpl.AbbreviationSetsService'
-
 
 class AjaxController < ApplicationController
 
@@ -19,6 +19,18 @@ class AjaxController < ApplicationController
     def get_keyword_matches
         if stale? :last_modified => IndexVivusAdditions::Rails::STARTUP_TIME
             matches = @keyword_search_service.get_matches(params[:keyword], @@language_by_string[params[:lang]])
+            render :json => serialize_matches(matches)
+        end
+    end
+
+    def get_matches_with_alternative
+        if stale? :last_modified => IndexVivusAdditions::Rails::STARTUP_TIME
+            if (params[:alternative].blank?)
+                matches = @keyword_search_service.get_matches(params[:keyword], @@language_by_string[params[:lang]])
+            else
+                matches = @keyword_search_service.get_matches_with_alternative(params[:keyword],
+                                                                               params[:alternative], @@language_by_string[params[:lang]])
+            end
             render :json => serialize_matches(matches)
         end
     end

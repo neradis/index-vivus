@@ -13,7 +13,6 @@ import scala.concurrent.{Await, future, ExecutionContext}
 import ExecutionContext.Implicits.global
 import scala.concurrent.duration.Duration
 import com.google.common.base.Stopwatch
-import java.util.concurrent.TimeUnit
 
 
 /**
@@ -51,6 +50,15 @@ class KeywordSearchService private() extends IKeywordSearchService {
 
   def getCompletions(keyword: String, language: Language): JList[String] = {
     fetchCompleter(language).getAutocompleteSuggestions(keyword).toList
+  }
+
+  def getMatchesWithAlternative(keywordCandidate: String, completionAlternative: String, language: Language): JList[DE] = {
+    db.withTransaction( s =>
+      if(DE.keywordExists(keywordCandidate, language, s)) {
+        DE.fetchByKeywordAndSourceLanguage(keywordCandidate, language, s)
+      } else {
+        DE.fetchByKeywordAndSourceLanguage(completionAlternative, language, s)
+      })
   }
 
   def autocompletionReady(language: Language): Boolean = fetchCompleter(language).autoCompletionReady

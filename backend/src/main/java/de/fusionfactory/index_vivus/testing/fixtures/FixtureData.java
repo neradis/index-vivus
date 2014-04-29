@@ -14,18 +14,9 @@ import static de.fusionfactory.index_vivus.services.Language.LATIN;
  * No rights reserved.
  */
 public class FixtureData {
-    public static final ImmutableSet<Abbreviation> ABBREVIATIONS = ImmutableSet.of(
-            Abbreviation.create(LATIN, "abgekzt.", "abgekürzt"),
-            Abbreviation.create(LATIN, "spezl.", "speziell"),
-            Abbreviation.create(LATIN, "substn.", "substantivisch")
-    );
-    public static final ImmutableMap<EntryDescription, String> ABBREVIATION_OCCURENCE_HINTS = ImmutableMap.of(
-            new EntryDescription("index", (byte) 2), "spezl.",
-            new EntryDescription("dominus", (byte) 1), "substn.",
-            new EntryDescription("SPQR", (byte) 1), "abgekzt."
-    );
-    private static final Optional<Integer> integerAbsent = Optional.absent();
+   private static final Optional<Integer> integerAbsent = Optional.absent();
     private static final Optional<String> stringAbsent = Optional.absent();
+
     public static final ImmutableSet<DictionaryEntry> DICTIONARY_ENTRIES = ImmutableSet.of(
             DictionaryEntry.create(LATIN, integerAbsent, integerAbsent, (byte) 1,
                     "index", "das Verzeichnis", stringAbsent, WordType.NOUN),
@@ -45,6 +36,17 @@ public class FixtureData {
                     "SPQR", "abgekzt. für: Senātus Populusque Rōmānus Eigentum - " +
                             "des römischen Senats und des römischen Volkes", stringAbsent, WordType.OTHER
             )
+    );
+
+    public static final ImmutableSet<Abbreviation> ABBREVIATIONS = ImmutableSet.of(
+            Abbreviation.create(LATIN, "abgekzt.", "abgekürzt"),
+            Abbreviation.create(LATIN, "spezl.", "speziell"),
+            Abbreviation.create(LATIN, "substn.", "substantivisch")
+    );
+    public static final ImmutableMap<EntryDescription, String> ABBREVIATION_OCCURENCE_HINTS = ImmutableMap.of(
+            new EntryDescription("index", (byte) 2), "spezl.",
+            new EntryDescription("dominus", (byte) 1), "substn.",
+            new EntryDescription("SPQR", (byte) 1), "abgekzt."
     );
 
     public static class EntryDescription {
@@ -67,7 +69,6 @@ public class FixtureData {
         }
 
     }
-
 }
 
 

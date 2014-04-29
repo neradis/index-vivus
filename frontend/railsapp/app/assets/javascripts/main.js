@@ -56,17 +56,15 @@
     }
 
     function printSearchResults(matches) {
-        var $tr;
-
         $('#result').addClass('active');
         $('#result > .throbber').removeClass('active');
 
         $("#tbResult tbody tr").remove();
         $("#tbResult").addClass('active');
 
-        if (matches.length == 0) {
-            $pagination.hide();
+        $pagination.hide();
 
+        if (matches.length == 0) {
             $('#tbResult > tbody')
             .addClass('no-results')
             .removeClass('results')
@@ -78,7 +76,12 @@
             return;
         }
 
-        $pagination.show();
+        fillResultsTable(matches);
+    }
+
+    function fillResultsTable(matches) {
+        var $tr;
+
         $.each(matches, function(i, match) {
             var detailsUrl = '/details/'+match.id;
             var description = match.description.length < DESCRIPTION_MAX_LENGTH
@@ -113,7 +116,8 @@
     function doPagination(currentPage, totalPages, hasPrev, hasNext, switchPageCallback) {
         $pagination
         .removeClass('active')
-        .empty();
+        .empty()
+        .show();
 
         if (hasPrev) {
             $pagination
