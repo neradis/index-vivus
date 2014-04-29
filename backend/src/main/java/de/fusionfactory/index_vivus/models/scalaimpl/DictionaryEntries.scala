@@ -37,6 +37,8 @@ object DictionaryEntries extends Table[DictionaryEntry]("DICTIONARY_ENTRIES") {
 
   def nextIdFK = foreignKey("NEXT_ID_FK", nextId, DictionaryEntries)(_.id)
 
+  def keywordIndex = index("KEYWORD_INDEX", keyword)
+
   def * = id.? ~: baseProjection <> (t => DictionaryEntry(t._1, t._2, t._3, t._4, t._5, t._6, t._7, t._8, t._9),
     DictionaryEntry.unapply)
 
@@ -51,13 +53,7 @@ object DictionaryEntries extends Table[DictionaryEntry]("DICTIONARY_ENTRIES") {
 
   def bySourceLanguageQuery(lang: Language) =  Query(DEs) filter ( _.sourceLanguage === lang2Byte(lang) )
 
-  def joinOccurringAbbreviationsQuery =
-    for {
-      (de, abbrOcc) <- DictionaryEntries innerJoin AbbreviationOccurrences on (_.id === _.entryId)
-      (abbrOcc, abbr) <- AbbreviationOccurrences innerJoin Abbreviations on (_.entryId === _.id)
-    } yield abbr
-
-  def keywordsForLanguageQuery(lang: Language) = 
+  def keywordsForLanguageQuery(lang: Language) =
     Query(DEs) filter (de => de.sourceLanguage === lang2Byte(lang)) map (de => de.keyword) 
 
   def byKeywordAndKWGIndexQuery(kw: String, kwgi: Byte) =

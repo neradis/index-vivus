@@ -7,7 +7,6 @@ import de.fusionfactory.index_vivus.configuration.Environment;
 import de.fusionfactory.index_vivus.configuration.LocationProvider;
 import de.fusionfactory.index_vivus.models.WordType;
 import de.fusionfactory.index_vivus.models.scalaimpl.Abbreviation;
-import de.fusionfactory.index_vivus.models.scalaimpl.AbbreviationOccurrence;
 import de.fusionfactory.index_vivus.models.scalaimpl.DictionaryEntry;
 import de.fusionfactory.index_vivus.persistence.DbHelper;
 import de.fusionfactory.index_vivus.services.Language;
@@ -365,18 +364,7 @@ public abstract class Importer {
                     currentE = DictionaryEntry.fetchByKeywordAndGroupId(currentE.getKeyword(),
                             currentE.getKeywordGroupIndex()).get();
                 }
-                //logger.debug("prev: " + prevE);
-                //logger.debug("current: " + currentE);
-                //logger.debug("abbrv matches: " + abbrvMatches.size());
-                //add abbreviation occurrences for current entry
-                for (Abbreviation abbrv : abbrvMatches) {
-                    if (!AbbreviationOccurrence.exists(currentE.getId(), abbrv.getId(), tx)) // no duplicate entry
-                        AbbreviationOccurrence.create(currentE.getId(), abbrv.getId(), tx);
-                    else if (warningE < warningThreshold) {
-                        logger.warn(format("Skipping already added abbreviation occurrence relation: %s(%d) - %s",
-                                currentE.getKeyword(), currentE.getKeywordGroupIndex(), abbrv.getShortForm()));
-                    }
-                }
+
                 //set current Entry as previous Entry
                 prevE = Optional.of(currentE);
             }

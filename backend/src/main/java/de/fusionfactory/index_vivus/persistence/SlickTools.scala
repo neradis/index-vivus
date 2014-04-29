@@ -1,6 +1,6 @@
 package de.fusionfactory.index_vivus.persistence
 
-import scala.slick.session.{Session, Database}
+import scala.slick.session.Database
 import scala.slick.driver.H2Driver.simple._
 import de.fusionfactory.index_vivus.configuration.{LocationProvider, SettingsProvider}
 import de.fusionfactory.index_vivus.models.scalaimpl._
@@ -46,7 +46,7 @@ object SlickTools {
     Database.forDataSource(cpds)
   }
 
-  lazy val slickTables: Set[Table[_]] = Set(DictionaryEntries, Abbreviations, AbbreviationOccurrences, GermanTokens)
+  lazy val slickTables: Set[Table[_]] = Set(DictionaryEntries, Abbreviations, GermanTokens)
 
   def createMissingTables() = {
     def tableExists(table: Table[_])(implicit t: Session) = {

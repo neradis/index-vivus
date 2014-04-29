@@ -2,7 +2,7 @@ package de.fusionfactory.index_vivus.models.scalaimpl
 
 import de.fusionfactory.index_vivus.models._
 import de.fusionfactory.index_vivus.tools.scala.Utils.OptionConversions._
-import scala.slick.driver.H2Driver.simple.{_}
+import scala.slick.driver.H2Driver.simple._
 import scala.slick.session.Session
 import de.fusionfactory.index_vivus.persistence.SlickTools.{database => db}
 import de.fusionfactory.index_vivus.services.scalaimpl._
@@ -47,10 +47,6 @@ trait DictionaryEntryBean extends ICrudOpsProvider[DictionaryEntry,DictionaryEnt
   def getHtmlDescription: Optional[String] = htmlDescription
 
   def setHtmlDescription(hd: Optional[String]): Unit = htmlDescription = hd
-
-  def getOccurringAbbreviations: JList[Abbreviation] = fetchAbbreviations()
-
-  def getOccurringAbbreviations(s: Session): JList[Abbreviation] = fetchAbbreviations(Some(s))
 
   def getRelated: JList[_ <: IDictionaryEntry] = ImmutableList.of() //TODO: implement
 
