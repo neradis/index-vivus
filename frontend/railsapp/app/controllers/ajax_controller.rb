@@ -6,6 +6,8 @@ java_import 'de.fusionfactory.index_vivus.services.scalaimpl.AbbreviationSetsSer
 
 class AjaxController < ApplicationController
 
+    MAX_DESC_LENGTH_IN_MATCHES = 300
+
     def initialize
         super
         @@language_by_string = {'latin' => Language::LATIN,
@@ -92,7 +94,7 @@ class AjaxController < ApplicationController
                 :id          => match.get_id,
                 :keyword     => match.get_keyword,
                 :type        => match.get_word_type.to_s,
-                :description => match.get_description
+                :description => match.get_description[0, MAX_DESC_LENGTH_IN_MATCHES]
             })
         end
 
