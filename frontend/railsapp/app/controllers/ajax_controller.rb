@@ -25,11 +25,14 @@ class AjaxController < ApplicationController
 
     def get_matches_with_alternative
         if stale? :last_modified => IndexVivusAdditions::Rails::STARTUP_TIME
-            alternative_option = params[:alternative].blank? && Optional.absent || Optional.of(params[:alternative])
-            matches = @keyword_search_service.get_matches_with_alternative( params[:keyword], alternative_option,
-                                                                            @@language_by_string[params[:lang]])
+            if (params[:alternative].blank?)
+                matches = @keyword_search_service.get_matches(params[:keyword], @@language_by_string[params[:lang]])
+            else
+                matches = @keyword_search_service.get_matches_with_alternative(params[:keyword],
+                                                                               params[:alternative], @@language_by_string[params[:lang]])
+            end
             render :json => serialize_matches(matches)
-        end                                                                
+        end
     end
 
     def get_keyword_completions

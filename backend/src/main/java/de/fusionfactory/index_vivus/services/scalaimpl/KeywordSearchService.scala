@@ -12,10 +12,7 @@ import spray.caching.LruCache
 import scala.concurrent.{Await, future, ExecutionContext}
 import ExecutionContext.Implicits.global
 import scala.concurrent.duration.Duration
-import com.google.common.base.{Optional, Stopwatch}
-import java.util.concurrent.TimeUnit
-import de.fusionfactory.index_vivus.tools.scala.Utils.OptionConversions._
-import de.fusionfactory.index_vivus.models.IDictionaryEntry
+import com.google.common.base.Stopwatch
 
 
 /**
@@ -55,12 +52,12 @@ class KeywordSearchService private() extends IKeywordSearchService {
     fetchCompleter(language).getAutocompleteSuggestions(keyword).toList
   }
 
-  def getMatchesWithAlternative(keywordCandidate: String, completionAlternative: Optional[String], language: Language) = {
+  def getMatchesWithAlternative(keywordCandidate: String, completionAlternative: String, language: Language): JList[DE] = {
     db.withTransaction( s =>
       if(DE.keywordExists(keywordCandidate, language, s)) {
         DE.fetchByKeywordAndSourceLanguage(keywordCandidate, language, s)
       } else {
-        completionAlternative.map( ca => DE.fetchByKeywordAndSourceLanguage(ca, language, s) ).getOrElse(List.empty)
+        DE.fetchByKeywordAndSourceLanguage(completionAlternative, language, s)
       })
   }
 
