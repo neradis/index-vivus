@@ -78,11 +78,16 @@ public class Indexer implements IndexSearch {
         IndexWriter indexWriter = new IndexWriter(directoryIndex, config);
 
         List<DictionaryEntry> dictionaryEntryList = DictionaryEntry.fetchAll();
-        int i = 0;
+        int i = 1;
         for (DictionaryEntry e : dictionaryEntryList) {
-            logger.info("progress... " + i);
+            logger.debug("progress... " + i);
             insertDocument(indexWriter, e);
-            logger.info("progress... " + i + " .. done");
+
+            if (i % 1000 == 0) {
+                logger.info("progress... " + i + " .. done");
+            } else {
+                logger.debug("progress... " + i + " .. done");
+            }
             i++;
         }
         langLookup.shutdown();

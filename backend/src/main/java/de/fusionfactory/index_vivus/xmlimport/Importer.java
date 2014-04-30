@@ -263,7 +263,10 @@ public abstract class Importer {
         boolean noFiles = true;
 
         if (files != null) {
-            for (File fileHandle : Utils.moveMetaDataFilesToFront(files)) {
+            ImmutableList<File> importFiles = Utils.moveMetaDataFilesToFront(files);
+            logger.info("Will import the following files in order as listed:\n" + Joiner.on("\n").join(importFiles));
+
+            for (File fileHandle : importFiles) {
                 if (fileHandle.isFile() && fileHandle.getName().startsWith(sourceFilePrefix())
                         && fileHandle.getName().contains(".xml")) {
 
