@@ -7,7 +7,7 @@ import de.fusionfactory.index_vivus.indexer.Indexer
 import de.fusionfactory.index_vivus.persistence.SlickTools.{dbFilesExist, deleteDbFiles}
 
 import BuildTasks._
-import de.fusionfactory.index_vivus.configuration.LocationProvider
+import de.fusionfactory.index_vivus.configuration.{Environment, LocationProvider}
 import java.io.File
 import org.apache.log4j.Logger
 import org.apache.commons.io.FileUtils
@@ -96,4 +96,8 @@ object ReCreateAll extends App {
   importDictionaries
   logger.info("Creating fulltext index...")
   createFulltextIndex
+}
+
+object PrintEnvironment extends App {
+  print(Environment.getActive)
 }

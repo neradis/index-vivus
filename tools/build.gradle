@@ -104,20 +104,21 @@ for (t in [cleanDb, cleanIndices, loadFixtures, importDictionaries, createFullte
     t.group = 'maintenance'
 }
 
+
+task queryBackendEnvironment(type: JavaExec,  dependsOn: backend.classes) {
+
+    toolTaskDefaults(delegate)
+    main = 'de.fusionfactory.index_vivus.tools.PrintEnvironment'
+    ext.queryOutput = new ByteArrayOutputStream()
+    standardOutput = queryOutput
+
+    doLast {
+        project.ext.backendEnvironment = queryOutput.toString()
+    }
+}
+
 def toolTaskDefaults(JavaExec javaExec) {
     javaExec.ext.envProp = System.getProperty('env')
     if (javaExec.envProp) javaExec.jvmArgs("-Denv=$javaExec.envProp")
     javaExec.classpath = backend.sourceSets.main.runtimeClasspath
-}
-
-task queryBackendEnvironment(dependsOn: backend.classes) << {
-
-    try {
-        project.ext.backendDataDir = de.fusionfactory.index_vivus.configuration.LocationProvider.instance.dataDir
-        project.ext.backendEnvironment = de.fusionfactory.index_vivus.configuration.Environment.getActive().name
-    } catch (Throwable e) {
-        def msg = """|Error since backend classes and property files were not in place.
-                     |Run 'gradle :backend:classes first""".stripMargin('|').split().join(' ')
-        logger.warn(msg)
-    }
 }
