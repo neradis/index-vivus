@@ -3,6 +3,9 @@ package de.fusionfactory.index_vivus.xmlimport;
 import com.google.common.base.Joiner;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Sets;
 import de.fusionfactory.index_vivus.configuration.Environment;
 import de.fusionfactory.index_vivus.configuration.LocationProvider;
 import de.fusionfactory.index_vivus.models.WordType;
@@ -40,7 +43,10 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 
+import static de.fusionfactory.index_vivus.services.Language.GREEK;
+import static de.fusionfactory.index_vivus.services.Language.LATIN;
 import static java.lang.String.format;
 
 /**
@@ -53,7 +59,15 @@ public abstract class Importer {
     protected final Optional<Integer> integerAbsent = Optional.absent();
     protected final short logEntryBatchSize = 1000;
     protected final String abbrTag = "abbr";
-    protected ArrayList<Abbreviation> abbreviations = null;
+    private AtomicReference<ImmutableSet<String>> abbrShortForms = new AtomicReference<>();
+
+
+    public static ImmutableMap<Language, ImmutableSet<String>> DOT_STRIP_EXCEPTIONS = ImmutableMap.of(
+            LATIN, ImmutableSet.of("A.", "a. a. O.", "a. E.", "Adverb.", "altert.", "dass.", "L.",
+                    "latin.", "leb.", "n.", "s. v. a.", "Verb."),
+            GREEK, ImmutableSet.of("B.A.", "D.L.", "E.G.", "E.M.", "H.", "K.S.")
+    );
+
 
     public Importer() {
         // check for existing tables and create them, if not existent (for mode DEV and TEST)
@@ -61,12 +75,6 @@ public abstract class Importer {
         if (Environment.getActive().equals(Environment.DEVELOPMENT) || Environment.getActive().equals(Environment.TEST)) {
             DbHelper.createMissingTables();
         }
-        abbreviations = new ArrayList<>();
-    }
-
-    public Importer(List<Abbreviation> knownAbbreviations) {
-        this();
-        abbreviations.addAll(knownAbbreviations);
     }
 
     protected abstract Language sourceLanguage();
@@ -92,6 +100,33 @@ public abstract class Importer {
         return outStr.toString();
     }
 
+    protected ImmutableSet<String> getAbbrShortForms() {
+        synchronized (abbrShortForms) {
+            if (abbrShortForms.get() == null) {
+                abbrShortForms.compareAndSet(null, collectShortForms());
+            }
+        }
+        return abbrShortForms.get();
+    }
+
+    public static boolean testIfShortFormDotStrippable(String shortForm, Language lang) {
+        return shortForm.endsWith(".") && shortForm.length() > 2 &&
+                !DOT_STRIP_EXCEPTIONS.get(lang).contains(shortForm);
+    }
+
+    private ImmutableSet<String> collectShortForms() {
+        List<Abbreviation> abbrevs = Abbreviation.fetchAll();
+        Set<String> res = Sets.newHashSetWithExpectedSize(abbrevs.size() * 2);
+        for (Abbreviation abbr : abbrevs) {
+            String sf = abbr.getShortForm();
+            res.add(sf);
+            if (testIfShortFormDotStrippable(sf, sourceLanguage())) {
+                res.add(sf.substring(0, sf.length() - 1));
+            }
+        }
+        return ImmutableSet.copyOf(res);
+    }
+
     protected abstract void parseAbbrvData(NodeList entries);
 
     private void parseEntryData(NodeList entries) throws IOException, SAXException {
@@ -105,8 +140,8 @@ public abstract class Importer {
              - remove overlaps to find longer abbreviations before shorter ones
                with the same suffix (e.g. 'Alex. Aet.' before 'Alex.' */
         Trie abbrTrie = new Trie().onlyWholeWords().removeOverlaps();
-        for (Abbreviation abbr : this.abbreviations)
-            abbrTrie.addKeyword(abbr.getShortForm());
+        for (String sf : getAbbrShortForms())
+            abbrTrie.addKeyword(sf);
 
         LinkedHashMap<DictionaryEntry, ArrayList<Abbreviation>> entryBulk = new LinkedHashMap<>();
         for (int i = 0; i < entries.getLength(); i++) {
@@ -209,7 +244,6 @@ public abstract class Importer {
         if (entryBulk.size() != 0) {
             EntryImportTransaction entryImp = new EntryImportTransaction(prevEntry, entryBulk, warningsPrinted);
             DbHelper.transaction(entryImp);
-            prevEntry = entryImp.getPrevE();
             added += entryImp.getAdded();
         }
         logger.info("Entries processed: " + processed);
@@ -262,10 +296,6 @@ public abstract class Importer {
         if (noFiles) {
             throw new FileNotFoundException("Keine passenden Wörterbuchdateien gefunden");
         }
-    }
-
-    public List<Abbreviation> getAbbreviations() {
-        return this.abbreviations;
     }
 
     public class AbbreviationsImportTransaction extends DbHelper.Operations<Object> {

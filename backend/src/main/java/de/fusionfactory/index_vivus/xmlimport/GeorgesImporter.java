@@ -93,11 +93,6 @@ public class GeorgesImporter extends Importer {
             logger.info("Thereof invalid: " + errorC);
             AbbreviationsImportTransaction abbrvImport = new AbbreviationsImportTransaction(aBuf);
             DbHelper.transaction(abbrvImport);
-
-            this.abbreviations.addAll(abbrvImport.getAbbreviations());
-            //debug output
-            //for (Abbreviation abbrv : this.abbreviations)
-            //    logger.debug(abbrv);
         }
     }
 

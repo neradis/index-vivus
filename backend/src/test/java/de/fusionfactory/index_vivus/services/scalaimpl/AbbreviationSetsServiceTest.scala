@@ -9,6 +9,7 @@ import scala.collection.convert.wrapAll._
 import com.google.common.collect.Maps
 import AbbreviationSetsServiceTest._
 import de.fusionfactory.index_vivus.services.Language
+import java.util
 
 
 /**
@@ -18,26 +19,34 @@ import de.fusionfactory.index_vivus.services.Language
 
 object AbbreviationSetsServiceTest {
 
-  lazy val georgesAbbrSelection = Map(
-    "a. a. O." -> "am angeführten Orte.",
-    "allg." -> "allgemein.",
-    "in ders. Bed." -> "in derselben Bedeutung.",
-    "meton." -> "metonymisch.",
-    "tr." -> "transitivum od. transitive.",
-    "vorkl." -> "vorklassisch.",
-    "vorz." -> "vorzüglich.",
-    "W." -> "Wort.",
-    "WW." -> "Wörter.",
-    "Zshg." -> "Zusammenhang.",
-    "Zustz." -> "Zusatz.",
-    "zugl." -> "zugleich.",
-    "zuw." -> "zuweilen.",
-    "zw." -> "zweifelhaft."
-  )
+  lazy val georgesAbbrSelection: util.Map[String, String] = List(
+    "a. a. O." -> "am angeführten Orte",
+    "allg." -> "allgemein",
+    "allg" -> "allgemein",
+    "in ders. Bed." -> "in derselben Bedeutung",
+    "meton." -> "metonymisch",
+    "meton" -> "metonymisch",
+    "tr." -> "transitivum oder transitive",
+    "tr" -> "transitivum oder transitive",
+    "vorkl." -> "vorklassisch",
+    "vorkl" -> "vorklassisch",
+    "vorz." -> "vorzüglich",
+    "W." -> "Wort",
+    "WW." -> "Wörter",
+    "Zshg." -> "Zusammenhang",
+    "Zshg" -> "Zusammenhang",
+    "Zustz." -> "Zusatz",
+    "zugl." -> "zugleich",
+    "zuw." -> "zuweilen",
+    "zw." -> "zweifelhaft"
+  ).foldLeft(Maps.newHashMap[String, String])((m, p) => {
+    m.put(p._1, p._2); m
+  })
 
-  lazy val fixutreAbbr = (FixtureData.ABBREVIATIONS.foldLeft(Maps.newHashMap[String, String]) {
-    (res, abbr) => res.put(abbr.shortForm, abbr.longForm); res
-  }).toMap
+  lazy val fixutreAbbr: util.Map[String, String] = FixtureData.ABBREVIATIONS.foldLeft(Maps.newHashMap[String, String])(
+    (m, a) => {
+      m.put(a.getShortForm, a.getLongForm); m
+    })
 
 
   lazy val expectedAbbreviations = Map(
@@ -60,11 +69,10 @@ class AbbreviationSetsServiceTest extends FlatSpec with BeforeAndAfter {
 
   "The abbreviation set service" should "give correct an complete listings of abbreviations and their expansions" in {
 
-    val expected = expectedAbbreviations(Environment.getActive)
 
+    val expected = expectedAbbreviations(Environment.getActive)
     val actual = AbbreviationSetsService.getInstance.getAbbreviationExpansions(Language.LATIN)
 
-    expected.entrySet subsetOf actual.entrySet
-
+    expected.keySet().toList.foreach(ek => assert(actual.get(ek) == expected.get(ek), (ek, actual.get(ek), expected.get(ek))))
   }
 }
