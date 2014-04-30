@@ -1,6 +1,6 @@
 <%
 	dict_entry   = get_dictionary_entry(params[:id].to_i)
-	language_str = "latin" #java_lang_to_s(dict_entry.get_language)
+    language_str = java_lang_to_s(dict_entry.get_language)
 %>
 
 <%= javascript_tag do -%>
