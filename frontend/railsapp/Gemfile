@@ -19,7 +19,7 @@ gem 'activerecord-jdbcsqlite3-adapter'
 
   # See https://github.com/sstephenson/execjs#readme for more supported runtimes
   # Uncomment the following line if you want to use Mozilla Rhino instead of node.js
-  # gem 'therubyrhino', :platforms => :jruby
+  gem 'therubyrhino', :platforms => :jruby
 
   gem 'bootstrap-sass', '~> 3.1.1'
 
