@@ -28,7 +28,8 @@ object Utils {
 
   def moveMetaDataFilesToFront(fileArray: Array[File]): ImmutableList[File] = {
     def isMetaData(f: File) = f.getName.contains("000")
-    ImmutableList.copyOf(fileArray.filter(isMetaData) ++ fileArray.filterNot(isMetaData))
+    val sortedFiles = fileArray.sortBy(_.getName)
+    ImmutableList.copyOf(sortedFiles.filter(isMetaData) ++ sortedFiles.filterNot(isMetaData))
   }
   
   object OptionConversions {
