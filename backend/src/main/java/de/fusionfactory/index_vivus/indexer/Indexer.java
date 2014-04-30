@@ -34,6 +34,7 @@ import org.apache.lucene.util.Version;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static java.lang.String.format;
 
@@ -49,7 +50,7 @@ public class Indexer implements IndexSearch {
     private Directory directoryIndex;
     private static Logger logger = Logger.getLogger(Indexer.class);
     private static Logger preprocLogger = Logger.getLogger("DESCRIPTION_PREPROCESSING");
-    private Lookup langLookup = new Lookup(Language.GERMAN);
+    private AtomicReference<Lookup> langLookupHolder = new AtomicReference<>();
     public static int TOP_HIT_COUNT = 10;
 
     public Indexer() {
@@ -90,8 +91,17 @@ public class Indexer implements IndexSearch {
             }
             i++;
         }
-        langLookup.shutdown();
+        getLangLookup().shutdown();
         indexWriter.close();
+    }
+
+    private Lookup getLangLookup() {
+        synchronized (langLookupHolder) {
+            if (langLookupHolder.get() == null) {
+                langLookupHolder.compareAndSet(null, new Lookup(Language.GERMAN));
+            }
+        }
+        return langLookupHolder.get();
     }
 
     private void insertDocument(IndexWriter w, DictionaryEntry entry) throws IOException {
@@ -101,7 +111,7 @@ public class Indexer implements IndexSearch {
 
         List<String> germanTokens;
         try {
-            germanTokens = langLookup.getListOfLanguageWords(tokens);
+            germanTokens = getLangLookup().getListOfLanguageWords(tokens);
         } catch (InterruptedException ie) {
             throw new RuntimeException("interrupt in language lookup", ie);
         }
