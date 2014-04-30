@@ -116,11 +116,8 @@ task queryBackendEnvironment(dependsOn: backend.classes) << {
         project.ext.backendDataDir = de.fusionfactory.index_vivus.configuration.LocationProvider.instance.dataDir
         project.ext.backendEnvironment = de.fusionfactory.index_vivus.configuration.Environment.getActive().name
     } catch (Throwable e) {
-        /*if the backendNotReady flag was already set we are in the execution phase and had not all backend assets
-          ready at the start -> throw GradleScripException to nag the user
-          if the flag is no set, progagate the exception as caught (e.g. to allow tasksIfBackendClassesReady to igore
-          them with a warning*/
         def msg = """|Error since backend classes and property files were not in place.
                      |Run 'gradle :backend:classes first""".stripMargin('|').split().join(' ')
+        logger.warn(msg)
     }
 }
